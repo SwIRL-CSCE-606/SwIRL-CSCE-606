@@ -42,6 +42,10 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+#Use password_digest 
+#because Rails has a built-in method called has_secure_password which utilizes the bcrypt gem to handle password hashing. 
+gem 'bcrypt', '~> 3.1.7'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
