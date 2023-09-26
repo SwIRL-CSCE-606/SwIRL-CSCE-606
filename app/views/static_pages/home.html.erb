@@ -33,7 +33,7 @@
     <h1>Skhedule.com</h1>
     <h3>Click here to create Events: </h3>
     <p>
-    <%= button_to "Create a singular event" %>
-    <%= button_to "Create a series event" %>
+    <%= button_to "Create a singular event", welcome_path, :method => :get  %>
+    <%= button_to "Create a series event", welcome_path, :method => :get  %>
     </p>
 </body>

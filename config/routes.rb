@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'static_pages#home'
   # root :to => redirect('/static_pages/home')
-  get "/pages/:page" => "pages#show"
+  get 'welcome' => 'static_pages#singular_event'
 end
