@@ -13,6 +13,8 @@
             margin-right: 20px;
             padding: 10px 15px; /* Adjust the padding to increase button size */
             font-size: 12px; /* Adjust the font size */
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center-align horizontally */
         }
         h3 {
             text-align: center;
@@ -33,7 +35,7 @@
     <h1>Skhedule.com</h1>
     <h3>Click here to create Events: </h3>
     <p>
-    <%= button_to "Create a singular event", welcome_path, :method => :get  %>
-    <%= button_to "Create a series event", welcome_path, :method => :get  %>
+        <%= button_to "Create singular event", singular_path, :method => :get  %>
+        <%= button_to "Create series event", root_path, :method => :get  %>
     </p>
 </body>

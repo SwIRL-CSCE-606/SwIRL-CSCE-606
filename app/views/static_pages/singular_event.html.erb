@@ -29,8 +29,39 @@
     </style>
 </head>
 
+<body>
 <h3>Singular Event Form</h3>
-
-
-
-</p>
+<%= form_with do |f|%>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :venue %>
+    <%= f.text_field :venue %>
+  </div>
+  <div>
+  <div>
+    <%= f.label :Date %>
+    <%= f.date_field :Date %>
+  </div>
+  <div>
+  <div>
+    <%= f.label :capacity %>
+    <%= f.number_field :capacity, in: 0..10000000, step: 1%>
+  </div>
+  <div>
+  <div>
+    <%= f.label :timeStart %>
+    <%= f.time_field :timeStart%>
+  </div>
+  <div>
+    <%= f.label :timeEnd %>
+    <%= f.time_field :timeEnd%>
+  </div>
+  <div>
+  <div>
+    <%= f.submit "Submit" %>
+  </div>
+<% end %>
+</body>
