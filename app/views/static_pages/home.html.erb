@@ -4,8 +4,8 @@
     <style>
         /* Add some spacing between the buttons */
         button {
-            margin-right: 20px;
-            padding: 5px 10px; /* Adjust the padding to increase button size */
+            margin-right: 12px;
+            padding: 15px 30px; /* Adjust the padding to increase button size */
             font-size: 12px; /* Adjust the font size */
         }
         p {
@@ -18,7 +18,9 @@
         }
         h3 {
             text-align: center;
-            font-size: 15px;
+            font-size: 18px;
+            margin-right: 20px;
+            justify-content: center;
         }        
         body {
         /* Background color */
@@ -33,9 +35,12 @@
 
 <body>
     <h1>Skhedule.com</h1>
-    <h3>Click here to create Events: </h3>
+    <h3>Click here to create events</h3>
     <p>
-        <%= button_to "Create singular event", singular_path, :method => :get  %>
-        <%= button_to "Create series event", root_path, :method => :get  %>
+        <button><%= link_to "Create singular event", singular_path %></button>
+        <button><%= link_to "Create series event", root_path %></button>
+    </p>
+    <p>
+        <button><%= link_to "Check current status", root_path %></button>
     </p>
 </body>
