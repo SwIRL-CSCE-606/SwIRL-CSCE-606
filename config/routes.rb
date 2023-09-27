@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   # root :to => redirect('/static_pages/home')
   get 'singular' => 'static_pages#singular_event'
+  get 'series' => 'static_pages#series_event'
 end
