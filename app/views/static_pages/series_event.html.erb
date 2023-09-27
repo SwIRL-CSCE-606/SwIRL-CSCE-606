@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
-        /* Add some spacing between the buttons */
+        /* Add your CSS styles here */
         button {
             margin-right: 20px;
             padding: 5px 10px; /* Adjust the padding to increase button size */
@@ -31,51 +32,78 @@
         background-size: cover; /* Cover the entire viewport */
         background-repeat: no-repeat; /* Do not repeat the image */
         }
+
     </style>
+    <script>
+        // Function to add a new input field
+        function addField(fieldType) {
+            const container = document.getElementById(`${fieldType}-container`);
+            const newField = document.createElement("div");
+            newField.innerHTML = `
+                <input type="text" class="form-input" name="${fieldType}[]" placeholder="${fieldType}">
+                <button type="button" onclick="removeField(this)">Delete</button>
+            `;
+            container.appendChild(newField);
+        }
+
+        // Function to remove the clicked input field
+        function removeField(button) {
+            const container = button.parentNode.parentNode;
+            container.removeChild(button.parentNode);
+        }
+    </script>
 </head>
 
 <body>
-<h3> Series  Event Form</h3>
-<p>
-<%= form_with do |f|%>
-  <div>
-    <%= f.label "Event Name" %>
-    <%= f.text_field :name, class: 'form-input' %>
-  </div>
+    <h3>Series Event Form</h3>
+    <p>
+        <%= form_with do |f|%>
+        <div>
+            <%= f.label "Event Name" %>
+            <%= f.text_field :name, class: 'form-input' %>
+        </div>
 
-  <div>
-    <%= f.label "Event Venue" %>
-    <%= f.text_field :venue, class: 'form-input' %>
-  </div>
+        <div id="Event-venue-container">
+            <%= f.label "Event Venue" %>
+            <%= f.text_field :venue, class: 'form-input' %>
+            <button type="button" onclick="addField('Event-venue')">Add</button>
+        </div>
 
-  <div>
-    <%= f.label "Event Date" %>
-    <%= f.date_field :Date, class: 'form-input' %>
-  </div>
+        <div id="Event-date-container">
+            <%= f.label "Event Date" %>
+            <%= f.date_field :Date, class: 'form-input' %>
+            <button type="button" onclick="addField('Event-date')">Add</button>
+        </div>
 
-  <div>
-    <%= f.label "Max Capacity" %>
-    <%= f.number_field :capacity, in: 0..10000000, step: 1, class: 'form-input'%>
-  </div>
+        <div id="Max-capacity-container">
+            <%= f.label "Max Capacity" %>
+            <%= f.number_field :capacity, in: 0..10000000, step: 1, class: 'form-input' %>
+            <button type="button" onclick="addField('Max-capacity')">Add</button>
+        </div>
 
-  <div>
-    <%= f.label "Start Time" %>
-    <%= f.time_field :timeStart, class: 'form-input'%>
-  </div>
+        <div id="Start-time-container">
+            <%= f.label "Start Time" %>
+            <%= f.time_field :timeStart, class: 'form-input' %>
+            <button type="button" onclick="addField('Start-time')">Add</button>
+        </div>
 
-  <div>
-    <%= f.label "End Time" %>
-    <%= f.time_field :timeEnd, class: 'form-input'%>
-  </div>
+        <div id="End-time-container">
+            <%= f.label "End Time" %>
+            <%= f.time_field :timeEnd, class: 'form-input' %>
+            <button type="button" onclick="addField('End-time')">Add</button>
+        </div>
 
-  <div>
-    <%= f.label "Duration(minutes)" %>
-    <%= f.text_field :timeEnd, class: 'form-input'%>
-  </div>
+        <div id="Duration-container">
+            <%= f.label "Duration(minutes)" %>
+            <%= f.text_field :duration, class: 'form-input' %>
+            <button type="button" onclick="addField('Duration')">Add</button>
+        </div>
 
-  <div>
-    <%= f.submit "Submit", class: 'form-input' %>
-  </div>
-<% end %>
-</p>
+        <div>
+            <%= f.submit "Submit", class: 'form-input' %>
+        </div>
+        <% end %>
+    </p>
 </body>
+
+</html>
