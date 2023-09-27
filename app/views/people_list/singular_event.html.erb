@@ -1,0 +1,12 @@
+<head>
+<title>Add People List</title>
+</head>
+
+<body>
+<%= form_with do |form|%>
+    <%= form.label :query, "Email List"%>
+    <%= form.email_field :address%>
+    <%= form.submit "Save"%>
+<%end%>
+</body>
+
