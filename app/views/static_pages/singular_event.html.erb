@@ -37,7 +37,7 @@
 <body>
 <h3>Singular Event Form</h3>
 <p>
-<%= form_with do |f|%>
+<%= form_with(url: '/singular', method: 'post') do |f|%>
   <div>
     <%= f.label "Event Name" %>
     <%= f.text_field :name, class: 'form-input' %>
