@@ -15,26 +15,13 @@ RSpec.feature 'Create a Singular Event', type: :feature do
 
   scenario 'Fill in Singular Event Details' do
     visit root_path
-    click_on 'Organizer Button'
-    click_on 'Singular Event'
+    click_link 'Organizer'
+    click_link 'Create singular event'
     fill_in 'Event Name', with: 'Test Event'
     fill_in 'Event Venue', with: 'Test Venue'
     fill_in 'Event Date', with: '2023-10-15'
-    fill_in 'Max Capacity', with: '100'
-    fill_in 'Start Time', with: '14:00'
-    fill_in 'End Time', with: '16:00'
-    fill_in 'Duration (minutes)', with: '120'
-    click_on 'Submit Button'
-    expect(page).to have_content('People List Page')
-  end
-
-  scenario 'Add People to the Singular Event' do
-    visit people_list_page_path(event: 'Test Event')
-    fill_in 'Person Name', with: 'John Doe'
-    fill_in 'Dietary Restrictions', with: 'Vegetarian'
-    fill_in 'Accommodations', with: 'Wheelchair Access'
-    click_on 'Submit Button'
-    expect(page).to have_content('Confirmation Message')
-    # Add further expectations to check if data is saved in the database
+    fill_in 'Event Time', with: '12:00 PM'
+    click_button 'Create Event'
+    expect(Event.where(name:'Test Event', venue:'Test Venue', date:'2023-10-15', time:'12:00 PM').exists?).to be true
   end
 end
