@@ -6,10 +6,11 @@ require 'rails_helper'
 RSpec.feature 'Create a Singular Event', type: :feature do
   scenario 'Navigate to Singular Event Creation Page' do
     visit root_path
-    click_on 'Organizer Button'
-    expect(page).to have_content('Singular Event')
-    expect(page).to have_content('Repeating Event')
-    expect(page).to have_content('Current Status')
+    click_link 'Organizer'
+    expect(page).to have_current_path('/home', wait:10)
+    expect(page).to have_button('Create singular event')
+    expect(page).to have_button('Create series event')
+    expect(page).to have_button('Check current status')
   end
 
   scenario 'Fill in Singular Event Details' do
