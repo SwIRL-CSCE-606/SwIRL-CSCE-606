@@ -1,17 +1,3 @@
-# features/step_definitions/add_people_steps.rb
-
-Given(/^I am on the Main Page$/) do
-  visit root_path
-  end
-
-  When(/^I click on the Organizer Button$/) do
-    click_link  'Organizer'
-  end
-
-  Then(/^I should be on the Organizer Page$/) do
-    expect(current_path).to eq home_path
-  end
-
   Then(/^I should see options for Singular Event, Series Event$/) do
     expect(page).to have_text("Create singular event")
     expect(page).to have_text("Create series event")
@@ -27,5 +13,21 @@ Given(/^I am on the Main Page$/) do
   end
 
   Then("I should create an empty event") do
-    click_on "Create Event"
+    click_button "Create Event"
+  end
+
+  Then("I should be able to see the successful event creation") do
+    expect(page).to have_text('Event was successfully created.')
+  end
+
+  Then("I should be able to add people to this event") do
+    click_button "Add list of people to our event"
+  end
+
+  Then("I should be able to see the email field in the page") do
+    expect(page).to have_content('Email')
+  end
+
+  Then("I click on the Add Button") do
+    click_button "Add"
   end
