@@ -14,5 +14,6 @@ Rails.application.routes.draw do
   get 'home' => 'static_pages#home'
   get 'series' => 'static_pages#series_event'
   get 'newEvents' => 'events#new'
+  get 'eventsList' => 'events#index'
   get 'peopleList' => 'people_list#people_list'
 end
