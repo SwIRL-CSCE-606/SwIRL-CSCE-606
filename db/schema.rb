@@ -30,6 +30,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_031240) do
   end
 
   create_table "event_tests", force: :cascade do |t|
+    t.string "name"
+    t.string "venue"
+    t.date "date"
+    t.time "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+  
   create_table "event_types", force: :cascade do |t|
     t.string "name"
     t.string "venue"

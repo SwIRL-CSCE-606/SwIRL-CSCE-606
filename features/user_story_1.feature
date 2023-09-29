@@ -34,11 +34,7 @@ Feature: Create a Singular Event
     Then I should see a confirmation message
     And the event details should be saved in the database
 
-    
-
-
-
-
+  
 
 
 
