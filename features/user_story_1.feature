@@ -17,10 +17,7 @@ Feature: Create a Singular Event
       | Event Name         | Test Event           |
       | Event Venue        | Test Venue           |
       | Event Date         | 2023-10-15           |
-      | Max Capacity       | 100                  |
-      | Start Time         | 14:00                |
-      | End Time           | 16:00                |
-      | Duration (minutes) | 120                  |
+      | Time               | 14:00                |
     And I click on the Submit Button
     Then I should be on the People List Page
 

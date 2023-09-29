@@ -2,6 +2,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Create a Singular Event', type:feature do
+    include Rails.application.routes.url_helpers
     scenario 'Navigate to Singular Event Creation Page' do
         visit root_path
         click_on 'Organizer Button'
