@@ -1,37 +1,64 @@
 # features/step_definitions/add_people_steps.rb
 
-Given("I am on the Main Page") do
-  visit '/static_pages/main'
-end
+Given(/^I am on the Main Page$/) do
+    visit root_path
+  end
 
-When("I click on the Organizer Button") do
-  click_on 'Organizer'
-end
+  When(/^I click on the Organizer Button$/) do
+    click_link  'Organizer'
+  end
 
-Then("I should be on the Organizer Page") do
-  expect(page).to have_content('Organizer Page')
-end
+  Then(/^I should be on the Organizer Page$/) do
+    expect(current_path).to eq home_path
+  end
 
-And("I should see options for Singular Event, Series Event") do
-  expect(page).to have_content('Singular Event')
-  expect(page).to have_content('Series Event')
-end
+  Then(/^I should see options for Singular Event, Series Event$/) do
+    expect(page).to have_text("Create singular event")
+    expect(page).to have_text("Create series event")
+    expect(page).to have_text("Check current status")
+  end
 
-When("I click on the Singular Event page") do
-  click_on 'Singular Event'
-end
+  When("I click on the Singular Event page") do
+    click_link 'Create singular event'
+  end
 
-Then("I should see the Singular Event page") do
-  expect(page).to have_content('Singular Event Page')
-end
+  Then("I should see the Singular Event page") do
+    expect(page).to have_content('Event Form')
+  end
 
-When("I click on the add people in the singular event") do
-  click_on 'Add People'
-end
+Given(/^I am on the Main Page$/) do
+  visit root_path
+  end
 
-Then("I should see the add people to the singular event page where I can add the email of the persons to be added to a particular singular event") do
-  expect(page).to have_content('Add People to Singular Event Page')
-end
+  When(/^I click on the Organizer Button$/) do
+    click_link  'Organizer'
+  end
+
+  Then(/^I should be on the Organizer Page$/) do
+    expect(current_path).to eq home_path
+  end
+
+  Then(/^I should see options for Singular Event, Series Event$/) do
+    expect(page).to have_text("Create singular event")
+    expect(page).to have_text("Create series event")
+    expect(page).to have_text("Check current status")
+  end
+
+  When("I click on the Singular Event page") do
+    click_link 'Create singular event'
+  end
+
+  Then("I should see the Singular Event page") do
+    expect(page).to have_content('Event Form')
+  end
+
+  When("I want to create an empty event") do
+    click_link 'Create Event'
+  end
+
+  Then(/^I should see successful event creation$/) do
+    expect(page).to have_text("Event was successfully created")
+  end
 
 Given("I am on the Organizer Page") do
   visit '/static_pages/home'
