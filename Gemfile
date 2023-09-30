@@ -42,6 +42,10 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+#Use password_digest 
+#because Rails has a built-in method called has_secure_password which utilizes the bcrypt gem to handle password hashing. 
+gem 'bcrypt', '~> 3.1.7'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -52,6 +56,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "sqlite3", "~> 1.4"
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -73,5 +78,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'rspec'
 end
+
+
