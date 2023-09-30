@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Event Form page', type: :feature do
-  scenario 'Navigate to Singular Event Creation Page' do
+  scenario 'Navigate to Create Event' do
     visit root_path
     click_link 'Organizer'
     expect(page).to have_current_path('/home', wait:10)
@@ -11,7 +11,7 @@ RSpec.feature 'Event Form page', type: :feature do
 
   end
 
-  scenario 'Navigate to Singular Event Creation Page' do
+  scenario 'Navigate to Add Email' do
       visit root_path
       click_link 'Organizer'
       expect(page).to have_current_path('/home', wait:10)
