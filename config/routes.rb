@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   get 'newEvents' => 'events#new'
   get 'eventsList' => 'events#index'
   get 'peopleList' => 'people_list#people_list'
+  get 'eventsList' => 'events#index'
 end
