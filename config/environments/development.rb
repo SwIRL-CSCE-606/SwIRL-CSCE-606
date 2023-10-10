@@ -45,15 +45,22 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :smtp
+
+  host = "localhost:3000"
+  config.action_mailer.default_url_options = { host: host, protocol:'http' }
   config.action_mailer.smtp_settings = {
-    address: 'smtp.sendgrid.net',
+    address: 'smtp.gmail.com',
     port: 587,
-    domain: 'sendgrid.net',
-    user_name: 'apikey',
-    password: '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',
-    authentication: :login,
+    domain: host,
+    # user_name: 'insert email for skhedule here',
+    # password: 'insert passkey for 2fa?',
+    #https://www.youtube.com/watch?v=eYhi_rbnOo8 follow this guide
+    authentication: :plain,
     enable_starttls_auto: true
   }
+
+
+    #qcns mqwf gspy zzve
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
