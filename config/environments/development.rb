@@ -47,14 +47,15 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   host = "localhost:3000"
+  user_name = ENV['USER_NAME']
+  password = ENV['PASSWORD']
   config.action_mailer.default_url_options = { host: host, protocol:'http' }
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
     domain: host,
-    # user_name: 'insert email for skhedule here',
-    # password: 'insert passkey for 2fa?',
-    #https://www.youtube.com/watch?v=eYhi_rbnOo8 follow this guide
+    user_name: user_name,
+    password: password,
     authentication: :plain,
     enable_starttls_auto: true
   }
