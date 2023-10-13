@@ -34,6 +34,25 @@
     </style>
 </head>
 
+<script>
+    // Function to add a new input field
+    function add_field(fieldType) {
+        const container = document.getElementById(`${fieldType}-container`);
+        const newField = document.createElement("div");
+        newField.innerHTML = `
+            <%= text_field_tag 'email' %>
+            <button type="button" onclick="remove_field(this)">Delete</button>
+        `;
+        container.appendChild(newField);
+    }
+
+    // Function to remove the clicked input field
+    function remove_field(button) {
+        const container = button.parentNode.parentNode;
+        container.removeChild(button.parentNode);
+    }
+</script>
+
 <body>
 <%= form_with(model: @event) do |form| %>
   <% if @event.errors.any? %>
@@ -66,6 +85,12 @@
   <div>
     <%= form.label "Event Time", style: "display: block" %>
     <%= form.time_field :time, class: 'form-input', id: 'Event Time' %>
+  </div>
+
+  <div>
+    <h2> List of Attendees </h2>
+    <%= form.label "Email", style: "display: block" %>
+    <%= form.email_field :email, class: 'form-input', id: 'Event Time' %>
   </div>
 
   <div>

@@ -27,6 +27,7 @@ class EventsController < ApplicationController
       if @event.save
         format.html do
           redirect_to event_url(@event), notice: "Event was successfully created."
+          EventRemainderMailer.with(email: event_params[:email]).remainder_email.deliver_now
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -66,6 +67,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :venue, :date, :time)
+      params.require(:event).permit(:name, :venue, :date, :time, :email)
     end
 end
