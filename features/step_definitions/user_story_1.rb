@@ -3,7 +3,7 @@ Given(/^I am on the Main Page$/) do
   end
   
   When(/^I click on the Organizer Button$/) do
-    click_link "Organizer"
+    click_link "Event Organizer"
   end
   
   Then(/^I should be on the Organizer Page$/) do
@@ -15,6 +15,5 @@ Given(/^I am on the Main Page$/) do
     expect(page).to have_text("Create series event")
     expect(page).to have_text("Check current status")
   end
-  
   
   
