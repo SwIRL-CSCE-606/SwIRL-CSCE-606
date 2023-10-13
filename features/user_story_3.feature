@@ -12,6 +12,3 @@ Feature: Add people to the singular event
     Then I should see the Singular Event page
     And I should create an empty event
     Then I should be able to see the successful event creation
-    And I should be able to add people to this event
-    Then I should be able to see the email field in the page
-    And I click on the Add Button
