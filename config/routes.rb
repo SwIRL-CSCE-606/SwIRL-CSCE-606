@@ -3,9 +3,6 @@ Rails.application.routes.draw do
   get 'static_pages/home'
   get 'static_pages/help'
   
-  post '/submit_form', to: 'people_list#form'
-
-
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -15,6 +12,5 @@ Rails.application.routes.draw do
   get 'series' => 'static_pages#series_event'
   get 'newEvents' => 'events#new'
   get 'eventsList' => 'events#index'
-  get 'peopleList' => 'people_list#people_list'
   get 'eventsList' => 'events#index'
 end
