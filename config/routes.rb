@@ -12,6 +12,12 @@ Rails.application.routes.draw do
   get 'series' => 'static_pages#series_event'
   get 'newEvents' => 'events#new'
   get 'eventsList' => 'events#event_status'
+  get 'peopleList' => 'people_list#people_list'
+
+  if Rails.env.development? || Rails.env.test?
+    get '/test_email_invitation', to: 'event_remainder_mailer_test#email_invitation', as: 'test_email_invitation'
+  end
+
   #get 'eventsList' => 'events#index'
 
 end
