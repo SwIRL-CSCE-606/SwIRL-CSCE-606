@@ -13,7 +13,6 @@
   end
 
   Then("I should add a test email") do
-    find_field("Email", wait: 10)
     fill_in 'Email', with: "testuser@gmail.com"
   end
 
