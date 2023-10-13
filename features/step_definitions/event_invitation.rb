@@ -1,7 +1,7 @@
 Given("I am on the event invitation page") do
-    visit event_invitation_path # Assuming your Rails path helper is named this way
+    visit test_email_invitation_path
   end
-  
+    
   Then("I should see {string} as the page header") do |header_text|
     expect(page).to have_selector('.event-header', text: header_text)
   end
