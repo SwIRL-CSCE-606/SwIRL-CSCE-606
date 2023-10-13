@@ -96,15 +96,18 @@ end
 
 config.action_mailer.perform_caching = true
 config.action_mailer.delivery_method = :smtp
+
+host = "gmail.com"
+user_name = ENV['USER_NAME']
+password = ENV['PASSWORD']
+config.action_mailer.default_url_options = { host: host, protocol:'http' }
 config.action_mailer.smtp_settings = {
-  address: 'smtp.sendgrid.net',
+  address: 'smtp.gmail.com',
   port: 587,
-  domain: 'skhedule.com',
-  user_name: 'apikey',
-  password: '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',
-  authentication: '',
+  domain: host,
+  user_name: user_name,
+  password: password,
+  authentication: :plain,
   enable_starttls_auto: true
-
-
 }
 
