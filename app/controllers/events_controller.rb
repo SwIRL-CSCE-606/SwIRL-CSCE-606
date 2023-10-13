@@ -27,6 +27,7 @@ class EventsController < ApplicationController
       if @event.save
         format.html do
           redirect_to event_url(@event), notice: "Event was successfully created."
+          EventRemainderMailer.with(email: event_params[:email]).remainder_email.deliver_now
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -58,6 +59,31 @@ class EventsController < ApplicationController
     end
   end
 
+  def event_status
+    @event = Event.find(params[:id])  # Grabbing the event using the ID passed in the URL
+
+    # Grabbing data from the database
+    @event.name = @event.name
+    @event.description = @event.duration
+    @event.date = @event.created_at.to_date  
+    @event.time = @event.start_time
+    @event.location = "Your Location Here"  # Placeholder since location isn't provided 
+
+    # Calculate the invite status
+    attending_count = @event.attendees.where(status: "Yes").count  # Assuming there's an attendees association and status column
+    not_attending_count = @event.attendees.count - attending_count
+
+    @event.yes_count = attending_count
+    @event.no_count = not_attending_count
+
+    # Calculate the ratios
+    @event.yes_ratio = (attending_count.to_f / @event.attendees.count) * 100
+    @event.no_ratio = 100 - @event.yes_ratio
+
+    # Attendees List
+    @attendees = Event.find(params[:id])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -66,6 +92,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :venue, :date, :time)
+      params.require(:event).permit(:name, :venue, :date, :time, :email)
     end
 end
