@@ -1,22 +1,101 @@
-<div id="<%= dom_id event %>">
-  <p>
-    <strong>Name:</strong>
-    <%= event.name %>
-  </p>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
 
-  <p>
-    <strong>Venue:</strong>
-    <%= event.venue %>
-  </p>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-  <p>
-    <strong>Date:</strong>
-    <%= event.date %>
-  </p>
 
-  <p>
-    <strong>Time:</strong>
-    <%= event.time %>
-  </p>
+    <style>
+        body {
+            background-color: #e2c9be;
+            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
 
-</div>
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #44A1F2, #4CAF50);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            padding: 30px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .event-content {
+            padding: 30px 20px;
+        }
+
+        .highlight-text {
+            color: rgb(8, 92, 120);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+    <div class="event-header">
+        <h1 align = "center">Skhedule.com</h1>
+    </div>
+    <div class="event-content">
+    <div id="<%= dom_id event %>">
+      <h3 align = "center">
+        <strong>Name:</strong>
+        <%= event.name %>
+      </h3>    
+
+      <h3 align = "center">
+        <strong>Venue:</strong>
+        <%= event.venue %>
+      </h3>     
+
+      <h3 align = "center">
+        <strong>Date:</strong>
+        <%= event.date %>
+      </h3>     
+
+      <h3 align = "center">
+        <strong>Time:</strong>
+        <%= event.time %>
+      </h3>
+    </div>
+    </div>
