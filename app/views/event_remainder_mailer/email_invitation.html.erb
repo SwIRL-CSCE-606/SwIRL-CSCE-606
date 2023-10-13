@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
 
     <style>
         body {
@@ -75,19 +76,30 @@
 </head>
 
 <body>
-<div class="event-card">
-    <div class="event-header">
-        <h1 align = "center">Skhedule.com</h1>
+    <div class="event-card">
+        <div class="event-header">
+            Event Invitation
+        </div>
+        <div class="event-content">
+            <p class="text-center mb-4 highlight-text">You are cordially invited to our special event:</p>
+            <p class="mb-3"><strong>Event Name:</strong> <%= @url %> </p>
+            <p class="mb-3"><strong>Date:</strong> <%= @date %></p>
+            <p class="mb-3"><strong>Time:</strong> <%= @time %> </p>
+            <p class="mb-3"><strong>Location:</strong> <%= @location %></p>
+            <p class="mb-4"><strong>Description:</strong> <%= @Description %></p>
+            <div class="d-flex justify-content-around">
+                <button class="gradient-btn">Yes, I'll Attend</button>
+                <button class="btn btn-outline-danger">No, I Can't Make It</button>
+            </div>
+        </div>
     </div>
-    <div class="event-content">
-        <h3 align = "center">Click here to create events</h3>
-        <h4 align = "center">
-            <button class="gradient-btn" align = "center"><%= link_to "Create singular event", newEvents_path %></button>
-            <button class="gradient-btn" align = "center"><%= link_to "Create series event", series_path %></button>
-        </h4>
-        <h4 align = "center">
-            <button class="gradient-btn" align = "center"><%= link_to "Check current status", eventsList_path %></button>
-        </h4>
-    </div>
-</div>
 </body>
+
+    <!-- Future: Bootstrap JS and dependencies -->
+    <!-- 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    -->
+
+</html>

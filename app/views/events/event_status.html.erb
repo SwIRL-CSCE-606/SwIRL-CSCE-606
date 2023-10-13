@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #e2c9be;
+            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            font-family: 'Arial', sans-serif;
+            padding: 4em;
+        }
+
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s;
+            margin-bottom: 2em;
+        }
+
+        .event-header {
+            padding: 1.5em 2em;
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 1.5em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .event-content {
+            padding: 2em;
+        }
+
+        .ratio-bar {
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1em;
+        }
+
+        .attendee {
+            border-bottom: 1px solid #f1f1f1;
+            padding: 0.5em 0;
+        }
+    </style>
+</head>
+<body>
+
+    <% @events.each do |event| %>
+        <div class="event-card">
+            <div class="event-header">
+                <%= event.name %>
+            </div>
+            <div class="event-content">
+                <p><strong>Description:</strong> <%= event.description %></p>
+                <p><strong>Date:</strong> <%= event.date %></p>
+                <p><strong>Time:</strong> <%= event.time %></p>
+                <p><strong>Location:</strong> <%= event.location %></p>
+
+                <hr class="my-4">
+
+                <h4 class="mb-3">Invite Status:</h4>
+                <div class="ratio-bar">
+                    <!-- Dummy ratios here; you should replace these with actual data from your database -->
+                    <div style="width:70%; background-color:#4CAF50;" class="d-inline-block"></div>
+                    <div style="width:30%; background-color:#FF5733;" class="d-inline-block"></div>
+                </div>
+                <p class="mb-4">Yes: <%= @event.yes_count %> | No: <%= @event.no_count %></p>
+
+                <h4 class="mb-3">Attendees:</h4>
+                <ul class="list-unstyled">
+                    <% attendees.each do |attendee| %>
+                    <li class="attendee">
+                        <strong><%= attendee.name %></strong> - 
+                        <%= attendee.status == "Yes" ? '<span class="text-success">Attending</span>' : '<span class="text-danger">Not Attending</span>' %>
+                    </li>
+                    <% end %>
+                </ul>
+            </div>
+        </div>
+    <% end %>
+
+</body>
+</html>
