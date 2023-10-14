@@ -2,45 +2,92 @@
 <html>
 <head>
     <style>
-        /* Add some spacing between the buttons */
-        button {
-            margin-right: 12px;
-            padding: 15px 30px; /* Adjust the padding to increase button size */
-            font-size: 12px; /* Adjust the font size */
-        }
-        p {
-            text-align: center; /* Center-align the content */
-            margin-right: 20px;
-            padding: 10px 15px; /* Adjust the padding to increase button size */
-            font-size: 12px; /* Adjust the font size */
-            display: flex; /* Use flexbox */
-            justify-content: center; /* Center-align horizontally */
-        }
-        h3 {
-            text-align: center;
-            font-size: 18px;
-            margin-right: 20px;
-            justify-content: center;
-        }        
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
         body {
-        /* Background color */
-        background-color: #e2c9be; /* You can use the gradient color here */
-        /* Background image */
-        background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%); /* Replace with your downloaded image file */
-        background-size: cover; /* Cover the entire viewport */
-        background-repeat: no-repeat; /* Do not repeat the image */
+            background-color: #e2c9be;
+            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
         }
+
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #44A1F2, #4CAF50);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            padding: 30px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .event-content {
+            padding: 30px 20px;
+        }
+
+        .highlight-text {
+            color: rgb(8, 92, 120);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
 <body>
-    <h1>Skhedule.com</h1>
-    <h3>Click here to create events</h3>
-    <p>
-        <button><%= link_to "Create singular event", newEvents_path %></button>
-        <button><%= link_to "Create series event", series_path %></button>
-    </p>
-    <p>
-        <button><%= link_to "Check current status", eventsList_path %></button>
-    </p>
+<div class="event-card">
+    <div class="event-header">
+        <h1 align = "center">Skhedule.com</h1>
+    </div>
+    <div class="event-content">
+        <h3 align = "center">Click here to create events</h3>
+        <h4 align = "center">
+            <button class="gradient-btn" align = "center"><%= link_to "Create singular event", newEvents_path %></button>
+            <button class="gradient-btn" align = "center"><%= link_to "Create series event", series_path %></button>
+        </h4>
+        <h4 align = "center">
+            <button class="gradient-btn" align = "center"><%= link_to "Check current status", eventsList_path %></button>
+        </h4>
+    </div>
+</div>
 </body>
