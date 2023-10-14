@@ -11,6 +11,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
+  create_table "accounts", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "attendeeinfos", force: :cascade do |t|
     t.integer "event_id"
     t.datetime "created_at", null: false
@@ -20,6 +28,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
     t.string "isattending"
     t.string "comments"
     t.index ["event_id"], name: "index_attendeeinfos_on_event_id"
+  end
+
+  create_table "event_informations", force: :cascade do |t|
+    t.string "description"
+    t.datetime "date"
+    t.string "venue"
+    t.integer "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_informations_on_event_id"
+  end
+
+  create_table "event_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "events", force: :cascade do |t|
@@ -34,4 +58,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
   end
 
   add_foreign_key "attendeeinfos", "events"
+  add_foreign_key "event_informations", "events"
 end
