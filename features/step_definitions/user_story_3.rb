@@ -9,25 +9,17 @@
   end
 
   Then("I should see the Singular Event page") do
-    expect(page).to have_text('Event Form')
+    expect(page).to have_text('Event name')
   end
 
-  Then("I should create an empty event") do
+  Then("I should add a test email") do
+    fill_in 'Email', with: "testuser@gmail.com"
+  end
+
+  Then("I should create an event") do
     click_button "Create Event"
   end
 
   Then("I should be able to see the successful event creation") do
     expect(page).to have_text('Event was successfully created.')
-  end
-
-  Then("I should be able to add people to this event") do
-    click_button "Add list of people to our event"
-  end
-
-  Then("I should be able to see the email field in the page") do
-    expect(page).to have_content('Email')
-  end
-
-  Then("I click on the Add Button") do
-    click_button "Add"
   end

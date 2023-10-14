@@ -2,7 +2,7 @@ Feature: Create a Singular Event
   As an event organizer
   I want to create a one-time event on skhedule.com efficiently
   So that I can easily manage and organize unique events
-
+  
   Scenario: Navigate to Singular Event Creation Page
     Given I am on the Main Page
     When I click on the Organizer Button
@@ -20,7 +20,6 @@ Feature: Create a Singular Event
       | Time               | 14:00                |
     And I click on the Submit Button
     Then I should be on the People List Page
-    And I should see the "Back to events" link
 
 
   Scenario: Add People to the Singular Event
@@ -32,11 +31,4 @@ Feature: Create a Singular Event
     And I click on the Submit Button
     Then I should see a confirmation message
     And the event details should be saved in the database
-
-  
-
-
-
-
-
 

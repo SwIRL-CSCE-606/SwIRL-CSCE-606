@@ -27,4 +27,3 @@ end
 Then("I should be on the Singular Event Creation Page") do
   expect(page).to have_current_path newEvents_path
 end
-
