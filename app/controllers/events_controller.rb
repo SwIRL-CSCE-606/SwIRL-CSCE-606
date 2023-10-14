@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_event, only: %i[show edit update destroy]
 
   # GET /events or /events.json
   def index
@@ -7,8 +7,7 @@ class EventsController < ApplicationController
   end
 
   # GET /events/1 or /events/1.json
-  def show
-  end
+  def show; end
 
   # GET /events/new
   def new
@@ -16,8 +15,7 @@ class EventsController < ApplicationController
   end
 
   # GET /events/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /events or /events.json
   def create
@@ -26,7 +24,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         format.html do
-          redirect_to event_url(@event), notice: "Event was successfully created."
+          redirect_to event_url(@event), notice: 'Event was successfully created.'
           EventRemainderMailer.with(email: event_params[:email]).remainder_email.deliver_now
         end
       else
@@ -40,7 +38,7 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to event_url(@event), notice: "Event was successfully updated." }
+        format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,44 +52,72 @@ class EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to events_url, notice: "Event was successfully destroyed." }
+      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   def event_status
-    @event = Event.find(params[:id])  # Grabbing the event using the ID passed in the URL
+    # Creating a dummy @event
+    # Dummy event data
+    @events = [
+        OpenStruct.new({
+            id: 1,
+            name: "Sample Event 1",
+            description: "This is a sample event",
+            date: Date.today,
+            time: Time.now,
+            location: "Sample Location 1",
+            yes_count: 50,
+            no_count: 20
+        }),
+        OpenStruct.new({
+            id: 2,
+            name: "Sample Event 2",
+            description: "This is another sample event",
+            date: Date.today + 1.day,
+            time: Time.now + 1.hour,
+            location: "Sample Location 2",
+            yes_count: 30,
+            no_count: 40
+        })
+    ]
 
-    # Grabbing data from the database
-    @event.name = @event.name
-    @event.description = @event.duration
-    @event.date = @event.created_at.to_date  
-    @event.time = @event.start_time
-    @event.location = "Your Location Here"  # Placeholder since location isn't provided 
+    # Dummy attendees data
+    @attendees = [
+      OpenStruct.new(status: 'Yes', name: 'John Doe'),
+      OpenStruct.new(status: 'No', name: 'Jane Smith'),
+      OpenStruct.new(status: 'Yes', name: 'Charlie Brown')
+    ]
 
-    # Calculate the invite status
-    attending_count = @event.attendees.where(status: "Yes").count  # Assuming there's an attendees association and status column
-    not_attending_count = @event.attendees.count - attending_count
+    # # Grabbing data from the database
+    # @event.name = @event.name
+    # @event.description = @event.duration
+    # @event.date = @event.created_at.to_date
+    # @event.time = @event.start_time
+    # @event.location = 'Your Location Here' # Placeholder since location isn't provided
 
-    @event.yes_count = attending_count
-    @event.no_count = not_attending_count
+    # # Calculate the invite status
+    # attending_count = @attendees.select { |attendee| attendee.status == 'Yes' }.count
+    # not_attending_count = @attendees.count - attending_count
 
-    # Calculate the ratios
-    @event.yes_ratio = (attending_count.to_f / @event.attendees.count) * 100
-    @event.no_ratio = 100 - @event.yes_ratio
+    # @event.yes_count = attending_count
+    # @event.no_count = not_attending_count
 
-    # Attendees List
-    @attendees = Event.find(params[:id])
+    # # Calculate the ratios
+    # @event.yes_ratio = (attending_count.to_f / @attendees.count) * 100
+    # @event.no_ratio = 100 - @event.yes_ratio
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:name, :venue, :date, :time, :email)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def event_params
+    params.require(:event).permit(:name, :venue, :date, :time, :email)
+  end
 end
