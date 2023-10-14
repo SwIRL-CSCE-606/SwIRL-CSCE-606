@@ -11,7 +11,7 @@ Feature: Create a Singular Event
 
   Scenario: Fill in Singular Event Details
     Given I am on the Organizer Page
-    When I click on Singular Event
+    When I click on Create singular event
     Then I should be on the Singular Event Creation Page
     And I fill in the following details:
       | Event Name         | Test Event           |
@@ -20,6 +20,8 @@ Feature: Create a Singular Event
       | Time               | 14:00                |
     And I click on the Submit Button
     Then I should be on the People List Page
+    And I should see the "Back to events" link
+
 
   Scenario: Add People to the Singular Event
     Given I am on the People List Page for Test Event
