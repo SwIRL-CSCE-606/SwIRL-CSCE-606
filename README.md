@@ -27,6 +27,6 @@ Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
 
 ###### How to Run Tests:
 
-rails cucumber - to run all cucumber tests (7 test cases)
-        - 
-rspec - to run all rspec tests (10 test cases implemented and successful, 2 test cases pending)
+* rails cucumber - to run all cucumber tests (7 test cases)
+        
+* rspec - to run all rspec tests (10 test cases implemented and successful, 2 test cases pending)
