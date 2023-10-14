@@ -8,7 +8,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 
-more_singular_event = [
+events = [
     { name: 'Item 1', date: '01-Jan-2023', venue: 'Comment 1' , time:''},
     { name: 'Item 2', date: '15-Feb-2023', venue: 'Comment 2'  , time:''},
     { name: 'Item 3', date: '30-Mar-2023', venue: 'Comment 3'  , time:''},
@@ -17,9 +17,15 @@ more_singular_event = [
   ]
 
 
-  more_singular_event.each do |singular_event|
-    Event.create!(singular_event)
+  events.each do |event|
+    Event.create!(event)
   end
+
+attendee_info = [
+  { name: 'Erik',  email: 'example@gmail.com', isattending: 'true', comments: 'N/A'},
+  { name: 'Bob',  email: 'example@gmail.com', isattending: 'false', comments: 'N/A'}
+]
+
 
 #   more_create_event = [
 #     { :event_type => 'Type A', :name => 'Event 1', :description => 'Description for Event 1' },
