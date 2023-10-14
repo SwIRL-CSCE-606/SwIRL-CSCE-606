@@ -25,7 +25,7 @@ class EventsController < ApplicationController
       if @event.save
         format.html do
           redirect_to event_url(@event), notice: 'Event was successfully created.'
-          EventRemainderMailer.with(email: event_params[:email]).remainder_email.deliver_now
+          EventRemainderMailer.with(email: @event.email).remainder_email.deliver_now
         end
       else
         format.html { render :new, status: :unprocessable_entity }
