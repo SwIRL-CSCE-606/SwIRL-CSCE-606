@@ -7,62 +7,77 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+#           -----------Event----------
+#           |                        |
+#           |                        |
+#           +(many)                  *(one)
+#      AttendeeInfo               EventInfo
+#
 
-events = [
-    { name: 'Item 1', date: '01-Jan-2023', venue: 'Comment 1' , time:''},
-    { name: 'Item 2', date: '15-Feb-2023', venue: 'Comment 2'  , time:''},
-    { name: 'Item 3', date: '30-Mar-2023', venue: 'Comment 3'  , time:''},
-    { name: 'Item 4', date: '10-Apr-2023', venue: 'Comment 4'  , time:''},
-    { name: 'Item 5', date: '25-May-2023', venue: 'Comment 5'  , time:''}
-  ]
-
-
-  events.each do |event|
-    Event.create!(event)
-  end
-
-attendee_info = [
-  { name: 'Erik',  email: 'example@gmail.com', isattending: 'true', comments: 'N/A'},
-  { name: 'Bob',  email: 'example@gmail.com', isattending: 'false', comments: 'N/A'}
+# Data for AttendeeInfos Table
+attendee_infos = [
+  { name: 'Erik',     email: 'example1@gmail.com', is_attending: 'true',   comments: 'N/A'},
+  { name: 'Mohit',    email: 'example2@gmail.com', is_attending: 'false',  comments: 'N/A'},
+  { name: 'Aashay',   email: 'example3@gmail.com', is_attending: 'true',   comments: 'N/A'},
+  { name: 'Chong',    email: 'example4@gmail.com', is_attending: 'false',  comments: 'N/A'},
+  { name: 'Ishant',   email: 'example5@gmail.com', is_attending: 'false',  comments: 'N/A'},
+  { name: 'Shaunak',  email: 'example6@gmail.com', is_attending: 'true',   comments: 'N/A'}
 ]
 
 
-#   more_create_event = [
-#     { :event_type => 'Type A', :name => 'Event 1', :description => 'Description for Event 1' },
-#     { :event_type => 'Type B', :name => 'Event 2', :description => 'Description for Event 2' },
-#     { :event_type => 'Type C', :name => 'Event 3', :description => 'Description for Event 3' },
-#     { :event_type => 'Type A', :name => 'Event 4', :description => 'Description for Event 4' },
-#     { :event_type => 'Type B', :name => 'Event 5', :description => 'Description for Event 5' }
-#   ]
+# Data for EventInfos Table
+event_infos = [
+  { name: 'Item 1', description: 'event 1', date: '01-Jan-2023', venue: 'Venue 1', time:'00:00:00AM'},
+  { name: 'Item 2', description: 'event 2', date: '15-Feb-2023', venue: 'Venue 2', time:'00:00:00AM'},
+  { name: 'Item 3', description: 'event 3', date: '30-Mar-2023', venue: 'Venue 3', time:'00:00:00AM'},
+  { name: 'Item 4', description: 'event 4', date: '10-Apr-2023', venue: 'Venue 4', time:'00:00:00AM'},
+  { name: 'Item 5', description: 'event 5', date: '25-May-2023', venue: 'Venue 5', time:'00:00:00AM'}
+]
 
-#   more_create_event.each do |create_event|
-#     CreateEvents.create!(create_event)
-#   end
+# Data for Events Table
+events = [
+  { name: 'Item 1'},
+  { name: 'Item 2'},
+  { name: 'Item 3'},
+  { name: 'Item 4'},
+  { name: 'Item 5'}
+]
 
-#   more_create_event_type = [
-#     { name: 'Item 1' },
-#     { name: 'Item 2' },
-#     { name: 'Item 3' },
-#     { name: 'Item 4' },
-#     { name: 'Item 5' },
-#     { name: 'Item 6' },
-#   ]
 
-#   more_create_event_type.each do |create_event_type|
-#     CreateEventTypes.create!(create_event_type)
-#   end
 
-#   more_create_information = [
-#     { :event => 'Event 1', :date => '2023-10-10', :time => '10:00 AM', :venue => 'Venue A', :description => 'Description for Event 1' },
-#     { :event => 'Event 2', :date => '2023-10-15', :time => '3:30 PM', :venue => 'Venue B', :description => 'Description for Event 2' },
-#     { :event => 'Event 3', :date => '2023-10-20', :time => '7:00 PM', :venue => 'Venue C', :description => 'Description for Event 3' },
-#     { :event => 'Event 4', :date => '2023-10-25', :time => '2:00 PM', :venue => 'Venue D', :description => 'Description for Event 4' },
-#     { :event => 'Event 5', :date => '2023-10-30', :time => '6:30 PM', :venue => 'Venue E', :description => 'Description for Event 5' }
-#   ]
+
+# Create entries for Event Table, EventInfos Table, and AttendeeInfos Tables
+for i in 0..(events.length - 1)
+  # Create Event entry
+  event = Event.create!(events[i])
+
+  # Create EventInfos entry
+  event_info = EventInfo.create!(
+    name:         event_infos[i][:name],
+    description:  event_infos[i][:description],
+    date:         event_infos[i][:date],
+    venue:        event_infos[i][:venue],
+    event_id:     event.id
+  )
+
+  # Add all attendees per event
+  for j in 0..(attendee_infos.length - 1)
+    attendee = AttendeeInfo.create!(
+      name:           attendee_infos[i][:name],
+      email:          attendee_infos[i][:email],
+      is_attending:   attendee_infos[i][:is_attending],
+      comments:       attendee_infos[i][:comments],
+      event_id:       event.id
+    )
+  end
+
+  # Add reference from event_id to new tables
+  event.update!(event_info_id: event_info.id)
   
-#   more_create_information.each do |create_event_information|
-#     CreateEventInformations.create!(create_event_information)
-#   end
+
+end
+
+
 
 
 #   more_create_accounts = [
