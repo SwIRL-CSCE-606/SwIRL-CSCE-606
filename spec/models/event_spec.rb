@@ -2,35 +2,43 @@ require 'rails_helper'
 
 RSpec.describe Event, type: :model do
     before do
-        if described_class.where(name: "CSCE 606").empty?
-            described_class.create( name: "CSCE 606",
-                                    venue: "Zachery Complex",
-                                    date: "2023-01-01",
-                                    time: "10:20:00AM")
-        end
+        @event = Event.create!( 
+            name:       "CSCE 606"
+        )
+        
+        @event_info = EventInfo.create!(
+            name:       "CSCE 606",
+            event_id:   @event.id
+        )
+
+        @attendee = AttendeeInfo.create!(
+            name:       "Josh",
+            event_id:   @event.id
+        )
+
+
     end
 
-    describe 'edit event' do
-        it 'edit event that exists' do
-            event = described_class.find_by(name: "CSCE 606")
-            event.update(venue: "HRBB")
-            expect(event.venue).to eq "HRBB"
-        end
-    end
-
-    describe 'new event' do
-        it 'new event' do
-            described_class.create(name: "CSCE 645")
-            event = described_class.find_by(name: "CSCE 645")
+    describe 'event actions' do
+        it 'edit event' do
+            event = Event.find_by(name: "CSCE 606")
+            event.update(name: "CSCE 645")
             expect(event.name).to eq "CSCE 645"
         end
-    end
 
-    describe 'delete event' do
+        it 'new event' do
+            Event.create(name: "CSCE 645")
+            event = Event.find_by(name: "CSCE 645")
+            expect(event.name).to eq "CSCE 645"
+        end
+
         it 'delete event' do
-            event = described_class.find_by(name: "CSCE 606")
+            event = Event.find_by(name: "CSCE 606")
+            event_id = event.id
             event.destroy
-            expect(described_class.find_by(name: "CSCE 606")).to eq nil
+            expect(Event.find_by(name: "CSCE 606")).to eq nil
+            expect(EventInfo.find_by(event_id: event_id)).to eq nil
+            expect(AttendeeInfo.find_by(event_id: event_id)).to eq nil
         end
     end
 

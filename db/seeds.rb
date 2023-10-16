@@ -80,7 +80,7 @@ end
 
 
 
-#   more_create_accounts = [
+#   accounts = [
 #     { :email => 'user1@example.com', :name => 'User One', :password_digest => 'password1' },
 #     { :email => 'user2@example.com', :name => 'User Two', :password_digest => 'password2' },
 #     { :email => 'user3@example.com', :name => 'User Three', :password_digest => 'password3' },
@@ -88,6 +88,6 @@ end
 #     { :email => 'user5@example.com', :name => 'User Five', :password_digest => 'password5' }
 #   ]
 
-#   more_create_accounts.each do |create_account|
+#   accounts.each do |create_account|
 #     CreateAccounts.create!(create_account)
 #   end

@@ -52,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "attendee_infos", "events"
-  add_foreign_key "event_infos", "events"
+  add_foreign_key "attendee_infos", "events", on_delete: :cascade
+  add_foreign_key "event_infos", "events", on_delete: :cascade
   add_foreign_key "events", "event_infos"
 end
