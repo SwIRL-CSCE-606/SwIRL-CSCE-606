@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
     t.string "name"
     t.string "description"
     t.datetime "date"
+    t.time "time"
     t.string "venue"
     t.integer "event_id", null: false
     t.datetime "created_at", null: false

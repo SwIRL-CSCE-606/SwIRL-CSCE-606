@@ -57,6 +57,7 @@ for i in 0..(events.length - 1)
     description:  event_infos[i][:description],
     date:         event_infos[i][:date],
     venue:        event_infos[i][:venue],
+    time:         event_infos[i][:time],
     event_id:     event.id
   )
 

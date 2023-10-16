@@ -34,7 +34,7 @@ class EventsController < ApplicationController
       name:       name,
       venue:      venue,
       date:       date,
-      # Forgot to add time field to database, TO-DO fix that 
+      time:       time
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
@@ -75,7 +75,7 @@ class EventsController < ApplicationController
     event_info = EventInfo.find_by(id: @event.event_info.id)
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, time:time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
