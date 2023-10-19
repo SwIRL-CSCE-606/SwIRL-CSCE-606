@@ -77,22 +77,22 @@
     <div id="<%= dom_id event %>">
       <h3 align = "center">
         <strong>Name:</strong>
-        <%= event.name %>
+        <%= event.event_info.name %>
       </h3>    
 
       <h3 align = "center">
         <strong>Venue:</strong>
-        <%= event.venue %>
+        <%= event.event_info.venue %>
       </h3>     
 
       <h3 align = "center">
         <strong>Date:</strong>
-        <%= event.date %>
+        <%= event.event_info.date %>
       </h3>     
 
       <h3 align = "center">
         <strong>Time:</strong>
-        <%= event.time %>
+        <%= event.event_info.time.strftime("%I:%M%p") %>
       </>
     </div>
     </div>
