@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #e2c9be;
+            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #44A1F2, #4CAF50);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            padding: 30px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .event-content {
+            padding: 30px 20px;
+        }
+
+        .highlight-text {
+            color: rgb(8, 92, 120);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .event-list {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="event-header">
+        <h1 align="center">Event Dashboard</h1>
+    </div>
+    <div class="event-card">
+        <div class="event-content">
+            <!-- Event List -->
+            <h2>Events</h2>
+            <ul id="event-list">
+                <li class="event-list" data-event="event1">Event 1</li>
+                <li class="event-list" data-event="event2">Event 2</li>
+                <li class="event-list" data-event="event3">Event 3</li>
+            </ul>
+
+            <!-- Event Details -->
+            <div id="event-details" style="display: none;">
+                <h2>Event Details</h2>
+                <div>
+                    <h2>Event Name: <span id="event-name"></span></h2>
+                </div>
+                <div>
+                    <h2>Yes/No Ratio: <span id="yes-no-ratio"></span></h2>
+                </div>
+                <div>
+                    <h2>Seat Occupancy: <span id="seat-occupancy"></span></h2>
+                </div>
+                <div>
+                    <h2>Status of Priority List: <span id="priority-list-status"></span></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const events = {
+            event1: {
+                name: "Event 1",
+                yesNoRatio: "3:1",
+                seatOccupied: 30,
+                totalSeats: 40,
+                priorityListStatus: "On Track",
+            },
+            event2: {
+                name: "Event 2",
+                yesNoRatio: "2:1",
+                seatOccupied: 15,
+                totalSeats: 30,
+                priorityListStatus: "Delayed",
+            },
+            event3: {
+                name: "Event 3",
+                yesNoRatio: "4:1",
+                seatOccupied: 40,
+                totalSeats: 50,
+                priorityListStatus: "Completed",
+            },
+        };
+
+        const eventListItems = document.querySelectorAll('.event-list');
+        const eventDetails = document.getElementById('event-details');
+        const eventName = document.getElementById('event-name');
+        const yesNoRatio = document.getElementById('yes-no-ratio');
+        const seatOccupancy = document.getElementById('seat-occupancy');
+        const priorityListStatus = document.getElementById('priority-list-status');
+
+        eventListItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const eventId = item.getAttribute('data-event');
+                const event = events[eventId];
+
+                eventName.textContent = event.name;
+                yesNoRatio.textContent = event.yesNoRatio;
+                seatOccupancy.textContent = `${event.seatOccupied} out of ${event.totalSeats}`;
+                priorityListStatus.textContent = event.priorityListStatus;
+
+                // Hide other event details and show the selected event details
+                eventDetails.style.display = 'block';
+                eventListItems.forEach(e => {
+                    e.classList.remove('highlight-text');
+                });
+                item.classList.add('highlight-text');
+            });
+        });
+    </script>
+</body>
+
+</html>
