@@ -12,6 +12,8 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    # Create EventInfothat corresponds to Event
+    @event_info = EventInfo.new
   end
 
   # GET /events/1/edit
@@ -19,13 +21,41 @@ class EventsController < ApplicationController
 
   # POST /events or /events.json
   def create
-    @event = Event.new(event_params)
+    name = event_params[:name]
+    venue = event_params[:venue]
+    date = event_params[:date]
+    time = event_params[:time]
+    email = event_params[:email]
+
+    @event = Event.new(
+      name:       name
+    )
+    @event_info = EventInfo.new(
+      name:       name,
+      venue:      venue,
+      date:       date,
+      time:       time
+    )
+
+    # Make this loop through list instead (once we can retrieve a list from the form)
+    @attendee = AttendeeInfo.new(
+      email:      email,
+    )
+
+    # NOTE: @event.id does not exist until the record is SAVED
 
     respond_to do |format|
       if @event.save
-        format.html do
-          redirect_to event_url(@event), notice: 'Event was successfully created.'
-          EventRemainderMailer.with(email: event_params[:email]).remainder_email.deliver_now
+        # Save the other events reference to the event
+        @event_info.event_id = @event.id
+        @attendee.event_id = @event.id
+
+        if @event_info.save && @attendee.save
+          @event.update(event_info_id: @event_info.id)
+          format.html do
+            redirect_to event_url(@event), notice: 'Event was successfully created.'
+            EventRemainderMailer.with(email: @attendee.email).remainder_email.deliver_now
+          end
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -36,10 +66,18 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1 or /events/1.json
   def update
+    name = event_params[:name]
+    venue = event_params[:venue]
+    date = event_params[:date]
+    time = event_params[:time]
+    email = event_params[:email]
+
+    event_info = EventInfo.find_by(id: @event.event_info.id)
+
     respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, time:time)
+          format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
+          format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
