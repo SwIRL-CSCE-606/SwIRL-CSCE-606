@@ -27,3 +27,38 @@ end
 Then("I should be on the Singular Event Creation Page") do
   expect(page).to have_current_path newEvents_path
 end
+
+
+Then('I fill in the following details:') do |table|
+  # table is a Cucumber::MultilineArgument::DataTable
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then('I click on the Submit Button') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then('I should be on the People List Page') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Given('I am on the People List Page for Test Event') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When('I add the following individuals with accommodations:') do |table|
+  # table is a Cucumber::MultilineArgument::DataTable
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When('I click on the Submit Button') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then('I should see a confirmation message') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then('the event details should be saved in the database') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
