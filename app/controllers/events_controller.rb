@@ -16,6 +16,10 @@ class EventsController < ApplicationController
     @event_info = EventInfo.new
   end
 
+  def event_dashboard
+      render template eventdashboard
+  end
+
   # GET /events/1/edit
   def edit; end
 
