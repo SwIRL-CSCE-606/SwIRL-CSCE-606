@@ -148,7 +148,7 @@ class EventsController < ApplicationController
   end
 
   def email_invitation
-    @event = Event.includes(:event_information).find(params[:id]) # You can fetch the event by ID or however you want
+    @event = Event.includes(:event_info).find(params[:id]) # You can fetch the event by ID or however you want
     render 'email_invitation'
   end
 
