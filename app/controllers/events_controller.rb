@@ -24,17 +24,21 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
     email = event_params[:email]
 
     @event = Event.new(
       name:       name
     )
     @event_info = EventInfo.new(
-      name:       name,
-      venue:      venue,
-      date:       date,
-      time:       time
+      name:         name,
+      venue:        venue,
+      date:         date,
+      start_time:   start_time,
+      end_time:     end_time,
+      max_capacity: max_capacity
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
@@ -69,13 +73,15 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
     email = event_params[:email]
 
     event_info = EventInfo.find_by(id: @event.event_info.id)
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, time:time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time:start_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
@@ -156,6 +162,6 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :time, :email)
+    params.require(:event).permit(:name, :venue, :date, :start_time,:end_time, :max_capacity, :email)
   end
 end

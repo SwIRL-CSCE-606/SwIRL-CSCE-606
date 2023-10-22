@@ -126,9 +126,20 @@
   </div>
 
   <div>
-    <%= form.label "Event Time", style: "display: block" %>
-    <%= form.time_field :time, class: 'form-input', id: 'Event Time' %>
+    <%= form.label "Max Capacity", style: "display: block" %>
+    <%= form.number_field :max_capacity, in: 0..1000000000, step: 1, class: 'form-input', id: 'Event Time' %>
   </div>
+
+  <div>
+    <%= form.label "Event Start Time", style: "display: block" %>
+    <%= form.time_field :start_time, class: 'form-input', id: 'Event Time' %>
+  </div>
+
+  <div>
+    <%= form.label "Event End Time", style: "display: block" %>
+    <%= form.time_field :end_time, class: 'form-input', id: 'Event Time' %>
+  </div>
+
   <br>
   <h4 align = "center"> List of Attendees </h4>
   <div>  
