@@ -123,6 +123,11 @@ class EventsController < ApplicationController
     # @event.no_ratio = 100 - @event.yes_ratio
   end
 
+  def email_invitation
+    @event = Event.includes(:event_info).find(params[:id]) # You can fetch the event by ID or however you want
+    render 'email_invitation'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
