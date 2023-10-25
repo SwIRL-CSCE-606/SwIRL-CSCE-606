@@ -102,37 +102,7 @@ class EventsController < ApplicationController
   end
 
   def event_status
-    # Creating a dummy @event
-    # Dummy event data
-    @events = [
-        OpenStruct.new({
-            id: 1,
-            name: "Sample Event 1",
-            description: "This is a sample event",
-            date: Date.today,
-            time: Time.now,
-            location: "Sample Location 1",
-            yes_count: 50,
-            no_count: 20
-        }),
-        OpenStruct.new({
-            id: 2,
-            name: "Sample Event 2",
-            description: "This is another sample event",
-            date: Date.today + 1.day,
-            time: Time.now + 1.hour,
-            location: "Sample Location 2",
-            yes_count: 30,
-            no_count: 40
-        })
-    ]
-
-    # Dummy attendees data
-    @attendees = [
-      OpenStruct.new(status: 'Yes', name: 'John Doe'),
-      OpenStruct.new(status: 'No', name: 'Jane Smith'),
-      OpenStruct.new(status: 'Yes', name: 'Charlie Brown')
-    ]
+    @events = Event.includes(:attendee_infos, :event_info).all
 
     # # Grabbing data from the database
     # @event.name = @event.name
