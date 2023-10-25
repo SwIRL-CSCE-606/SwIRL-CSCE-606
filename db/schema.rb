@@ -38,7 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_19_205629) do
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "end_time"
+    t.time "end_time"
     t.integer "max_capacity"
   end
 

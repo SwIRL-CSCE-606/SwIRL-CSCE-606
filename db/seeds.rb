@@ -47,35 +47,34 @@ events = [
 
 
 # Create entries for Event Table, EventInfos Table, and AttendeeInfos Tables
-for i in 0..(events.length - 1)
+# Create entries for Event Table, EventInfos Table, and AttendeeInfos Tables
+events.each_with_index do |event_data, index|
   # Create Event entry
-  event = Event.create!(events[i])
+  event = Event.create!(event_data)
 
   # Create EventInfos entry
   event_info = EventInfo.create!(
-    name:         event_infos[i][:name],
-    description:  event_infos[i][:description],
-    date:         event_infos[i][:date],
-    venue:        event_infos[i][:venue],
-    time:         event_infos[i][:time],
-    event_id:     event.id
+    name: event_infos[index][:name],
+    description: event_infos[index][:description],
+    date: event_infos[index][:date],
+    venue: event_infos[index][:venue],
+    start_time: event_infos[index][:time],
+    event_id: event.id
   )
 
-  # Add all attendees per event
-  for j in 0..(attendee_infos.length - 1)
+  # Create unique attendees per event
+  attendee_infos.each do |attendee_data|
     attendee = AttendeeInfo.create!(
-      name:           attendee_infos[i][:name],
-      email:          attendee_infos[i][:email],
-      is_attending:   attendee_infos[i][:is_attending],
-      comments:       attendee_infos[i][:comments],
-      event_id:       event.id
+      name: attendee_data[:name],
+      email: attendee_data[:email],
+      is_attending: attendee_data[:is_attending],
+      comments: attendee_data[:comments],
+      event_id: event.id
     )
   end
 
-  # Add reference from event_id to new tables
+  # Update reference from event_id to new tables
   event.update!(event_info_id: event_info.id)
-  
-
 end
 
 
