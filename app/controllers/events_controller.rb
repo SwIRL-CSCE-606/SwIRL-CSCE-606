@@ -148,24 +148,25 @@ class EventsController < ApplicationController
 
   def yes_response
     @event = Event.find_by(params[:id])
-    @attendee_info = Event.attendee_infos.find_by(email_token: params[:token])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-      @attendee_info.is_attending = 1
+      @attendee_info.is_attending = "yes"
       @attendee_info.update
     end
-    show
+    
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
 
   def no_response
     @event = Event.find_by(params[:id])
-    @attendee_info = Event.attendee_infos.find_by(email_token: params[:token])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-      @attendee_info.is_attending = 0
+      @attendee_info.is_attending = "no"
       @attendee_info.update
     end
-    show
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
   
 
