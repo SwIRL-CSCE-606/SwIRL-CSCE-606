@@ -1,4 +1,7 @@
+
 require 'csv'
+require 'securerandom'
+
 
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
@@ -34,7 +37,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    # email = event_params[:email]
+    email = event_params[:email]
 
 
     @event = Event.new(
@@ -50,9 +53,10 @@ class EventsController < ApplicationController
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
-    # @attendee = AttendeeInfo.new(
-    #   email:      email,
-    # )
+    @attendee = AttendeeInfo.new(
+      email:        email,
+      email_token:  SecureRandom.uuid
+    )
 
     #@email = something something parse through csv here to get list of attendees
 
@@ -84,12 +88,13 @@ class EventsController < ApplicationController
         end
         @event_info.event_id = @event.id
         # need to do something here instead to store csv 
-        # @attendee.event_id = @event.id
+        @attendee.event_id = @event.id
 
-        if @event_info.save #&& @attendee.save
+        if @event_info.save && @attendee.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
+            EventRemainderMailer.with(email: email, token: @attendee.email_token, event: @event).remainder_email.deliver_now
           end
         end
       else
@@ -159,6 +164,29 @@ class EventsController < ApplicationController
     render 'email_invitation'
   end
 
+  def yes_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = Event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.is_attending = 1
+      @attendee_info.update
+    end
+    show
+  end
+
+  def no_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = Event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.is_attending = 0
+      @attendee_info.update
+    end
+    show
+  end
+  
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -168,7 +196,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, :email)
 
   end
 end

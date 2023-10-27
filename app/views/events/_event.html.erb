@@ -98,7 +98,7 @@
       <h3 align = "center">
         <strong>Start Time:</strong>
         <% if event.event_info.start_time.present? %>
-          <p><%= event.event_info.start_time.strftime("%I:%M%p") %></p>
+          <p><%= event.event_info.start_time.strftime("%I:%M:%p") %></p>
         <% else %>
           <p>No data available.</p>
         <% end %>
@@ -107,7 +107,7 @@
       <h3 align = "center">
         <strong>End Time:</strong>
         <% if event.event_info.end_time.present? %>
-          <p><%= event.event_info.end_time.strftime("%I:%M%p") %></p>
+          <p><%= event.event_info.end_time.strftime("%I:%M:%p") %></p>
         <% else %>
           <p>No data available.</p>
         <% end %>
