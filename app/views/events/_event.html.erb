@@ -97,12 +97,20 @@
 
       <h3 align = "center">
         <strong>Start Time:</strong>
-        <%= event.event_info.start_time&.strftime("%I:%M%p") || 'N/A'  %>
+        <% if event.event_info.start_time.present? %>
+          <p><%= event.event_info.start_time.strftime("%I:%M%p") %></p>
+        <% else %>
+          <p>No data available.</p>
+        <% end %>
       </h3>
 
       <h3 align = "center">
         <strong>End Time:</strong>
-        <%= event.event_info.end_time&.strftime("%I:%M%p") || 'N/A'  %>
+        <% if event.event_info.end_time.present? %>
+          <p><%= event.event_info.end_time.strftime("%I:%M%p") %></p>
+        <% else %>
+          <p>No data available.</p>
+        <% end %>
       </h3>
     </div>
     </div>

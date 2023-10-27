@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    email = event_params[:email]
+    # email = event_params[:email]
 
 
     @event = Event.new(
@@ -56,7 +56,7 @@ class EventsController < ApplicationController
 
     #commented the above code because that was entering a textbox for the email
     #below is uploading a csv
-    if csv_file
+    if csv_file.present?
       @event.csv_file.attach(csv_file)
     end
 
@@ -67,13 +67,12 @@ class EventsController < ApplicationController
         # Save the other events reference to the event
         @event_info.event_id = @event.id
         # need to do something here instead to store csv 
-        @attendee.event_id = @event.id
+        # @attendee.event_id = @event.id
 
         if @event_info.save #&& @attendee.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
-            EventRemainderMailer.with(email: @attendee.email).remainder_email.deliver_now
           end
         end
       else
@@ -91,7 +90,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    email = event_params[:email]
+    # email = event_params[:email]
 
     event_info = EventInfo.find_by(id: @event.event_info.id)
 
