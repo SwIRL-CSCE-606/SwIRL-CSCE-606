@@ -87,7 +87,6 @@ class EventsController < ApplicationController
 
         if @event_info.save
           @event.update(event_info_id: @event_info.id)
-          EventRemainderMailer.remainder_email(csv_file_path).deliver_now
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
           end
@@ -157,6 +156,15 @@ class EventsController < ApplicationController
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
   
+
+  def invite_attendees
+    @event = Event.find_by(params[:id])
+    @event.attendee_infos.each do |attendee|
+      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+    end
+    redirect_to eventsList_path
+  end
+
 
   private
 
