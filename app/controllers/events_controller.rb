@@ -37,8 +37,6 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    email = event_params[:email]
-
 
     @event = Event.new(
       name:       name
@@ -52,19 +50,11 @@ class EventsController < ApplicationController
       max_capacity: max_capacity
     )
 
-    # Make this loop through list instead (once we can retrieve a list from the form)
-    @attendee = AttendeeInfo.new(
-      email:        email,
-      email_token:  SecureRandom.uuid
-    )
-
-    #@email = something something parse through csv here to get list of attendees
-
     #commented the above code because that was entering a textbox for the email
     #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
-# Parse the CSV data
+      # Parse the CSV data
       csv_data = csv_file.read
       parsed_data = CSV.parse(csv_data, headers: true)
     end
@@ -73,31 +63,32 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
+
         # Save the other events reference to the event
+        # ---------------------- Make this a separate function ------------------- #
         parsed_data.each do |row|
           email = row["Email"]
           priority = row["Priority"]
       
           @attendee = AttendeeInfo.new(
-            email: email,
-            event_id: @event.id,
-            email_token:  SecureRandom.uuid,
-            priority: priority,
+            email:          email,
+            event_id:       @event.id,
+            email_token:    SecureRandom.uuid,
+            priority:       priority,
           )
           puts "Parsed Data: #{parsed_data}"
           unless @attendee.save
             puts "Validation errors: #{@attendee.errors.full_messages}"
           end
         end
-        @event_info.event_id = @event.id
-        # need to do something here instead to store csv 
-        @attendee.event_id = @event.id
+        # ----------------------------------------------------------------------- #
 
-        if @event_info.save && @attendee.save
+        @event_info.event_id = @event.id
+
+        if @event_info.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
-            EventRemainderMailer.with(email: email, token: @attendee.email_token, event: @event).remainder_email.deliver_now
           end
         end
       else
@@ -162,11 +153,6 @@ class EventsController < ApplicationController
     # @event.no_ratio = 100 - @event.yes_ratio
   end
 
-  def email_invitation
-    @event = Event.includes(:event_info).find(params[:id]) # You can fetch the event by ID or however you want
-    render 'email_invitation'
-  end
-
   def yes_response
     @event = Event.find_by(params[:id])
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
@@ -198,7 +184,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, :email)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
 
   end
 end
