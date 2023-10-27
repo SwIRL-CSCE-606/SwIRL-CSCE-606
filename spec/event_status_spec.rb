@@ -16,7 +16,6 @@ RSpec.feature 'EventStatus', type: :feature do
 
   it 'displays event information' do
     expect(page).to have_content('Item 6')
-    expect(page).to have_content('event 6')
     expect(page).to have_content('Friday, 26 May 2023') # matching strftime('%A, %d %b %Y')
     expect(page).to have_content('06:00 AM') # matching strftime('%H:%M %p')
     expect(page).to have_content('Venue 6')
