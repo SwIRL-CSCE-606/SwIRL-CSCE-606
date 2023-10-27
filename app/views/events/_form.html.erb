@@ -141,14 +141,24 @@
   </div>
 
   <br>
-  <h4 align = "center"> List of Attendees </h4>
-  <div>  
-    <%= form.label "Email", style: "display: block" %>
-    <%= form.email_field :email, class: 'form-input', id: 'Email' %>
-  </div>
+  <%# <h4 align = "center"> List of Attendees </h4> %>
+  <%# <div>   %>
+    <%# <%= form.label "Email", style: "display: block" %>
+    <%# <%= form.email_field :email, class: 'form-input', id: 'Email' %>
+  <%# </div> %>
 
+  
   <div>
+    <%# <label for="csvFile" style="display: block">Upload List of Emails:</label>
+    <input type="file" id="csv  File" accept=".csv" /> %>
+    <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
+    <%= form.file_field :csv_file %>
+  </div>
+  <br>
+  <div>
+    <h4 align = "center">
     <%= form.submit %>
+    </h4  >
   </div>
 </div>
 </div>

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'newEvents' => 'events#new'
   get 'eventsList' => 'events#event_status'
   get 'peopleList' => 'people_list#people_list'
+  get 'eventdashboard' => 'events#eventdashboard'
 
   get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 

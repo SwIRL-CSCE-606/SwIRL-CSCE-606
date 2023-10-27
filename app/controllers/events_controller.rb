@@ -16,6 +16,10 @@ class EventsController < ApplicationController
     @event_info = EventInfo.new
   end
 
+  def event_dashboard
+      render template eventdashboard
+  end
+
   # GET /events/1/edit
   def edit; end
 
@@ -24,10 +28,12 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
+    csv_file = event_params[:csv_file]
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
     email = event_params[:email]
+
 
     @event = Event.new(
       name:       name
@@ -42,9 +48,17 @@ class EventsController < ApplicationController
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
-    @attendee = AttendeeInfo.new(
-      email:      email,
-    )
+    # @attendee = AttendeeInfo.new(
+    #   email:      email,
+    # )
+
+    #@email = something something parse through csv here to get list of attendees
+
+    #commented the above code because that was entering a textbox for the email
+    #below is uploading a csv
+    if csv_file
+      @event.csv_file.attach(csv_file)
+    end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
@@ -52,9 +66,10 @@ class EventsController < ApplicationController
       if @event.save
         # Save the other events reference to the event
         @event_info.event_id = @event.id
+        # need to do something here instead to store csv 
         @attendee.event_id = @event.id
 
-        if @event_info.save && @attendee.save
+        if @event_info.save #&& @attendee.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
@@ -137,6 +152,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time,:end_time, :max_capacity, :email)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+
   end
 end
