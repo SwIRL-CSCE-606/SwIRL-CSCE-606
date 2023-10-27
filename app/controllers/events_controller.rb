@@ -64,7 +64,7 @@ class EventsController < ApplicationController
     #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
-      # Parse the CSV data
+# Parse the CSV data
       csv_data = csv_file.read
       parsed_data = CSV.parse(csv_data, headers: true)
     end
@@ -73,7 +73,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        # Save the other events reference to the event    
+        # Save the other events reference to the event
         parsed_data.each do |row|
           email = row["Email"]
       
@@ -169,8 +169,7 @@ class EventsController < ApplicationController
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-      @attendee_info.is_attending = "yes"
-      @attendee_info.update
+      @attendee_info.update(is_attending: "yes")
     end
     
     redirect_to event_url(@event), notice: 'Your response has been recorded'
@@ -181,8 +180,7 @@ class EventsController < ApplicationController
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-      @attendee_info.is_attending = "no"
-      @attendee_info.update
+      @attendee_info.update(is_attending: "no")
     end
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
