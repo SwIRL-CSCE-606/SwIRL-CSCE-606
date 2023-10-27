@@ -10,3 +10,14 @@ Feature: Add people to the singular event
     And I should see options for Singular Event, Series Event
     When I click on the Singular Event page 
     Then I should see the Singular Event page
+
+
+  Scenario: Create an empty singular event
+    Given I am on the Main Page
+    When I click on the Organizer Button
+    Then I should be on the Organizer Page
+    And I should see options for Singular Event, Series Event
+    When I click on the Singular Event page 
+    Then I should see the Singular Event page
+    Then I should be able to see upload csv option
+    Then I should upload csv file

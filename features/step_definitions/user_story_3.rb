@@ -11,3 +11,11 @@
   Then("I should see the Singular Event page") do
     expect(page).to have_text('Event name')
   end
+
+  Then("I should be able to see upload csv option") do
+    expect(page).to have_text("Upload list of emails (csv)")
+  end
+
+  Then("I should upload csv file") do 
+    file_path = Rails.root.join('features', 'step_definitions', 'test.csv')
+  end
