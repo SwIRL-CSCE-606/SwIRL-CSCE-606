@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    # email = event_params[:email]
+    #email = event_params[:email]
 
 
     @event = Event.new(
@@ -71,6 +71,7 @@ class EventsController < ApplicationController
 
         if @event_info.save #&& @attendee.save
           @event.update(event_info_id: @event_info.id)
+          EventRemainderMailer.remainder_email(csv_file_path).deliver_now
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
           end
