@@ -60,19 +60,16 @@ class EventsController < ApplicationController
     #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
-
       # Parse the CSV data
+      csv_data = csv_file.read
+      parsed_data = CSV.parse(csv_data, headers: true)
     end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
     respond_to do |format|
       if @event.save
-        # Save the other events reference to the event
-        csv_data = csv_file.read
-        parsed_data = CSV.parse(csv_data, headers: true, col_sep: "\t")
-        puts(parsed_data)
-    
+        # Save the other events reference to the event    
         parsed_data.each do |row|
           email = row["Email"]
       
