@@ -142,24 +142,6 @@ class EventsController < ApplicationController
 
   def event_status
     @events = Event.includes(:attendee_infos, :event_info).all
-
-    # # Grabbing data from the database
-    # @event.name = @event.name
-    # @event.description = @event.duration
-    # @event.date = @event.created_at.to_date
-    # @event.time = @event.start_time
-    # @event.location = 'Your Location Here' # Placeholder since location isn't provided
-
-    # # Calculate the invite status
-    # attending_count = @attendees.select { |attendee| attendee.status == 'Yes' }.count
-    # not_attending_count = @attendees.count - attending_count
-
-    # @event.yes_count = attending_count
-    # @event.no_count = not_attending_count
-
-    # # Calculate the ratios
-    # @event.yes_ratio = (attending_count.to_f / @attendees.count) * 100
-    # @event.no_ratio = 100 - @event.yes_ratio
   end
 
   def email_invitation
