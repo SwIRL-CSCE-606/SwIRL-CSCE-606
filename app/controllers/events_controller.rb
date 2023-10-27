@@ -29,7 +29,8 @@ class EventsController < ApplicationController
     venue = event_params[:venue]
     date = event_params[:date]
     time = event_params[:time]
-    email = event_params[:email]
+    csv_file = event_params[:csv_file]
+    #email = event_params[:email]
 
     @event = Event.new(
       name:       name
@@ -42,9 +43,17 @@ class EventsController < ApplicationController
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
-    @attendee = AttendeeInfo.new(
-      email:      email,
-    )
+    # @attendee = AttendeeInfo.new(
+    #   email:      email,
+    # )
+
+    #@email = something something parse through csv here to get list of attendees
+
+    #commented the above code because that was entering a textbox for the email
+    #below is uploading a csv
+    if csv_file
+      @event.csv_file.attach(csv_file)
+    end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
@@ -52,9 +61,10 @@ class EventsController < ApplicationController
       if @event.save
         # Save the other events reference to the event
         @event_info.event_id = @event.id
+        # need to do something here instead to store csv 
         @attendee.event_id = @event.id
 
-        if @event_info.save && @attendee.save
+        if @event_info.save #&& @attendee.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
@@ -160,6 +170,6 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :time, :email)
+    params.require(:event).permit(:name, :venue, :date, :time, :csv_file)
   end
 end
