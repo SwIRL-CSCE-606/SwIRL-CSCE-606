@@ -1,4 +1,7 @@
+
+require 'csv'
 require 'securerandom'
+
 
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
@@ -61,13 +64,28 @@ class EventsController < ApplicationController
     #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
+      # Parse the CSV data
+      csv_data = csv_file.read
+      parsed_data = CSV.parse(csv_data, headers: true)
     end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
     respond_to do |format|
       if @event.save
-        # Save the other events reference to the event
+        # Save the other events reference to the event    
+        parsed_data.each do |row|
+          email = row["Email"]
+      
+          @attendee = AttendeeInfo.new(
+            email: email,
+            event_id: @event.id,
+          )
+          puts "Parsed Data: #{parsed_data}"
+          unless @attendee.save
+            puts "Validation errors: #{@attendee.errors.full_messages}"
+          end
+        end
         @event_info.event_id = @event.id
         # need to do something here instead to store csv 
         @attendee.event_id = @event.id
