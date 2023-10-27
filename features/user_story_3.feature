@@ -12,7 +12,7 @@ Feature: Add people to the singular event
     Then I should see the Singular Event page
 
 
-  Scenario: Create an empty singular event
+  Scenario: Create singular event
     Given I am on the Main Page
     When I click on the Organizer Button
     Then I should be on the Organizer Page
