@@ -28,18 +28,23 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
     csv_file = event_params[:csv_file]
-    #email = event_params[:email]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
+    email = event_params[:email]
+
 
     @event = Event.new(
       name:       name
     )
     @event_info = EventInfo.new(
-      name:       name,
-      venue:      venue,
-      date:       date,
-      time:       time
+      name:         name,
+      venue:        venue,
+      date:         date,
+      start_time:   start_time,
+      end_time:     end_time,
+      max_capacity: max_capacity
     )
 
     # Make this loop through list instead (once we can retrieve a list from the form)
@@ -83,13 +88,15 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
     email = event_params[:email]
 
     event_info = EventInfo.find_by(id: @event.event_info.id)
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, time:time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time:start_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
@@ -110,37 +117,7 @@ class EventsController < ApplicationController
   end
 
   def event_status
-    # Creating a dummy @event
-    # Dummy event data
-    @events = [
-        OpenStruct.new({
-            id: 1,
-            name: "Sample Event 1",
-            description: "This is a sample event",
-            date: Date.today,
-            time: Time.now,
-            location: "Sample Location 1",
-            yes_count: 50,
-            no_count: 20
-        }),
-        OpenStruct.new({
-            id: 2,
-            name: "Sample Event 2",
-            description: "This is another sample event",
-            date: Date.today + 1.day,
-            time: Time.now + 1.hour,
-            location: "Sample Location 2",
-            yes_count: 30,
-            no_count: 40
-        })
-    ]
-
-    # Dummy attendees data
-    @attendees = [
-      OpenStruct.new(status: 'Yes', name: 'John Doe'),
-      OpenStruct.new(status: 'No', name: 'Jane Smith'),
-      OpenStruct.new(status: 'Yes', name: 'Charlie Brown')
-    ]
+    @events = Event.includes(:attendee_infos, :event_info).all
 
     # # Grabbing data from the database
     # @event.name = @event.name
@@ -161,6 +138,11 @@ class EventsController < ApplicationController
     # @event.no_ratio = 100 - @event.yes_ratio
   end
 
+  def email_invitation
+    @event = Event.includes(:event_info).find(params[:id]) # You can fetch the event by ID or however you want
+    render 'email_invitation'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -170,6 +152,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :time, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+
   end
 end

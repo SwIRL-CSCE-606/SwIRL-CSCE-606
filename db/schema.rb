@@ -61,11 +61,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_004828) do
     t.string "name"
     t.string "description"
     t.datetime "date"
-    t.time "time"
+    t.time "start_time"
     t.string "venue"
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "end_time"
+    t.integer "max_capacity"
   end
 
   create_table "event_types", force: :cascade do |t|

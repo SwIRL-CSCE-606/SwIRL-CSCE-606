@@ -88,11 +88,21 @@
       <h3 align = "center">
         <strong>Date:</strong>
         <%= event.event_info.date %>
-      </h3>     
+      </h3>    
 
       <h3 align = "center">
-        <strong>Time:</strong>
-        <%= event.event_info.time.strftime("%I:%M%p") %>
-      </>
+        <strong>Max Capacity:</strong>
+        <%= event.event_info.max_capacity %>
+      </h3> 
+
+      <h3 align = "center">
+        <strong>Start Time:</strong>
+        <%= event.event_info.start_time&.strftime("%I:%M%p") || 'N/A'  %>
+      </h3>
+
+      <h3 align = "center">
+        <strong>End Time:</strong>
+        <%= event.event_info.end_time&.strftime("%I:%M%p") || 'N/A'  %>
+      </h3>
     </div>
     </div>

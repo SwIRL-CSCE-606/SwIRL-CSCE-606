@@ -4,3 +4,4 @@ class Event < ApplicationRecord
     has_one :event_info 
     has_one_attached :csv_file
 end
+

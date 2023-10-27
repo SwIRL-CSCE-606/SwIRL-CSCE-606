@@ -15,9 +15,7 @@ Rails.application.routes.draw do
   get 'peopleList' => 'people_list#people_list'
   get 'eventdashboard' => 'events#eventdashboard'
 
-  if Rails.env.development? || Rails.env.test?
-    get '/test_email_invitation', to: 'event_remainder_mailer_test#email_invitation', as: 'test_email_invitation'
-  end
+  get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
   #get 'eventsList' => 'events#index'
 
