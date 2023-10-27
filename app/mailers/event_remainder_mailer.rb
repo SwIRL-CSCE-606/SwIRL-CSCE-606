@@ -1,27 +1,9 @@
 require 'csv'
+include Rails.application.routes.url_helpers
 
 class EventRemainderMailer < ApplicationMailer
     default from: 'noreply@sendgrid.net'
-
-    # def remainder_email
-    #     #@email = params[:email]
-    #     @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
-    #     mail(to: @email, subject: 'Email Remainder')
-    # end
-
-    # def remainder_email
-    #     @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
-      
-    #     # Assuming you've stored the path to the CSV file in an instance variable
-    #     @csv_file = params[:csv_file]
-    #     csv_file_path = @csv_file
-        
-    #     # Parse the CSV file and extract email addresses
-    #     CSV.foreach(csv_file_path, headers: true) do |row|
-    #       email = row['email'] # Assuming 'email' is a column in your CSV
-    #       mail(to: email, subject: 'Email Reminder').deliver_now
-    #     end
-    #   end
+    default_url_options[:host] = 'https://skhedule-9d55cf93012e.herokuapp.com'
 
     def remainder_email(csv_file_path)
         @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
@@ -39,6 +21,15 @@ class EventRemainderMailer < ApplicationMailer
           end
         end
       end
+
+    def reminder_email
+        @email = params[:email]
+        @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+        @event = params[:event]
+        @token = params[:token]
+        mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
+    end
+ 
 end
 
 

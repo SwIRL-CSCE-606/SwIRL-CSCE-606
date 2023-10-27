@@ -1,3 +1,8 @@
+
+require 'csv'
+require 'securerandom'
+
+
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
@@ -32,8 +37,6 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    #email = event_params[:email]
-
 
     @event = Event.new(
       name:       name
@@ -47,29 +50,42 @@ class EventsController < ApplicationController
       max_capacity: max_capacity
     )
 
-    # Make this loop through list instead (once we can retrieve a list from the form)
-    # @attendee = AttendeeInfo.new(
-    #   email:      email,
-    # )
-
-    #@email = something something parse through csv here to get list of attendees
-
     #commented the above code because that was entering a textbox for the email
     #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
+      # Parse the CSV data
+      csv_data = csv_file.read
+      parsed_data = CSV.parse(csv_data, headers: true)
     end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
     respond_to do |format|
       if @event.save
-        # Save the other events reference to the event
-        @event_info.event_id = @event.id
-        # need to do something here instead to store csv 
-        # @attendee.event_id = @event.id
 
-        if @event_info.save #&& @attendee.save
+        # Save the other events reference to the event
+        # ---------------------- Make this a separate function ------------------- #
+        parsed_data.each do |row|
+          email = row["Email"]
+          priority = row["Priority"]
+      
+          @attendee = AttendeeInfo.new(
+            email:          email,
+            event_id:       @event.id,
+            email_token:    SecureRandom.uuid,
+            priority:       priority,
+          )
+          puts "Parsed Data: #{parsed_data}"
+          unless @attendee.save
+            puts "Validation errors: #{@attendee.errors.full_messages}"
+          end
+        end
+        # ----------------------------------------------------------------------- #
+
+        @event_info.event_id = @event.id
+
+        if @event_info.save
           @event.update(event_info_id: @event_info.id)
           EventRemainderMailer.remainder_email(csv_file_path).deliver_now
           format.html do
@@ -118,30 +134,29 @@ class EventsController < ApplicationController
 
   def event_status
     @events = Event.includes(:attendee_infos, :event_info).all
-
-    # # Grabbing data from the database
-    # @event.name = @event.name
-    # @event.description = @event.duration
-    # @event.date = @event.created_at.to_date
-    # @event.time = @event.start_time
-    # @event.location = 'Your Location Here' # Placeholder since location isn't provided
-
-    # # Calculate the invite status
-    # attending_count = @attendees.select { |attendee| attendee.status == 'Yes' }.count
-    # not_attending_count = @attendees.count - attending_count
-
-    # @event.yes_count = attending_count
-    # @event.no_count = not_attending_count
-
-    # # Calculate the ratios
-    # @event.yes_ratio = (attending_count.to_f / @attendees.count) * 100
-    # @event.no_ratio = 100 - @event.yes_ratio
   end
 
-  def email_invitation
-    @event = Event.includes(:event_info).find(params[:id]) # You can fetch the event by ID or however you want
-    render 'email_invitation'
+  def yes_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.update(is_attending: "yes")
+    end
+    
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
+
+  def no_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.update(is_attending: "no")
+    end
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
+  
 
   private
 
