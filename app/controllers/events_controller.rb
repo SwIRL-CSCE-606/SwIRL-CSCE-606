@@ -76,10 +76,13 @@ class EventsController < ApplicationController
         # Save the other events reference to the event
         parsed_data.each do |row|
           email = row["Email"]
+          priority = row["Priority"]
       
           @attendee = AttendeeInfo.new(
             email: email,
             event_id: @event.id,
+            email_token:  SecureRandom.uuid,
+            priority: priority,
           )
           puts "Parsed Data: #{parsed_data}"
           unless @attendee.save
