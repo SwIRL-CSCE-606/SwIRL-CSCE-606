@@ -66,28 +66,37 @@ class EventsController < ApplicationController
 
         # Save the other events reference to the event
         # ---------------------- Make this a separate function ------------------- #
-        parsed_data.each do |row|
-          email = row["Email"]
-          priority = row["Priority"]
-      
-          @attendee = AttendeeInfo.new(
-            email:          email,
-            event_id:       @event.id,
-            email_token:    SecureRandom.uuid,
-            priority:       priority,
-          )
-          puts "Parsed Data: #{parsed_data}"
-          unless @attendee.save
-            puts "Validation errors: #{@attendee.errors.full_messages}"
+        
+        if parsed_data.nil?
+          # Handle the case when parsed_data is nil
+          puts "parsed_data is nil"
+        else
+          if parsed_data.empty?
+            # Handle the case when parsed_data is an empty array
+            puts "parsed_data is empty"
+          else
+            parsed_data.each do |row|
+              email = row["Email"]
+              priority = row["Priority"]
+        
+              @attendee = AttendeeInfo.new(
+                email: email,
+                event_id: @event.id,
+                email_token: SecureRandom.uuid,
+                priority: priority,
+              )
+              puts "Parsed Data: #{parsed_data}"
+              unless @attendee.save
+                puts "Validation errors: #{@attendee.errors.full_messages}"
+              end
+            end
           end
         end
         # ----------------------------------------------------------------------- #
-
         @event_info.event_id = @event.id
 
         if @event_info.save
           @event.update(event_info_id: @event_info.id)
-          EventRemainderMailer.remainder_email(csv_file_path).deliver_now
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
           end
