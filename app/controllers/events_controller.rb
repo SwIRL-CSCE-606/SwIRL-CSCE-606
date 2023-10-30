@@ -142,7 +142,7 @@ class EventsController < ApplicationController
   end
 
   def event_status
-    @events = Event.includes(:attendee_infos, :event_info).all
+    @events = Event.all
   end
 
   def yes_response
@@ -166,6 +166,15 @@ class EventsController < ApplicationController
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
   
+
+  def invite_attendees
+    @event = Event.find(params[:id])
+    @event.attendee_infos.each do |attendee|
+      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+    end
+    redirect_to eventsList_path
+  end
+
 
   private
 
