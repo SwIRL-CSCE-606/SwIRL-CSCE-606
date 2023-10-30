@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     member do
       get 'yes_response', to: 'events#yes_response'
       get 'no_response', to: 'events#no_response'
-      get 'invite_attendees', to: 'events#invite_attendees'
+
     end
   end
   get 'static_pages/home'
@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   get 'eventsList' => 'events#event_status'
   get 'peopleList' => 'people_list#people_list'
   get 'eventdashboard' => 'events#eventdashboard'
-  
+
+
+  get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
 
   get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
