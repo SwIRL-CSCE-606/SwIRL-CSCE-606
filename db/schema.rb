@@ -84,7 +84,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_182408) do
     t.integer "event_info_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index "\"accounts_id\"", name: "index_events_on_accounts_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
