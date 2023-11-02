@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resources :events do
-    member do
-      get 'yes_response', to: 'events#yes_response'
-      get 'no_response', to: 'events#no_response'
+  resources :events
+  # resources :events do
+  #   member do
+  #     get 'yes_response', to: 'events#yes_response'
+  #     get 'no_response', to: 'events#no_response'
 
-    end
-  end
+  #   end
+  # end
   get 'static_pages/home'
   get 'static_pages/help'
   
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
 
   get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
 
-  get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
+  #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
   #get 'eventsList' => 'events#index'
 
