@@ -31,5 +31,5 @@ Given("I am on the event invitation page") do
   end
   
   When('I press {string}') do |string|
-    pending # Write code here that turns the phrase above into concrete actions
+    click_button string
   end
