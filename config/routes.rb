@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :events
+  resources :events do
+    member do
+      get 'yes_response', to: 'events#yes_response'
+      get 'no_response', to: 'events#no_response'
+    end
+  end
   get 'static_pages/home'
   get 'static_pages/help'
   
@@ -15,9 +20,7 @@ Rails.application.routes.draw do
   get 'peopleList' => 'people_list#people_list'
   get 'eventdashboard' => 'events#eventdashboard'
 
-  if Rails.env.development? || Rails.env.test?
-    get '/test_email_invitation', to: 'event_remainder_mailer_test#email_invitation', as: 'test_email_invitation'
-  end
+  get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
   #get 'eventsList' => 'events#index'
 
