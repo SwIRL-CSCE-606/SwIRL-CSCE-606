@@ -90,6 +90,13 @@
     <br>
     <%= button_to "Destroy this event", @event, method: :delete, class: "gradient-btn"  %>
 </div>
+<%# show csv in event dashboard page?? idk %>
+<% if @event.csv_file.attached? %>
+  <p>
+    <strong>CSV File:</strong>
+    <%= link_to @event.csv_file.filename, rails_blob_path(@event.csv_file) %>
+  </p>
+<% end %>
 
 </div>
 </body>

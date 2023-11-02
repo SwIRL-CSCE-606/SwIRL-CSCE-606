@@ -1,3 +1,8 @@
+
+require 'csv'
+require 'securerandom'
+
+
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
@@ -28,37 +33,72 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
-    email = event_params[:email]
+    csv_file = event_params[:csv_file]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
 
     @event = Event.new(
       name:       name
     )
     @event_info = EventInfo.new(
-      name:       name,
-      venue:      venue,
-      date:       date,
-      time:       time
+      name:         name,
+      venue:        venue,
+      date:         date,
+      start_time:   start_time,
+      end_time:     end_time,
+      max_capacity: max_capacity
     )
 
-    # Make this loop through list instead (once we can retrieve a list from the form)
-    @attendee = AttendeeInfo.new(
-      email:      email,
-    )
+    #commented the above code because that was entering a textbox for the email
+    #below is uploading a csv
+    if csv_file.present?
+      @event.csv_file.attach(csv_file)
+      # Parse the CSV data
+      csv_data = csv_file.read
+      parsed_data = CSV.parse(csv_data, headers: true)
+    end
 
     # NOTE: @event.id does not exist until the record is SAVED
 
     respond_to do |format|
       if @event.save
-        # Save the other events reference to the event
-        @event_info.event_id = @event.id
-        @attendee.event_id = @event.id
 
-        if @event_info.save && @attendee.save
+        # Save the other events reference to the event
+        # ---------------------- Make this a separate function ------------------- #
+        
+        if parsed_data.nil?
+          # Handle the case when parsed_data is nil
+          puts "parsed_data is nil"
+        else
+          if parsed_data.empty?
+            # Handle the case when parsed_data is an empty array
+            puts "parsed_data is empty"
+          else
+            parsed_data.each do |row|
+              email = row["Email"]
+              priority = row["Priority"]
+        
+              @attendee = AttendeeInfo.new(
+                email: email,
+                event_id: @event.id,
+                email_token: SecureRandom.uuid,
+                priority: priority,
+              )
+              puts "Parsed Data: #{parsed_data}"
+              unless @attendee.save
+                puts "Validation errors: #{@attendee.errors.full_messages}"
+              end
+            end
+          end
+        end
+        # ----------------------------------------------------------------------- #
+        @event_info.event_id = @event.id
+
+        if @event_info.save
           @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
-            EventRemainderMailer.with(email: @attendee.email).remainder_email.deliver_now
           end
         end
       else
@@ -73,13 +113,15 @@ class EventsController < ApplicationController
     name = event_params[:name]
     venue = event_params[:venue]
     date = event_params[:date]
-    time = event_params[:time]
-    email = event_params[:email]
+    start_time = event_params[:start_time]
+    end_time = event_params[:end_time]
+    max_capacity = event_params[:max_capacity]
+    # email = event_params[:email]
 
     event_info = EventInfo.find_by(id: @event.event_info.id)
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, time:time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time:start_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
@@ -100,56 +142,39 @@ class EventsController < ApplicationController
   end
 
   def event_status
-    # Creating a dummy @event
-    # Dummy event data
-    @events = [
-        OpenStruct.new({
-            id: 1,
-            name: "Sample Event 1",
-            description: "This is a sample event",
-            date: Date.today,
-            time: Time.now,
-            location: "Sample Location 1",
-            yes_count: 50,
-            no_count: 20
-        }),
-        OpenStruct.new({
-            id: 2,
-            name: "Sample Event 2",
-            description: "This is another sample event",
-            date: Date.today + 1.day,
-            time: Time.now + 1.hour,
-            location: "Sample Location 2",
-            yes_count: 30,
-            no_count: 40
-        })
-    ]
-
-    # Dummy attendees data
-    @attendees = [
-      OpenStruct.new(status: 'Yes', name: 'John Doe'),
-      OpenStruct.new(status: 'No', name: 'Jane Smith'),
-      OpenStruct.new(status: 'Yes', name: 'Charlie Brown')
-    ]
-
-    # # Grabbing data from the database
-    # @event.name = @event.name
-    # @event.description = @event.duration
-    # @event.date = @event.created_at.to_date
-    # @event.time = @event.start_time
-    # @event.location = 'Your Location Here' # Placeholder since location isn't provided
-
-    # # Calculate the invite status
-    # attending_count = @attendees.select { |attendee| attendee.status == 'Yes' }.count
-    # not_attending_count = @attendees.count - attending_count
-
-    # @event.yes_count = attending_count
-    # @event.no_count = not_attending_count
-
-    # # Calculate the ratios
-    # @event.yes_ratio = (attending_count.to_f / @attendees.count) * 100
-    # @event.no_ratio = 100 - @event.yes_ratio
+    @events = Event.all
   end
+
+  def yes_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.update(is_attending: "yes")
+    end
+    
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
+
+  def no_response
+    @event = Event.find_by(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+
+    if @event.present? && @attendee_info.present?
+      @attendee_info.update(is_attending: "no")
+    end
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
+  
+
+  def invite_attendees
+    @event = Event.find(params[:id])
+    @event.attendee_infos.each do |attendee|
+      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+    end
+    redirect_to eventsList_path
+  end
+
 
   private
 
@@ -160,6 +185,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :time, :email)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+
   end
 end
