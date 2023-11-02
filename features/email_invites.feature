@@ -13,3 +13,25 @@ Feature: Add people to the singular event
         And  I fill in "End Time" with "2023-11-03 12:20:00"
         And  I upload "test.csv"
         And  I press "Create Event"
+
+
+    Scenario: View Event Status Page
+
+    Given I went to the Event Status page
+    Then I should see the following event information:
+        | Field             | Value                   |
+        | Event Name        | CSCE 606                |
+        | Description       | hall in tamu            |
+        | Date              | 2023-11-03              |
+        | Start Time        | 2023-11-03 11:10:00     |
+        | End Time          | 2023-11-03 12:20:00     |
+        | Venue             | Zachery                 |
+        | Max. Capacity     | 100                     |
+        | Send Invite       | [Button]                |
+        | Reminder Invite   | [Button]                |
+        | Attendees         | [List of people email IDs] |
+        | Add People        | [Button]                |
+        | Remove People     | [Button]                |
+        | Status            | - Yes: 30
+                              - No: 10
+                              - No Response: 70
