@@ -12,9 +12,6 @@ class EventRemainderMailer < ApplicationMailer
           # Create an email for each recipient in the CSV file
           CSV.foreach(csv_file_path, headers: true) do |row|
             email = row['email'] # Assuming 'email' is a column in your CSV
-            # Add debugging output
-
-            puts "Email extracted from CSV: #{email}"
 
             mail(to: email, subject: 'Email Reminder').deliver # Use deliver here, not deliver_now
           end
