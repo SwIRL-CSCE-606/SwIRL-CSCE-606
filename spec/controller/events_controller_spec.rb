@@ -21,4 +21,8 @@ RSpec.describe EventsController, type: :controller do
             expect(response).to have_http_status(200)
         end
     end
+
+    describe 'GET /events/:id' do
+        
+    end
 end

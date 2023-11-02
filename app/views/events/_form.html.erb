@@ -112,32 +112,38 @@
 <div class="event-content">
   <div>
     <%= form.label "Event Name", style: "display: block" %>
-    <%= form.text_field :name, class: 'form-input', id: 'Event Name' %>
+    <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
+    value: @event.present? ? @event.name : ""%>
   </div>
 
   <div>
     <%= form.label "Event Venue", style: "display: block" %>
-    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue' %>
+    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
+    value: @event.event_info.present? ? @event.event_info.venue : "" %>
   </div>
 
   <div>
     <%= form.label "Event Date", style: "display: block" %>
-    <%= form.date_field :date, class: 'form-input', id: 'Event Date' %>
+    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
+    value: @event.event_info.present? ? @event.event_info.date : ""  %>
   </div>
 
   <div>
     <%= form.label "Max Capacity", style: "display: block" %>
-    <%= form.number_field :max_capacity, in: 0..1000000000, step: 1, class: 'form-input', id: 'Event Time' %>
+    <%= form.number_field :max_capacity, in: 0..1000000000, step: 1, class: 'form-input', id: 'Event Time',
+    value: @event.event_info.present? ? @event.event_info.max_capacity : ""  %>
   </div>
 
   <div>
     <%= form.label "Event Start Time", style: "display: block" %>
-    <%= form.time_field :start_time, class: 'form-input', id: 'Event Time' %>
+    <%= form.time_field :start_time, class: 'form-input', id: 'Event Time',
+    value: @event.event_info.present? ? @event.event_info.start_time : ""  %>
   </div>
 
   <div>
     <%= form.label "Event End Time", style: "display: block" %>
-    <%= form.time_field :end_time, class: 'form-input', id: 'Event Time' %>
+    <%= form.time_field :end_time, class: 'form-input', id: 'Event Time',
+    value: @event.event_info.present? ? @event.event_info.end_time : ""  %>
   </div>
   <br>
   
