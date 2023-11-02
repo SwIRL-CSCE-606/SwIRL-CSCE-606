@@ -1,5 +1,4 @@
 require 'csv'
-include Rails.application.routes.url_helpers
 
 class EventRemainderMailer < ApplicationMailer
     default from: 'noreply@sendgrid.net'
