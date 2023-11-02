@@ -18,4 +18,5 @@
 
   Then("I should upload csv file") do 
     file_path = Rails.root.join('features', 'step_definitions', 'test.csv')
+    attach_file('csv_file', file_path)
   end
