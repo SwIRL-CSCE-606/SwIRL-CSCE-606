@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   #   end
   # end
+
   get 'static_pages/home'
   get 'static_pages/help'
   
@@ -22,10 +23,10 @@ Rails.application.routes.draw do
   get 'peopleList' => 'people_list#people_list'
   get 'eventdashboard' => 'events#eventdashboard'
 
-
   get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
+
 
   #get 'eventsList' => 'events#index'
 
