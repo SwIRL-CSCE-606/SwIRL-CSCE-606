@@ -6,8 +6,6 @@ class EventRemainderMailer < ApplicationMailer
 
     def remainder_email(csv_file_path)
         @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
-    
-        
         if csv_file_path.present?
           # Create an email for each recipient in the CSV file
           CSV.foreach(csv_file_path, headers: true) do |row|
