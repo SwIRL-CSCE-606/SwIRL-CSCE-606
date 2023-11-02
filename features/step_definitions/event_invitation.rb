@@ -20,3 +20,16 @@ Given("I am on the event invitation page") do
     expect(page).to have_button(btn2)
   end
   
+
+  When('I fill in {string} with {string}') do |string, string2|
+    fill_in string, with: string2
+  end
+  
+  When('I upload {string}') do |string|
+    file_path = Rails.root.join('features', 'step_definitions', 'files', string)
+    attach_file('csv_file', file_path)
+  end
+  
+  When('I press {string}') do |string|
+    pending # Write code here that turns the phrase above into concrete actions
+  end
