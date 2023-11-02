@@ -22,7 +22,15 @@ RSpec.describe EventsController, type: :controller do
         end
     end
 
-    describe 'GET /events/:id' do
-        
+    describe 'GET /events/new' do
+        it "returns a successful response" do
+            get :new
+            expect(response).to be_successful
+        end
+
+        it "renders the new template" do
+            get :new
+            expect(response).to render_template('new')
+        end
     end
 end
