@@ -146,7 +146,7 @@ class EventsController < ApplicationController
   end
 
   def yes_response
-    @event = Event.find_by(params[:id])
+    @event = Event.find(params[:id])
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
@@ -157,7 +157,7 @@ class EventsController < ApplicationController
   end
 
   def no_response
-    @event = Event.find_by(params[:id])
+    @event = Event.find(params[:id])
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
