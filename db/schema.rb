@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_27_182408) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_02_180600) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -63,13 +63,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_182408) do
   create_table "event_infos", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.datetime "date"
+    t.date "date"
     t.time "start_time"
     t.string "venue"
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "end_time"
+    t.time "end_time"
     t.integer "max_capacity"
   end
 
