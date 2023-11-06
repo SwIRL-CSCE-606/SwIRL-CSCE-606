@@ -10,40 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema[7.0].define(version: 2023_09_29_031240) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_13_194658) do
   create_table "accounts", force: :cascade do |t|
-    t.string "email"
     t.string "name"
+    t.string "email"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "event_informations", force: :cascade do |t|
+  create_table "attendee_infos", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "is_attending"
+    t.string "comments"
+    t.integer "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "event_infos", force: :cascade do |t|
+    t.string "name"
     t.string "description"
     t.datetime "date"
+    t.time "time"
     t.string "venue"
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_informations_on_event_id"
   end
 
-  create_table "event_tests", force: :cascade do |t|
-    t.string "name"
-    t.string "venue"
-    t.date "date"
-    t.time "time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-  
   create_table "event_types", force: :cascade do |t|
     t.string "name"
-    t.string "venue"
-    t.date "date"
-    t.time "time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -53,11 +51,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_221446) do
 >>>>>>> 264d718 (yes_no button)
   create_table "events", force: :cascade do |t|
     t.string "name"
-    t.string "venue"
-    t.date "date"
-    t.time "time"
+    t.integer "event_info_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "attendee_infos", "events", on_delete: :cascade
+  add_foreign_key "event_infos", "events", on_delete: :cascade
+  add_foreign_key "events", "event_infos"
 end
