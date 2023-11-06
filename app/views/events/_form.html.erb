@@ -112,7 +112,8 @@
 <div class="event-content">
   <div>
     <%= form.label "Event Name", style: "display: block" %>
-    <%= form.text_field :name, class: 'form-input', id: 'Event Name' %>
+    <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
+    value: @event.present? ? @event.name : ""%>
   </div>
 
   <div>

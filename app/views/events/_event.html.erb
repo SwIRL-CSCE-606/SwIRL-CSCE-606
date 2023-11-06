@@ -112,5 +112,15 @@
           No data available.
         <% end %>
       </h3>
+
+      <h3 align = "center">
+        <% if @event.csv_file.attached? %>
+          <p>
+            <strong>CSV File:</strong>
+            <%= link_to @event.csv_file.filename, rails_blob_path(@event.csv_file) %>
+          </p>
+        <% end %>
+      </h3>
+
     </div>
     </div>
