@@ -113,10 +113,10 @@ class EventsController < ApplicationController
     max_capacity = event_params[:max_capacity]
     # email = event_params[:email]
 
-    event_info = EventInfo.find_by(id: @event.event_info.id)
+    event_info = @event.event_info
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time:start_time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time: start_time, end_time: end_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
-  let(:event) { Event.create(name: 'Original Name') }
-  let(:event_info) { EventInfo.create(event: event, name: 'Original Name') }
+  let!(:event) { Event.create!(name: 'Original Name') }
+  let!(:event_info) { EventInfo.create!(event_id: event.id, name: 'Original Name') }
 
   describe 'PATCH #update' do
     context 'with valid parameters' do
@@ -20,8 +20,9 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it 'updates the event' do
-        patch :update, params: { id: event.id, event: valid_params }
+        patch :update, params: { id: event.id, event: valid_params}
         event.reload
+        event_info.reload
         expect(event.name).to eq('Updated Event Name')
       end
 
@@ -45,6 +46,18 @@ RSpec.describe EventsController, type: :controller do
 
     context 'with invalid parameters' do
 
+      let(:invalid_params) do
+        {
+          name: 25,
+          venue: 100,
+          date: "yes",
+          start_time: "no",
+          end_time: "maybe",
+          max_capacity: "4fease2"
+        }
+      end
+
+      # False positive, doesn't really check for anything substantial need to rewrite
       it 'does not update the event' do
         patch :update, params: { id: event.id, event: invalid_params }
         event.reload
