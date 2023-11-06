@@ -80,7 +80,6 @@ class EventsController < ApplicationController
                 email_token: SecureRandom.uuid,
                 priority: priority,
               )
-              puts "Parsed Data: #{parsed_data}"
               unless @attendee.save
                 puts "Validation errors: #{@attendee.errors.full_messages}"
               end
@@ -164,8 +163,17 @@ class EventsController < ApplicationController
 
   def invite_attendees
     @event = Event.find(params[:id])
-    @event.attendee_infos.each do |attendee|
-      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+    @event_info = @event.event_info
+
+    if @event_info.max_capacity.present?
+      attendees_to_invite = @event.attendee_infos.limit(@event_info.max_capacity)
+      attendees_to_invite.each do |attendee|
+        EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+      end
+    else
+      @event.attendee_infos.each do |attendee|
+        EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+      end
     end
     redirect_to eventsList_path
   end
