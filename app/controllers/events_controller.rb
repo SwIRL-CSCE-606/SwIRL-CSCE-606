@@ -16,10 +16,6 @@ class EventsController < ApplicationController
     @event_info = EventInfo.new
   end
 
-  def event_dashboard
-      render template eventdashboard
-  end
-
   # GET /events/1/edit
   def edit; end
 
@@ -120,6 +116,8 @@ class EventsController < ApplicationController
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
+        logger.debug @event.errors.full_messages
+        logger.debug event_info.errors.full_messages
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end

@@ -1,37 +1,37 @@
 {
   "RSpec": {
     "coverage": {
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/helpers/application_helper.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/helpers/application_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/helpers/event_remainder_mailer_test_helper.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/helpers/event_remainder_mailer_test_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/helpers/events_helper.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/helpers/events_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/helpers/pages_helper.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/helpers/pages_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/helpers/static_pages_helper.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/helpers/static_pages_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/controllers/events_controller.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/controllers/events_controller.rb": {
         "lines": [
           null,
           1,
@@ -51,45 +51,35 @@
           2,
           null,
           null,
-          1,
-          0,
-          null,
-          null,
           null,
           1,
           null,
           null,
           1,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          null,
+          4,
+          null,
+          null,
+          4,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          4,
           2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          null,
-          2,
-          null,
-          null,
-          2,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          2,
-          2,
-          null,
-          2,
-          2,
-          null,
-          null,
-          null,
           null,
           2,
           2,
@@ -97,9 +87,15 @@
           null,
           null,
           null,
-          2,
+          4,
+          4,
           null,
-          0,
+          null,
+          null,
+          null,
+          4,
+          null,
+          2,
           null,
           2,
           null,
@@ -123,9 +119,9 @@
           null,
           null,
           null,
-          2,
+          4,
           null,
-          2,
+          4,
           2,
           2,
           2,
@@ -152,22 +148,24 @@
           null,
           5,
           5,
-          10,
-          5,
+          3,
+          3,
           null,
-          0,
-          0,
+          3,
+          3,
+          5,
+          4,
           null,
           null,
           null,
           null,
           null,
           1,
-          0,
+          3,
           null,
-          0,
-          0,
-          0,
+          3,
+          5,
+          4,
           null,
           null,
           null,
@@ -176,76 +174,76 @@
           null,
           null,
           1,
-          0,
-          0,
+          1,
+          1,
           null,
-          0,
-          0,
-          null,
-          null,
-          0,
+          1,
+          1,
           null,
           null,
           1,
-          0,
-          0,
           null,
-          0,
-          0,
           null,
-          0,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
           null,
           null,
           null,
           1,
           2,
           2,
-          2,
-          null,
-          2,
-          null,
-          null,
-          null,
-          1,
-          null,
-          null,
-          1,
-          5,
-          null,
-          null,
-          null,
-          1,
-          44,
-          null,
-          null,
-          null
-        ]
-      },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/controllers/application_controller.rb": {
-        "lines": [
-          1,
-          null
-        ]
-      },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/mailers/event_remainder_mailer.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          null,
-          1,
           2,
           null,
           2,
           null,
           null,
           null,
+          1,
+          null,
+          null,
+          1,
+          8,
+          null,
+          null,
+          null,
+          1,
+          58,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/chongx/Code/SwIRL-CSCE-606/app/controllers/application_controller.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/home/chongx/Code/SwIRL-CSCE-606/app/mailers/event_remainder_mailer.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          2,
+          null,
+          2,
+          null,
+          null,
+          null,
           null,
           1,
           1,
@@ -262,7 +260,7 @@
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/mailers/application_mailer.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/mailers/application_mailer.rb": {
         "lines": [
           1,
           1,
@@ -270,28 +268,29 @@
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/models/attendee_info.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/models/attendee_info.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/models/application_record.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/models/application_record.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/models/event_info.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/models/event_info.rb": {
         "lines": [
+          1,
           1,
           1,
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/models/event.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/models/event.rb": {
         "lines": [
           1,
           1,
@@ -302,7 +301,7 @@
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/controllers/static_pages_controller.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/controllers/static_pages_controller.rb": {
         "lines": [
           1,
           1,
@@ -313,7 +312,7 @@
           null
         ]
       },
-      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/controllers/event_remainder_mailer_test_controller.rb": {
+      "/home/chongx/Code/SwIRL-CSCE-606/app/controllers/event_remainder_mailer_test_controller.rb": {
         "lines": [
           0,
           0,
@@ -327,6 +326,6 @@
         }
       }
     },
-    "timestamp": 1699288005
+    "timestamp": 1699385202
   }
 }
