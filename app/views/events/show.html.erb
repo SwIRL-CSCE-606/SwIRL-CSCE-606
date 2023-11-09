@@ -1,95 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-
     <style>
         body {
             background-color: #e2c9be;
             background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-family: 'Arial', sans-serif;
         }
-
         .event-card {
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s;
         }
-
-        .event-card:hover {
-            transform: translateY(-10px);
-        }
-
         .gradient-btn {
             background: linear-gradient(45deg, #4CAF50, #44A1F2);
             border: none;
             color: white;
-            padding: 12px 30px;
+            padding: 0.75rem 1.5rem;
             border-radius: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
         }
-
         .gradient-btn:hover {
             background: linear-gradient(45deg, #44A1F2, #4CAF50);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
             transform: translateY(-2px);
         }
-
         .event-header {
-            padding: 30px 20px;
             background-color: #4CAF50;
             color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            font-weight: bold;
-            letter-spacing: 2px;
         }
-
-        .event-content {
-            padding: 30px 20px;
-        }
-
         .highlight-text {
             color: rgb(8, 92, 120);
-            padding: 5px 10px;
             border-radius: 10px;
-            font-size: 1.5em;
             font-weight: bold;
         }
-
     </style>
 </head>
-
 <body>
 
-<div class="event-header">
-    <h3 align = "center">Skhedule.com</h3>
-</div>
-<h3 align = "center" style="color: green"><%= notice %></h3>
+    <header class="event-header text-center p-4">
+        <h1 class="mb-0">Skhedule.com</h1>
+    </header>
 
-<%= render @event %>
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="event-card p-4">
+                    <h3 class="text-center text-success mb-4"><%= notice %></h3>
+                    <%= render @event %>
+                    <div class="text-center mt-4">
+                        <%= button_to "Edit this event", edit_event_path(@event), class: "btn gradient-btn", role: "button" %> 
+                        <br>
+                        <%= button_to "Event Status", eventsList_path, class: "btn gradient-btn", role: "button" %>
+                        <br>
+                        <%= button_to "Destroy this event", @event, method: :delete, class: "btn gradient-btn", role: "button", data: { confirm: "Are you sure?" } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    <div align = "center">
-        <%= link_to "Edit this event", edit_event_path(@event), class: "gradient-btn" %> 
-        <%= link_to "Event Status", eventsList_path , class: "gradient-btn" %>
-        <br>
-        <br>
-        <%= button_to "Destroy this event", @event, method: :delete, class: "gradient-btn"  %>
-    </div>
-</div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
