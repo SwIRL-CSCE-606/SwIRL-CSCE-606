@@ -1,54 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe TimeSlot, type: :model do
-    before do
-        @event = Event.create!(
-            name: "CSCE 645"
-        )
+  let(:event) { Event.create!(name: 'CSCE 645') }
 
-        @attendee = AttendeeInfo.create!(
-            name: "Erik",
-            email: "example@gmail.com",
-            is_attending: "yes",
-            comments: "super cool",
-            event_id: @event.id
-        )
-
-        @time_slot = TimeSlot.create!(
-            date: "2023-11-03",
-            start_time: "2023-11-03 11:10:00",
-            end_time: "2023-11-03 12:30:00",
-            event_id: @event.id
-        )
+  describe 'time slot actions' do
+    let(:time_slot) do
+      TimeSlot.create!(
+        date: '2023-11-03',
+        start_time: '11:10:00',
+        end_time: '12:30:00',
+        event_id: event.id
+      )
     end
 
-    describe 'time slot actions' do
-        it 'edit time slot that exists' do
-            _time = Time.now
-            @time_slot.update!(end_time: _time)
-            @time_slot.reload
-            expect(@time_slot.end_time).to eq _time
-        end
-    
-        it 'new time slot' do
-            time_slot = TimeSlot.create!(
-                date: "2000-11-03",
-                start_time: "2000-11-03 11:10:00",
-                end_time: "2000-11-03 12:30:00",
-                event_id: event.id
-            )
-
-            time_slot = TimeSlot.find_by(date: "2000-11-03")
-            expect(time_slot.date).to eq "2000-11-03"
-            expect(time_slot.start_time).to eq "2000-11-03 11:10:00"
-            expect(time_slot.end_time).to eq "2000-11-03 12:30:00"
-        end
-    
-        it 'delete attendee info' do
-            time_slot = TimeSlot.find_by(date: "2000-11-03")
-            time_slot.destroy
-            expect(TimeSlot.find_by(date: "2000-11-03")).to eq nil
-        end
-
+    it 'updates end time of an existing time slot' do
+      new_end_time = Time.current.change(year: 2000, day: 1, month: 1).strftime('%H:%M:%S')
+      time_slot.update!(end_time: new_end_time)
+      
+      expect(time_slot.reload.end_time.strftime('%H:%M:%S')).to eq new_end_time
     end
+
+    it 'creates a new time slot' do
+      expect(time_slot.date.to_s).to eq '2023-11-03'
+      expect(time_slot.start_time.strftime('%H:%M:%S')).to eq '11:10:00'
+      expect(time_slot.end_time.strftime('%H:%M:%S')).to eq '12:30:00'
+    end
+
+    it 'deletes a time slot' do
+      time_slot # create the time slot
+      time_slot_id = time_slot.id
+      time_slot.destroy
+
+      expect(TimeSlot.find_by(id: time_slot_id)).to be_nil
+    end
+  end
 end
