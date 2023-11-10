@@ -24,8 +24,10 @@ RSpec.describe TimeSlot, type: :model do
 
     describe 'time slot actions' do
         it 'edit time slot that exists' do
-            @time_slot.update(end_time: "2023-11-03 12:50:00")
-            expect(@time_slot.end_time).to eq "2023-11-03 12:50:00"
+            _time = Time.now
+            @time_slot.update!(end_time: _time)
+            @time_slot.reload
+            expect(@time_slot.end_time).to eq _time
         end
     
         it 'new time slot' do

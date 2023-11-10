@@ -314,6 +314,13 @@
           null
         ]
       },
+      "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/models/time_slot.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
       "/home/erik/Desktop/CSCE 606/SwIRL-CSCE-606/app/controllers/event_remainder_mailer_test_controller.rb": {
         "lines": [
           0,
@@ -328,6 +335,6 @@
         }
       }
     },
-    "timestamp": 1699631180
+    "timestamp": 1699632490
   }
 }
