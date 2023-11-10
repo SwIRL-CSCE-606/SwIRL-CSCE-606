@@ -16,10 +16,6 @@ class EventsController < ApplicationController
     @event_info = EventInfo.new
   end
 
-  def event_dashboard
-      render template eventdashboard
-  end
-
   # GET /events/1/edit
   def edit; end
 
@@ -80,7 +76,6 @@ class EventsController < ApplicationController
                 email_token: SecureRandom.uuid,
                 priority: priority,
               )
-              puts "Parsed Data: #{parsed_data}"
               unless @attendee.save
                 puts "Validation errors: #{@attendee.errors.full_messages}"
               end
@@ -113,13 +108,15 @@ class EventsController < ApplicationController
     max_capacity = event_params[:max_capacity]
     # email = event_params[:email]
 
-    event_info = EventInfo.find_by(id: @event.event_info.id)
+    event_info = @event.event_info
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time:start_time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time: start_time, end_time: end_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
+        logger.debug @event.errors.full_messages
+        logger.debug event_info.errors.full_messages
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
@@ -156,16 +153,43 @@ class EventsController < ApplicationController
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-      @attendee_info.update(is_attending: "no")
+        @attendee_info.update(is_attending: "no")
+
+    # Find the next attendee who hasn't responded yet and is not at max capacity
+    next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity).first
+
+    if next_attendee.present?
+      EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
     end
-    redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
+
+  redirect_to event_url(@event), notice: 'Your response has been recorded'
+end
+
+def attendees_at_or_over_capacity
+  @event = Event.find(params[:id])
+  @event_info = @event.event_info
+  max_capacity = @event_info.max_capacity
+  attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
+  attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
+  attendees_at_capacity + attendees_over_capacity
+end
+
   
 
   def invite_attendees
     @event = Event.find(params[:id])
-    @event.attendee_infos.each do |attendee|
-      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+    @event_info = @event.event_info
+
+    if @event_info.max_capacity.present?
+      attendees_to_invite = @event.attendee_infos.limit(@event_info.max_capacity)
+      attendees_to_invite.each do |attendee|
+        EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+      end
+    else
+      @event.attendee_infos.each do |attendee|
+        EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+      end
     end
     redirect_to eventsList_path
   end

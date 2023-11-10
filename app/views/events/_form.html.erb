@@ -28,7 +28,7 @@
     }
 
     .event-card:hover {
-        transform: translateY(-10px);
+        transform: none;
     }
 
     .gradient-btn {
@@ -117,39 +117,34 @@
   </div>
 
   <div>
-    <%= form.label "Event Venue", style: "display: block" %>
-    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
-    value: @event.event_info.present? ? @event.event_info.venue : "" %>
+    <%= form.label "Venue", style: "display: block" %>
+    <%= form.text_field :venue, class: 'form-input', id: 'Venue' %>
   </div>
 
   <div>
-    <%= form.label "Event Date", style: "display: block" %>
-    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
-    value: @event.event_info.present? ? @event.event_info.date : ""  %>
+    <%= form.label "Date", style: "display: block" %>
+    <%= form.date_field :date, class: 'form-input', id: 'Date' %>
   </div>
 
   <div>
     <%= form.label "Max Capacity", style: "display: block" %>
-    <%= form.number_field :max_capacity, in: 0..1000000000, step: 1, class: 'form-input', id: 'Event Time',
-    value: @event.event_info.present? ? @event.event_info.max_capacity : ""  %>
+    <%= form.number_field :max_capacity, in: 0..1000000000, step: 1, class: 'form-input', id: 'Max Capacity' %>
   </div>
 
   <div>
-    <%= form.label "Event Start Time", style: "display: block" %>
-    <%= form.time_field :start_time, class: 'form-input', id: 'Event Time',
-    value: @event.event_info.present? ? @event.event_info.start_time : ""  %>
+    <%= form.label "Start Time", style: "display: block" %>
+    <%= form.time_field :start_time, class: 'form-input', id: 'Start Time' %>
   </div>
 
   <div>
-    <%= form.label "Event End Time", style: "display: block" %>
-    <%= form.time_field :end_time, class: 'form-input', id: 'Event Time',
-    value: @event.event_info.present? ? @event.event_info.end_time : ""  %>
+    <%= form.label "End Time", style: "display: block" %>
+    <%= form.time_field :end_time, class: 'form-input', id: 'End Time' %>
   </div>
   <br>
   
   <div>
     <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
-    <%= form.file_field :csv_file %>
+    <%= form.file_field :csv_file, name: 'csv_file' %>
   </div>
   <br>
   <div>
