@@ -163,4 +163,42 @@ RSpec.describe EventsController, type: :controller do
   #     end
   #   end
   # end
+
+
+  describe 'GET #no_response' do
+    it 'updates attendee_info to no, sends reminder email, and redirects' do
+      allow(Event).to receive(:find).and_return(event)
+      allow(event.attendee_infos).to receive(:find_by).and_return(attendee_info)
+      allow(attendee_info).to receive(:update)
+      allow(event.attendee_infos).to receive(:where).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:where).with({ is_attending: nil }).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:where).with({ id: anything }).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:where).with({ id: anything }).and_return(event.attendee_infos)
+      next_attendee = AttendeeInfo.create(email_token: 'next_token', event: event, is_attending: nil)
+      allow(event.attendee_infos).to receive(:first).and_return(next_attendee)
+      mailer_double = instance_double('EventRemainderMailer')
+      get :no_response, params: { id: event.id, token: 'token123' }
+      expect(attendee_info).to have_received(:update).with(is_attending: 'no')
+      expect(EventRemainderMailer).to have_received(:with).with(email: next_attendee.email, token: next_attendee.email_token, event: event)
+      expect(mailer_double).to have_received(:reminder_email)
+      expect(mailer_double).to have_received(:deliver)
+      expect(response).to redirect_to(event_url(event))
+      expect(flash[:notice]).to eq('Your response has been recorded')
+    end
+  end
+  
+  describe 'GET #attendees_at_or_over_capacity' do
+    it 'returns attendees at or over capacity' do
+      allow(Event).to receive(:find).and_return(event)
+      allow(event.event_info).to receive(:max_capacity).and_return(2)
+      allow(event.attendee_infos).to receive(:where).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:where).with({ is_attending: 'yes' }).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:limit).with(2).and_return(event.attendee_infos)
+      allow(event.attendee_infos).to receive(:offset).with(2).and_return(event.attendee_infos)
+  
+      attendees = controller.send(:attendees_at_or_over_capacity)
+  
+      expect(attendees).to eq(event.attendee_infos)
+    end
+  end
 end
