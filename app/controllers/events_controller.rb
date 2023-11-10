@@ -158,7 +158,7 @@ class EventsController < ApplicationController
         @attendee_info.update(is_attending: "no")
 
     # Find the next attendee who hasn't responded yet and is not at max capacity
-    next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity(@event)).first
+    next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity).first
 
     if next_attendee.present?
       EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
@@ -168,10 +168,12 @@ class EventsController < ApplicationController
   redirect_to event_url(@event), notice: 'Your response has been recorded'
 end
 
-def attendees_at_or_over_capacity(event)
-  max_capacity = event.event_info.max_capacity
-  attendees_at_capacity = event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
-  attendees_over_capacity = event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
+def attendees_at_or_over_capacity
+  @event = Event.find(params[:id])
+  @event_info = @event.event_info
+  max_capacity = @event_info.max_capacity
+  attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
+  attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
   attendees_at_capacity + attendees_over_capacity
 end
 
