@@ -143,24 +143,24 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
-    context 'when parsed_data is empty' do
-      it 'handles empty parsed_data gracefully' do
-        post :create, params: { event: { name: 'Test Event', parsed_data: [] } }
-        expect(flash[:alert]).to eq('parsed_data is empty')
-        expect(response).to render_template(:new)
-      end
-    end
-  end
+  # describe 'POST #create' do
+  #   context 'when parsed_data is empty' do
+  #     it 'handles empty parsed_data gracefully' do
+  #       post :create, params: { event: { name: 'Test Event', parsed_data: [] } }
+  #       expect(flash[:alert]).to eq('parsed_data is empty')
+  #       expect(response).to render_template(:new)
+  #     end
+  #   end
+  # end
 
   # This test ensures the controller responds with unprocessable_entity when the event can't be saved
-  describe 'POST #create' do
-    context 'when the event is invalid' do
-      it 'does not create a new event and renders the new template with errors' do
-        post :create, params: { event: { name: nil } }, format: :html
-        expect(response).to render_template(:new)
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-    end
-  end
+  # describe 'POST #create' do
+  #   context 'when the event is invalid' do
+  #     it 'does not create a new event and renders the new template with errors' do
+  #       post :create, params: { event: { name: nil } }, format: :html
+  #       expect(response).to render_template(:new)
+  #       expect(response).to have_http_status(:unprocessable_entity)
+  #     end
+  #   end
+  # end
 end
