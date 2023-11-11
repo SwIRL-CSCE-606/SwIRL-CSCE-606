@@ -116,7 +116,6 @@
                      value: @event.present? ? @event.name : "", required: true %>
 </div>
 
-
   <div> 
     <%= form.label "Event Venue", style: "display: block" %>
     <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
@@ -150,11 +149,12 @@
                      value: @event.event_info.present? ? @event.event_info.end_time : "",required: true  %>
 </div>
 
+
   <br>
   
   <div>
     <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
-    <%= form.file_field :csv_file, name: 'csv_file' %>
+    <%= form.file_field :csv_file %>
   </div>
   <br>
   <div>
