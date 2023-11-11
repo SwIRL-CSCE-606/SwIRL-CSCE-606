@@ -111,9 +111,15 @@
 <div class="event-card">
 <div class="event-content">
   <div>
-    <%= form.label "Event Name", style: "display: block" %>
-    <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
-    value: @event.present? ? @event.name : ""%>
+  <%= form.label "Event Name", style: "display: block" %>
+  <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
+                     value: @event.present? ? @event.name : "", required: true %>
+</div>
+
+  <div> 
+    <%= form.label "Event Venue", style: "display: block" %>
+    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
+    value: @event.event_info.present? ? @event.event_info.venue : "", required: true %>
   </div>
 
   <div>
