@@ -32,3 +32,4 @@ Given("I am on the event invitation page") do
   When('I press {string}') do |string|
     click_button string
   end
+  

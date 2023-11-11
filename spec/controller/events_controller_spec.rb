@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
-  let!(:event) { Event.create!(name: 'Original Name') }
-  let!(:event_info) { EventInfo.create!(event_id: event.id, name: 'Original Name', date: Date.today) }
-  let!(:attendee_info) { event.attendee_infos.create!(email_token: 'token123', email: 'attendee@example.com') }
-
-  describe 'GET #event_status' do
-    let(:events) { Event.all }
+    describe 'GET #event_status' do
+        let(:events) { Event.all }
+        
+        before do
+            get :event_status   # here we simulate a GET request to the event_status action
+        end
 
     before do
       get :event_status # here we simulate a GET request to the event_status action
