@@ -20,6 +20,7 @@ Given("I am on the event invitation page") do
     expect(page).to have_button(btn2)
   end
   
+
   When('I fill in {string} with {string}') do |string, string2|
     fill_in string, with: string2
   end
