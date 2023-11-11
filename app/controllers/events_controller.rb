@@ -41,8 +41,6 @@ class EventsController < ApplicationController
       max_capacity: max_capacity
     )
 
-    #commented the above code because that was entering a textbox for the email
-    #below is uploading a csv
     if csv_file.present?
       @event.csv_file.attach(csv_file)
       # Parse the CSV data
@@ -154,26 +152,24 @@ class EventsController < ApplicationController
 
     if @event.present? && @attendee_info.present?
         @attendee_info.update(is_attending: "no")
-
+    end
     # Find the next attendee who hasn't responded yet and is not at max capacity
     next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity).first
 
     if next_attendee.present?
       EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
     end
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
 
-  redirect_to event_url(@event), notice: 'Your response has been recorded'
-end
-
-def attendees_at_or_over_capacity
-  @event = Event.find(params[:id])
-  @event_info = @event.event_info
-  max_capacity = @event_info.max_capacity
-  attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
-  attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
-  attendees_at_capacity + attendees_over_capacity
-end
+  def attendees_at_or_over_capacity
+    @event = Event.find(params[:id])
+    @event_info = @event.event_info
+    max_capacity = @event_info.max_capacity
+    attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
+    attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
+    attendees_at_capacity + attendees_over_capacity
+  end
 
   
 
