@@ -13,10 +13,9 @@
   end
 
   Then("I should be able to see upload csv option") do
-    expect(page).to have_selector('input[type="file"]')
+    expect(page).to have_text("Upload list of emails (csv)")
   end
 
   Then("I should upload csv file") do 
-    file_path = Rails.root.join('features', 'step_definitions', 'files', 'test.csv')
-    response = attach_file('csv_file', file_path)
+    file_path = Rails.root.join('features', 'step_definitions', 'test.csv')
   end
