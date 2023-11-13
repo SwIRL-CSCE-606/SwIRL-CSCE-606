@@ -47,8 +47,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   host = "localhost:3000"
-  user_name = ENV['USER_NAME']
-  password = ENV['PASSWORD']
+  user_name = Rails.application.credentials.USER_NAME
+  password = Rails.application.credentials.PASSWORD
   config.action_mailer.default_url_options = { host: host, protocol:'http' }
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
@@ -80,7 +80,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-
+  
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 

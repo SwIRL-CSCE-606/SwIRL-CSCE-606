@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,81 +10,152 @@
         body {
             background-color: #e2c9be;
             background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Arial', sans-serif;
-            padding: 4em;
         }
 
         .event-card {
             background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
             overflow: hidden;
             transition: transform 0.3s;
-            margin-bottom: 2em;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #44A1F2, #4CAF50);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
         }
 
         .event-header {
-            padding: 1.5em 2em;
+            padding: 30px 20px;
             background-color: #4CAF50;
             color: white;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            font-size: 1.5em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2em;
             font-weight: bold;
             letter-spacing: 2px;
+            cursor: pointer; /* Make the event name clickable */
         }
 
         .event-content {
-            padding: 2em;
+            display: none; /* Hide the event details by default */
+            padding: 20px; /* Adjust padding for better formatting */
         }
 
-        .ratio-bar {
-            height: 20px;
+        .highlight-text {
+            color: rgb(8, 92, 120);
+            padding: 5px 10px;
             border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 1em;
+            font-size: 1.5em;
+            font-weight: bold;
         }
 
-        .attendee {
-            border-bottom: 1px solid #f1f1f1;
-            padding: 0.5em 0;
+        .event-list {
+            cursor: pointer;
         }
     </style>
 </head>
+
 <body>
-
-    <% @events.each do |event| %>
-        <div class="event-card">
-            <div class="event-header">
-                <%= event.name %>
-            </div>
-            <div class="event-content">
-                <p><strong>Description:</strong> <%= event.description %></p>
-                <p><strong>Date:</strong> <%= event.date %></p>
-                <p><strong>Time:</strong> <%= event.time %></p>
-                <p><strong>Location:</strong> <%= event.location %></p>
-
-                <hr class="my-4">
-
-                <h4 class="mb-3">Invite Status:</h4>
-                <div class="ratio-bar">
-                    <!-- Dummy ratios here; you should replace these with actual data from your database -->
-                    <div style="width:70%; background-color:#4CAF50;" class="d-inline-block"></div>
-                    <div style="width:30%; background-color:#FF5733;" class="d-inline-block"></div>
-                </div>
-                <p class="mb-4">Yes: <%= event.yes_count %> | No: <%= event.no_count %></p>
-
-                <h4 class="mb-3">Attendees:</h4>
-                <ul class="list-unstyled">
-                    <% @attendees.each do |attendee| %>
-                    <li class="attendee">
-                        <strong><%= attendee.name %></strong> - 
-                        <%= attendee.status == "Yes" ? '<span class="text-success">Attending</span>' : '<span class="text-danger">Not Attending</span>' %>
-                    </li>
-                    <% end %>
-                </ul>
-            </div>
-        </div>
-    <% end %>
-
+    <div class="event-dashboard">
+        <h1>Event Dashboard</h1>
+        <ul>
+            <% @events.each do |event| %>
+                <% attending_count = 0 %>
+                <% not_attending_count = 0 %>
+                <li class="event-card">
+                    <div class="event-header" onclick="toggleEventContent('<%= event.id %>')">
+                        <h3><%= event.name %></h3>
+                    </div>
+                    <div id="event-content-<%= event.id %>" class="event-content">
+                        <h2>Event Details:</h2>
+                        <div>
+                            <h3>Time: <%= event.event_info&.start_time&.strftime('%H:%M %p') %></h3>
+                        </div>
+                        <div>
+                            <h3>Location: <%= event.event_info&.venue %></h3>
+                        </div>
+                        <br> <!-- Line break for spacing -->
+                        <div>
+                            <h3>Yes/No Ratio: <span id="yes-count-<%= event.id %>">0</span> / <span id="no-count-<%= event.id %>">0</span></h3>
+                        </div>
+                        <div>
+                            <h3>Seat Occupancy: <%= event.event_info&.max_capacity %></h3>
+                        </div>
+                        <br> <!-- Line break for spacing -->
+                        <div>
+                            <h3>Send Emails: <%= link_to 'Send Emails', invite_attendees_path(event) %></h3>
+                        </div>
+                        <h2>Attendees:</h2>
+                        <ul class="list-unstyled">
+                            <% event.attendee_infos.each do |attendee_info| %>
+                                <li class="attendee">
+                                    <strong><%= attendee_info&.name %></strong> -
+                                    Email: <%= attendee_info&.email %><br>
+                                    Status: <%= attendee_info&.is_attending == "yes" ? '<span class="text-success status">Attending</span>'.html_safe : '<span class="text-danger status">Not Attending</span>'.html_safe %><br>
+                                    <% if attendee_info&.is_attending == "yes" %>
+                                        <% attending_count += 1 %>
+                                    <% else %>
+                                        <% not_attending_count += 1 %>
+                                    <% end %>
+                                </li>
+                            <% end %>
+                        </ul>
+                    </div>
+                </li>
+                <br> <!-- Line break for each event -->
+            <% end %>
+        </ul>
+    </div>
+    <div>
+        <%= link_to "Back to Home", home_path, class: "gradient-btn", style: "text-align: center;" %>
+    </div>
+    <script>
+        function toggleEventContent(eventId) {
+            var eventContent = document.getElementById("event-content-" + eventId);
+            if (eventContent.style.display === "none" || eventContent.style.display === "") {
+                eventContent.style.display = "block";
+                // Calculate the Yes/No Ratio
+                var attendees = document.querySelectorAll("#event-content-" + eventId + " .attendee");
+                var attendingCount = 0;
+                var notAttendingCount = 0;
+                attendees.forEach(function (attendee) {
+                    var status = attendee.querySelector(".status").textContent.trim();
+                    if (status === 'Attending') {
+                        attendingCount++;
+                    } else if (status === 'Not Attending') {
+                        notAttendingCount++;
+                    }
+                });
+                // Update the Yes/No Ratio display
+                document.getElementById("yes-count-" + eventId).textContent = attendingCount;
+                document.getElementById("no-count-" + eventId).textContent = notAttendingCount;
+            } else {
+                eventContent.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

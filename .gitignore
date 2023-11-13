@@ -36,3 +36,8 @@
 
 # Ignore api keys
 .env
+.key
+master.key
+
+# Ignore coverage results
+coverage/

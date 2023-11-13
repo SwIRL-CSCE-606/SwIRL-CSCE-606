@@ -28,7 +28,7 @@
     }
 
     .event-card:hover {
-        transform: translateY(-10px);
+        transform: none;
     }
 
     .gradient-btn {
@@ -111,33 +111,56 @@
 <div class="event-card">
 <div class="event-content">
   <div>
-    <%= form.label "Event Name", style: "display: block" %>
-    <%= form.text_field :name, class: 'form-input', id: 'Event Name' %>
-  </div>
+  <%= form.label "Event Name", style: "display: block" %>
+  <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
+                     value: @event.present? ? @event.name : "", required: true %>
+</div>
 
-  <div>
+  <div> 
     <%= form.label "Event Venue", style: "display: block" %>
-    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue' %>
+    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
+    value: @event.event_info.present? ? @event.event_info.venue : "", required: true %>
   </div>
 
   <div>
     <%= form.label "Event Date", style: "display: block" %>
-    <%= form.date_field :date, class: 'form-input', id: 'Event Date' %>
+    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
+                     min: Date.today.strftime('%Y-%m-%d'),
+                     value: @event.event_info.present? ? @event.event_info.date : "", required: true %>
+  </div>
+
+
+  <div>
+    <%= form.label "Max Capacity", style: "display: block" %>
+    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Event Time',
+    value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
   </div>
 
   <div>
-    <%= form.label "Event Time", style: "display: block" %>
-    <%= form.time_field :time, class: 'form-input', id: 'Event Time' %>
+  <%= form.label "Event Start Time", style: "display: block" %>
+  <%= form.time_field :start_time, class: 'form-input', id: 'Event Time',
+                     value: @event.event_info.present? ? @event.event_info.start_time : "", required: true  %>
+</div>
+
+<div>
+  <%= form.label "Event End Time", style: "display: block" %>
+  <%= form.time_field :end_time, class: 'form-input', id: 'Event Time',
+                     min: @event.event_info.present? ? @event.event_info.start_time : "00:00",
+                     value: @event.event_info.present? ? @event.event_info.end_time : "",required: true  %>
+</div>
+
+
+  <br>
+  
+  <div>
+    <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
+    <%= form.file_field :csv_file %>
   </div>
   <br>
-  <h4 align = "center"> List of Attendees </h4>
-  <div>  
-    <%= form.label "Email", style: "display: block" %>
-    <%= form.email_field :email, class: 'form-input', id: 'Email' %>
-  </div>
-
   <div>
+    <h4 align = "center">
     <%= form.submit %>
+    </h4>
   </div>
 </div>
 </div>

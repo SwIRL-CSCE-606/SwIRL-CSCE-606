@@ -12,14 +12,11 @@
     expect(page).to have_text('Event name')
   end
 
-  Then("I should add a test email") do
-    fill_in 'Email', with: "testuser@gmail.com"
+  Then("I should be able to see upload csv option") do
+    expect(page).to have_selector('input[type="file"]')
   end
 
-  Then("I should create an event") do
-    click_button "Create Event"
-  end
-
-  Then("I should be able to see the successful event creation") do
-    expect(page).to have_text('Event was successfully created.')
+  Then("I should upload csv file") do 
+    file_path = Rails.root.join('features', 'step_definitions', 'files', 'test.csv')
+    response = attach_file('csv_file', file_path)
   end

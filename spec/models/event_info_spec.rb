@@ -9,7 +9,7 @@ RSpec.describe EventInfo, type: :model do
         @event_info = EventInfo.create!( 
             name:           "CSCE 606",
             description:    "super cool event",
-            date:           "2023-00-00",
+            date: Date.today, 
             venue:          "Rudder Theatre",
             event_id:       @event.id
         )
@@ -24,7 +24,7 @@ RSpec.describe EventInfo, type: :model do
         end
 
         it 'new event info' do
-            EventInfo.create(name: "CSCE 645", event_id: @event.id)
+            EventInfo.create(name: "CSCE 645", event_id: @event.id, date: Date.today)
             event_info = EventInfo.find_by(name: "CSCE 645")
             expect(event_info.name).to eq "CSCE 645"
         end

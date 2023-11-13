@@ -8,7 +8,8 @@ RSpec.describe Event, type: :model do
         
         @event_info = EventInfo.create!(
             name:       "CSCE 606",
-            event_id:   @event.id
+            event_id:   @event.id,
+            date: Date.today, 
         )
 
         @attendee = AttendeeInfo.create!(
