@@ -55,11 +55,12 @@
                     <h3 class="text-center text-success mb-4"><%= notice %></h3>
                     <%= render @event %>
                     <div class="text-center mt-4">
-                        <%= button_to "Edit this event", edit_event_path(@event), class: "btn gradient-btn", role: "button" %> 
+                        <%= button_to "Edit", edit_event_path(@event), class: "btn gradient-btn", role: "button" %> 
                         <br>
-                        <%= link_to "Event Status", eventsList_path, class: "btn gradient-btn", role: "button", method: 'get' %>
+                        <%= button_to "Destroy", @event, method: :delete, class: "btn gradient-btn", role: "button", data: { confirm: "Are you sure?" } %>
                         <br>
-                        <%= button_to "Destroy this event", @event, method: :delete, class: "btn gradient-btn", role: "button", data: { confirm: "Are you sure?" } %>
+                        <%= link_to "Status", eventsList_path, class: "btn gradient-btn", role: "button" %>
+                        
                     </div>
                 </div>
             </div>
