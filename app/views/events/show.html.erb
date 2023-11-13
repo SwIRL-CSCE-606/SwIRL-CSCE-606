@@ -57,7 +57,7 @@
                     <div class="text-center mt-4">
                         <%= button_to "Edit this event", edit_event_path(@event), class: "btn gradient-btn", role: "button" %> 
                         <br>
-                        <%= button_to "Event Status", eventsList_path, class: "btn gradient-btn", role: "button" %>
+                        <%= link_to "Event Status", eventsList_path, class: "btn gradient-btn", role: "button", method: 'get' %>
                         <br>
                         <%= button_to "Destroy this event", @event, method: :delete, class: "btn gradient-btn", role: "button", data: { confirm: "Are you sure?" } %>
                     </div>
