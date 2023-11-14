@@ -1,0 +1,14 @@
+<!-- app/views/events/_time_slot_fields.html.erb -->
+
+<div class="time-slot-fields">
+  <%= f.label "Date" %>
+  <%= f.date_field :date %>
+
+  <%= f.label "Start Time" %>
+  <%= f.time_field :start_time %>
+
+  <%= f.label "End Time" %>
+  <%= f.time_field :end_time %>
+
+  <button type="button" onclick="removeDateTimePair(this)">Remove</button>
+</div>

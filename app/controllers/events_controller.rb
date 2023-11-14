@@ -191,6 +191,11 @@ class EventsController < ApplicationController
   end
 
 
+  def series_event
+    @event = Event.new
+    1.times {@event.time_slots.build}
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -200,7 +205,8 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file,
+      time_slots: [:date, :start_time, :end_time])
 
   end
 end

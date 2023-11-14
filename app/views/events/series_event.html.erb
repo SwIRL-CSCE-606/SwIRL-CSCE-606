@@ -78,45 +78,49 @@
     </div>
     <div class="event-content">
         <h3 align="center">Series Event Form</h3>
-        <p>
-            <%= form_with do |f|%>
+            <%= form_with(model: @event) do |form|%>
             <div>
-                <%= f.label "Event Name" %>
-                <%= f.text_field :name, class: 'form-input', required: true %>
+                <%= form.label "Event Name" %>
+                <%= form.text_field :name, class: 'form-input', required: true %>
             </div>
 
             <div id="Event-venue-container">
-                <%= f.label "Event Venue" %>
-                <%= f.text_field :venue, class: 'form-input', required: true %>
+                <%= form.label "Event Venue" %>
+                <%= form.text_field :venue, class: 'form-input', required: true %>
             </div>
 
-            <div id="date-time-pairs">
-                <div>
-                    <label>Date:</label>
-                    <input type="date" class="form-input" name="date[]" required>
+
+            <%= form.fields_for :time_slots do |time_slots| %>
+                <div class="date-time-pairs">
+                    <div class="time-slot-fields">
+                        <%= time_slots.label "Date" %>
+                        <%= time_slots.date_field :date %>
+
+                        <%= time_slots.label "Start Time" %>
+                        <%= time_slots.time_field :start_time %>
+
+                        <%= time_slots.label "End Time" %>
+                        <%= time_slots.time_field :end_time %>
+                    </div>
+
+                    <%= render 'time_slot_fields', f: form %>
                 </div>
-                <div>
-                    <label>Start Time:</label>
-                    <input type="time" class="form-input" name="startTime[]" required>
-                </div>
-                <div>
-                    <label>End Time:</label>
-                    <input type="time" class="form-input" name="endTime[]" required>
-                </div>
-            </div>
-            <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button>
+
+            <% end %>
+
+            <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button> 
+
 
             <div>
-                <%= f.label "Upload CSV File" %>
-                <%= f.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
+                <%= form.label "Upload CSV File" %>
+                <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
             </div>
 
             <div align="center">
-                <%= f.submit "Submit", class: "gradient-btn" %>
-                <a href="javascript:history.back()" class="gradient-btn">Back</a>
+                `<%= form.submit "Submit", class: "gradient-btn" %>
+                <a href="javascript:history.back()" class="gradient-btn">Back</a>`
             </div>
             <% end %>
-        </p>
     </div>
 </div>
 
@@ -125,21 +129,7 @@
     function addDateTimePair() {
         const container = document.getElementById("date-time-pairs");
         const newPair = document.createElement("div");
-        newPair.innerHTML = `
-            <div>
-                <label>Date:</label>
-                <input type="date" class="form-input" name="date[]" required>
-            </div>
-            <div>
-                <label>Start Time:</label>
-                <input type="time" class="form-input" name="startTime[]" required>
-            </div>
-            <div>
-                <label>End Time:</label>
-                <input type="time" class="form-input" name="endTime[]" required>
-            </div>
-            <button type="button" onclick="removeDateTimePair(this)">Remove</button>
-        `;
+        newPair.innerHTML = '<%= escape_javascript(render("time_slot_fields", f: form)) %>';
         container.appendChild(newPair);
     }
 
