@@ -114,6 +114,11 @@
       </h3>
 
       <h3 align = "center">
+        <strong>Invite Expiration:</strong>
+        <%= event.event_info.invite_expiration %>
+      </h3> 
+
+      <h3 align = "center">
         <% if @event.csv_file.attached? %>
           <p>
             <strong>CSV File:</strong>

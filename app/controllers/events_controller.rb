@@ -28,6 +28,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    invite_expiration = event_params[:invite_expiration]
 
     @event = Event.new(
       name:       name
@@ -38,7 +39,8 @@ class EventsController < ApplicationController
       date:         date,
       start_time:   start_time,
       end_time:     end_time,
-      max_capacity: max_capacity
+      max_capacity: max_capacity,
+      invite_expiration: invite_expiration
     )
 
     if csv_file.present?
@@ -104,6 +106,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    invite_expiration = event_params[:invite_expiration]
     # email = event_params[:email]
 
     event_info = @event.event_info
@@ -200,7 +203,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, :invite_expiration)
 
   end
 end
