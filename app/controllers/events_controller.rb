@@ -184,12 +184,15 @@ class EventsController < ApplicationController
       attendees_to_invite = @event.attendee_infos.limit(@event_info.max_capacity)
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent_time: Time.current)
       end
     else
       @event.attendee_infos.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent_time: Time.current)
       end
     end
+    
     redirect_to eventsList_path
   end
 

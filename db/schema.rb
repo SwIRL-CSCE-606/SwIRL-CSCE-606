@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_15_175600) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_15_181656) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_175600) do
     t.datetime "updated_at", null: false
     t.integer "priority"
     t.string "email_token"
+    t.time "email_sent_time"
     t.index ["email_token"], name: "index_attendee_infos_on_email_token", unique: true
   end
 
