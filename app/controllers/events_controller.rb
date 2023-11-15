@@ -29,6 +29,8 @@ class EventsController < ApplicationController
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
 
+    puts event_params
+
     @event = Event.new(
       name:       name
     )
@@ -193,7 +195,7 @@ class EventsController < ApplicationController
 
   def series_event
     @event = Event.new
-    1.times {@event.time_slots.build}
+    @event.time_slots.build
   end
 
   private
@@ -205,8 +207,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file,
-      time_slots: [:date, :start_time, :end_time])
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slot: [:date, :start_time, :end_time])
 
   end
 end

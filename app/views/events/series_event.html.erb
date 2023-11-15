@@ -79,47 +79,56 @@
     <div class="event-content">
         <h3 align="center">Series Event Form</h3>
             <%= form_with(model: @event) do |form|%>
-            <div>
                 <%= form.label "Event Name" %>
                 <%= form.text_field :name, class: 'form-input', required: true %>
-            </div>
 
-            <div id="Event-venue-container">
                 <%= form.label "Event Venue" %>
                 <%= form.text_field :venue, class: 'form-input', required: true %>
-            </div>
+
+                <%
+=begin%>
+ <%= form_with model: @person do |person_form| %>
+                    <% @person.addresses.each do |address| %>
+                        <%= person_form.fields_for address, index: address.id do |address_form| %>
+                        <%= address_form.text_field :city %>
+                        <% end %>
+                    <% end %>
+                <% end %> 
+<%
+=end%>
 
 
-            <%= form.fields_for :time_slots do |time_slots| %>
-                <div class="date-time-pairs">
-                    <div class="time-slot-fields">
-                        <%= time_slots.label "Date" %>
-                        <%= time_slots.date_field :date %>
+                    <% @event.time_slots.each do |time_slot| %>
+                        <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
+                            <div id="date-time-pairs">
+                                <div class="time-slot-fields", id="time-slot-copy">
+                                    <%= render 'time_slot_fields', f: time_slot_form %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
 
-                        <%= time_slots.label "Start Time" %>
-                        <%= time_slots.time_field :start_time %>
-
-                        <%= time_slots.label "End Time" %>
-                        <%= time_slots.time_field :end_time %>
+                <%
+=begin%>
+ <%= fields_for :time_slots, @event.time_slots.each do |time_slot| %>
+                    <div id="date-time-pairs">
+                        <div class="time-slot-fields", id="time-slot-copy">
+                            <%= render 'time_slot_fields', f: time_slot %>
+                        </div>
                     </div>
+                <% end %> 
+<%
+=end%>
 
-                    <%= render 'time_slot_fields', f: form %>
-                </div>
+                <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button> 
 
-            <% end %>
-
-            <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button> 
-
-
-            <div>
                 <%= form.label "Upload CSV File" %>
                 <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
-            </div>
 
-            <div align="center">
-                `<%= form.submit "Submit", class: "gradient-btn" %>
-                <a href="javascript:history.back()" class="gradient-btn">Back</a>`
-            </div>
+                <div align="center">
+                    <%= form.submit "Submit", class: "gradient-btn" %>
+                    <a href="javascript:history.back()" class="gradient-btn">Back</a>
+                </div>
             <% end %>
     </div>
 </div>
@@ -128,9 +137,22 @@
     // Function to add a new date-time pair
     function addDateTimePair() {
         const container = document.getElementById("date-time-pairs");
-        const newPair = document.createElement("div");
-        newPair.innerHTML = '<%= escape_javascript(render("time_slot_fields", f: form)) %>';
+        const field = document.getElementById("time-slot-copy")
+        
+        
+        const newPair = field.cloneNode(true);
         container.appendChild(newPair);
+
+
+        const button = document.createElement('button');
+        button.textContent = 'Remove';
+        button.addEventListener('click', function(){
+            removeDateTimePair(button)
+        });
+
+
+        var targetDiv = newPair.querySelector('.time-slot-fields');
+        targetDiv.appendChild(button);
     }
 
     // Function to remove the clicked date-time pair
