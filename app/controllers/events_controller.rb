@@ -30,6 +30,9 @@ class EventsController < ApplicationController
     max_capacity = event_params[:max_capacity]
     time_slots = event_params[:time_slot]
 
+    if date.nil?
+      date = Time.now
+    end
 
     @event = Event.new(
       name:       name
