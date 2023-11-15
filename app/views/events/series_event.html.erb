@@ -85,40 +85,15 @@
                 <%= form.label "Event Venue" %>
                 <%= form.text_field :venue, class: 'form-input', required: true %>
 
-                <%
-=begin%>
- <%= form_with model: @person do |person_form| %>
-                    <% @person.addresses.each do |address| %>
-                        <%= person_form.fields_for address, index: address.id do |address_form| %>
-                        <%= address_form.text_field :city %>
-                        <% end %>
-                    <% end %>
-                <% end %> 
-<%
-=end%>
-
-
-                    <% @event.time_slots.each do |time_slot| %>
-                        <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
-                            <div id="date-time-pairs">
-                                <div class="time-slot-fields", id="time-slot-copy">
-                                    <%= render 'time_slot_fields', f: time_slot_form %>
-                                </div>
+                <% @event.time_slots.each do |time_slot| %>
+                    <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
+                        <div id="date-time-pairs">
+                            <div class="time-slot-fields", id="time-slot-copy">
+                                <%= render 'time_slot_fields', f: time_slot_form %>
                             </div>
-                        <% end %>
-                    <% end %>
-
-                <%
-=begin%>
- <%= fields_for :time_slots, @event.time_slots.each do |time_slot| %>
-                    <div id="date-time-pairs">
-                        <div class="time-slot-fields", id="time-slot-copy">
-                            <%= render 'time_slot_fields', f: time_slot %>
                         </div>
-                    </div>
-                <% end %> 
-<%
-=end%>
+                    <% end %>
+                <% end %>
 
                 <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button> 
 
