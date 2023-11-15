@@ -166,13 +166,12 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event_info = @event.event_info
     max_capacity = @event_info.max_capacity
-    attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
-    attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
+    attendees_at_capacity = @event.attendee_infos.where(is_attending: ["yes", "no"]).limit(max_capacity)
+    attendees_over_capacity = @event.attendee_infos.where(is_attending: ["yes", "no"]).offset(max_capacity)
     attendees_at_capacity + attendees_over_capacity
   end
-
   
-
+  
   def invite_attendees
     @event = Event.find(params[:id])
     @event_info = @event.event_info
