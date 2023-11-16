@@ -1,169 +1,163 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <title>Skhedule.com - Event Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
     <style>
-    body {
-        background-color: #e2c9be;
-        background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Arial', sans-serif;
-    }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
 
-    .event-card {
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        border-radius: 15px;
-        overflow: hidden;
-        transition: transform 0.3s;
-    }
+        .event-card {
+            background-color: black;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 960px;
+            width: 80%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transition: transform 0.3s;
+        }
 
-    .event-card:hover {
-        transform: none;
-    }
+        .event-card:hover {
+            transform: scale(1.02);
+        }
 
-    .gradient-btn {
-        background: linear-gradient(45deg, #4CAF50, #44A1F2);
-        border: none;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-    }
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 10px auto;
+            width: 250px;
+            display: block;
+            margin-bottom: 20px;
+        }
 
-    .gradient-btn:hover {
-        background: linear-gradient(45deg, #44A1F2, #4CAF50);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
+        .gradient-btn:hover {
+            background-color: #444;
+            cursor: pointer;
+            transform: scale(1.05);
+        }
 
-    .event-header {
-        padding: 30px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-        font-size: 2em;
-        font-weight: bold;
-        letter-spacing: 2px;
-    }
+        .title {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
 
-    .event-content {
-        padding: 30px 20px;
-    }
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
 
-    .highlight-text {
-        color: rgb(8, 92, 120);
-        padding: 5px 10px;
-        border-radius: 10px;
-        font-size: 1.5em;
-        font-weight: bold;
-    }
+        label {
+            color: white;
+            display: block;
+            margin-top: 20px;
+        }
 
-</style>
+        .form-input {
+            background: #222;
+            color: #ddd;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #333;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .event-card {
+                width: 95%;
+                padding: 10px;
+                margin: 10px auto;
+                max-height: 90vh;
+            }
+
+            .form-input, .gradient-btn {
+                width: calc(100% - 20px);
+            }
+        }
+    </style>
 </head>
-
-<script>
-    // Function to add a new input field
-    function add_field(fieldType) {
-        const container = document.getElementById(`${fieldType}-container`);
-        const newField = document.createElement("div");
-        newField.innerHTML = `
-            <%= text_field_tag 'email' %>
-            <button type="button" onclick="remove_field(this)">Delete</button>
-        `;
-        container.appendChild(newField);
-    }
-
-    // Function to remove the clicked input field
-    function remove_field(button) {
-        const container = button.parentNode.parentNode;
-        container.removeChild(button.parentNode);
-    }
-</script>
-
 <body>
-<%= form_with(model: @event) do |form| %>
-  <% if @event.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+    <div class="event-card">
+        <div class="title">Event Creation</div>
+        <div class="subtitle">Create your event with ease</div>
+        <%= form_with(model: @event, local: true) do |form| %>
+            <% if @event.errors.any? %>
+                <div style="color: red">
+                    <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+                    <ul>
+                        <% @event.errors.full_messages.each do |error| %>
+                            <li><%= error.full_message %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
 
-      <ul>
-        <% @event.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+            <div>
+                <%= form.label :name, "Event Name" %>
+                <%= form.text_field :name, class: 'form-input', id: 'EventName', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :venue, "Event Venue" %>
+                <%= form.text_field :venue, class: 'form-input', id: 'EventVenue', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :date, "Event Date" %>
+                <%= form.date_field :date, class: 'form-input', id: 'EventDate', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :max_capacity, "Max Capacity" %>
+                <%= form.number_field :max_capacity, class: 'form-input', id: 'MaxCapacity', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :start_time, "Event Start Time" %>
+                <%= form.time_field :start_time, class: 'form-input', id: 'EventStartTime', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :end_time, "Event End Time" %>
+                <%= form.time_field :end_time, class: 'form-input', id: 'EventEndTime', required: true %>
+            </div>
+
+            <div>
+                <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
+                <%= form.file_field :csv_file, class: 'form-input' %>
+            </div>
+
+            <br>
+
+            <div>
+                <h4 align="center">
+                    <%= form.submit "Submit", class: "gradient-btn" %>
+                </h4>
+            </div>
         <% end %>
-      </ul>
     </div>
-  <% end %>
-<div class="event-header">
-    <h1 align = "center">Skhedule.com</h1>
-</div>
-<div class="event-card">
-<div class="event-content">
-  <div>
-  <%= form.label "Event Name", style: "display: block" %>
-  <%= form.text_field :name, class: 'form-input', id: 'Event Name', 
-                     value: @event.present? ? @event.name : "", required: true %>
-</div>
-
-  <div> 
-    <%= form.label "Event Venue", style: "display: block" %>
-    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
-    value: @event.event_info.present? ? @event.event_info.venue : "", required: true %>
-  </div>
-
-  <div>
-    <%= form.label "Event Date", style: "display: block" %>
-    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
-                     min: Date.today.strftime('%Y-%m-%d'),
-                     value: @event.event_info.present? ? @event.event_info.date : "", required: true %>
-  </div>
-
-
-  <div>
-    <%= form.label "Max Capacity", style: "display: block" %>
-    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Event Time',
-    value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
-  </div>
-
-  <div>
-  <%= form.label "Event Start Time", style: "display: block" %>
-  <%= form.time_field :start_time, class: 'form-input', id: 'Event Time',
-                     value: @event.event_info.present? ? @event.event_info.start_time : "", required: true  %>
-</div>
-
-<div>
-  <%= form.label "Event End Time", style: "display: block" %>
-  <%= form.time_field :end_time, class: 'form-input', id: 'Event Time',
-                     min: @event.event_info.present? ? @event.event_info.start_time : "00:00",
-                     value: @event.event_info.present? ? @event.event_info.end_time : "",required: true  %>
-</div>
-
-
-  <br>
-  
-  <div>
-    <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
-    <%= form.file_field :csv_file %>
-  </div>
-  <br>
-  <div>
-    <h4 align = "center">
-    <%= form.submit %>
-    </h4>
-  </div>
-</div>
-</div>
-<% end %>
 </body>
 </html>
