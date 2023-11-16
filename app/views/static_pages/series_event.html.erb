@@ -1,179 +1,178 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Skhedule.com - Series Event Form</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
-        body {
-            background-color: #e2c9be;
-            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: 'Arial', sans-serif;
+            background-color: #000; /* Black background for the whole page */
+            color: #fff; /* White text color for better contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .event-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s;
+            background-color: #333; /* Dark background for the card */
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            width: auto; /* Width adjusted to content */
         }
 
-        .event-card:hover {
-            transform: translateY(-10px);
+        .event-header h1 {
+            margin: 0;
+            color: #fff; /* White text for the header */
+        }
+
+        .form-input, .gradient-btn {
+            background-color: #555; /* Darker background for input and buttons */
+            border: 1px solid #666; /* Slightly lighter border color */
+            color: #fff; /* White text color */
+            padding: 10px;
+            margin-bottom: 15px; /* Margin for spacing */
+            border-radius: 5px; /* Rounded corners */
+            width: calc(100% - 22px); /* Full width minus padding and border */
         }
 
         .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
+            background-color: #555; /* Button background */
+            padding: 10px 20px;
+            font-size: 16px; /* Font size for buttons */
+            letter-spacing: 1px; /* Spacing between letters for buttons */
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .gradient-btn:hover {
-            background: linear-gradient(45deg, #44A1F2, #4CAF50);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            transform: translateY(-2px);
+            background-color: #666; /* Slightly lighter on hover */
+            cursor: pointer; /* Change cursor to pointer */
+            transform: translateY(-2px); /* Moves button up slightly on hover */
         }
 
-        .event-header {
-            padding: 30px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            font-weight: bold;
-            letter-spacing: 2px;
+        /* Style for the file input to make it consistent with the theme */
+        .form-input[type="file"] {
+            padding: 0;
+            margin-top: -5px; /* Align with other text inputs */
         }
 
-        .event-content {
-            padding: 30px 20px;
+        /* Style for the 'Back' button to make it stand out */
+        .back-btn {
+            background-color: transparent; /* Transparent background */
+            color: #bbb; /* Lighter text color */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block; /* Allow it to be inline with other content */
+            border: none; /* No border */
         }
 
-        .highlight-text {
-            color: rgb(8, 92, 120);
+        .back-btn:hover {
+            color: #fff; /* White color on hover */
+            background-color: #444; /* Dark background on hover */
+        }
+
+        .date-time-pair {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-time-pair input {
+            flex: 1;
+        }
+
+        .remove-date-time {
+            background-color: #ff0000;
+            border: none;
+            color: #fff;
             padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
+            margin-left: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
+
 <div class="event-card">
     <div class="event-header">
-        <h1 align="center">Skhedule.com</h1>
+        <h1>SKHEDULE.COM</h1>
     </div>
-    <div class="event-content">
-        <h3 align="center">Series Event Form</h3>
-        <p>
-            <%= form_with do |f|%>
-            <div>
-                <%= f.label "Event Name" %>
-                <%= f.text_field :name, class: 'form-input', required: true %>
-            </div>
-
-            <div id="Event-venue-container">
-                <%= f.label "Event Venue" %>
-                <%= f.text_field :venue, class: 'form-input', required: true %>
-            </div>
-
-            <div id="date-time-pairs">
-                <div>
-                    <label>Date:</label>
-                    <input type="date" class="form-input" name="date[]" required>
-                </div>
-                <div>
-                    <label>Start Time:</label>
-                    <input type="time" class="form-input" name="startTime[]" required>
-                </div>
-                <div>
-                    <label>End Time:</label>
-                    <input type="time" class="form-input" name="endTime[]" required>
-                </div>
-            </div>
-            <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button>
-
-            <div>
-                <%= f.label "Upload CSV File" %>
-                <%= f.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
-            </div>
-
-            <div align="center">
-                <%= f.submit "Submit", class: "gradient-btn" %>
-                <a href="javascript:history.back()" class="gradient-btn">Back</a>
-            </div>
-            <% end %>
-        </p>
-    </div>
+    <h2>Series Event Form</h2>
+    <form id="event-form">
+        <input type="text" class="form-input" placeholder="Event name" required>
+        <input type="text" class="form-input" placeholder="Event venue" required>
+        <input type="date" class="form-input" id="event-date" required>
+        <input type="time" class="form-input" id="start-time" required>
+        <input type="time" class="form-input" id="end-time" required>
+        <div id="date-time-pairs">
+            <!-- Date-time input fields will be added here -->
+        </div>
+        <button type="button" class="gradient-btn" id="add-date-time">ADD DATE-TIME PAIR</button>
+        <input type="file" class="form-input" required>
+        <button type="submit" class="gradient-btn">SUBMIT</button>
+        <button type="button" class="back-btn" onclick="history.back()">BACK</button>
+    </form>
 </div>
 
 <script>
-    // Function to add a new date-time pair
-    function addDateTimePair() {
-        const container = document.getElementById("date-time-pairs");
-        const newPair = document.createElement("div");
-        newPair.innerHTML = `
-            <div>
-                <label>Date:</label>
-                <input type="date" class="form-input" name="date[]" required>
-            </div>
-            <div>
-                <label>Start Time:</label>
-                <input type="time" class="form-input" name="startTime[]" required>
-            </div>
-            <div>
-                <label>End Time:</label>
-                <input type="time" class="form-input" name="endTime[]" required>
-            </div>
-            <button type="button" onclick="removeDateTimePair(this)">Remove</button>
-        `;
-        container.appendChild(newPair);
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const addButton = document.getElementById("add-date-time");
+        const datePairsContainer = document.getElementById("date-time-pairs");
 
-    // Function to remove the clicked date-time pair
-    function removeDateTimePair(button) {
-        const container = button.parentNode.parentNode;
-        container.removeChild(button.parentNode);
-    }
+        addButton.addEventListener("click", function() {
+            const dateTimePair = document.createElement("div");
+            dateTimePair.classList.add("date-time-pair");
+            dateTimePair.innerHTML = `
+                <input type="date" class="form-input" required placeholder="Date">
+                <input type="time" class="form-input" required placeholder="Start Time">
+                <input type="time" class="form-input" required placeholder="End Time">
+                <button type="button" class="gradient-btn remove-date-time">REMOVE</button>
+            `;
+            datePairsContainer.appendChild(dateTimePair);
 
-    // Validate the date and time
-    document.querySelector("form").addEventListener("submit", function (event) {
-        const dateInputs = document.querySelectorAll('input[type="date"]');
-        const timeStartInputs = document.querySelectorAll('input[name="startTime[]"]');
-        const timeEndInputs = document.querySelectorAll('input[name="endTime[]"]');
+            // Add functionality to remove the specific date-time pair
+            const removeButton = dateTimePair.querySelector(".remove-date-time");
+            removeButton.addEventListener("click", function() {
+                datePairsContainer.removeChild(dateTimePair);
+            });
+        });
 
-        for (let i = 0; i < dateInputs.length; i++) {
-            const date = new Date(dateInputs[i].value);
-            const now = new Date();
-            if (date < now) {
-                event.preventDefault();
-                alert("Date cannot be in the past.");
-                return;
+        // Add form validation
+        const eventForm = document.getElementById("event-form");
+        eventForm.addEventListener("submit", function(event) {
+            const eventDate = document.getElementById("event-date").value;
+            const startTime = document.getElementById("start-time").value;
+            const endTime = document.getElementById("end-time").value;
+
+            // Perform your validation here
+            if (!isValidDate(eventDate) || !isValidTime(startTime) || !isValidTime(endTime) || startTime >= endTime) {
+                event.preventDefault(); // Prevent form submission
+                alert("Invalid date/time input. Please check and correct your inputs.");
             }
+        });
 
-            const startTime = new Date(date.toISOString().split("T")[0] + "T" + timeStartInputs[i].value);
-            const endTime = new Date(date.toISOString().split("T")[0] + "T" + timeEndInputs[i].value);
-            if (endTime <= startTime) {
-                event.preventDefault();
-                alert("End Time must be after Start Time.");
-                return;
+        // Date validation function
+        function isValidDate(date) {
+            return !isNaN(Date.parse(date));
+        }
+
+        // Time validation function
+        function isValidTime(time) {
+            const timeParts = time.split(":");
+            if (timeParts.length === 2) {
+                const hours = parseInt(timeParts[0]);
+                const minutes = parseInt(timeParts[1]);
+                return !isNaN(hours) && !isNaN(minutes) && hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
             }
+            return false;
         }
     });
 </script>
-</body>
 
+</body>
 </html>
