@@ -82,8 +82,14 @@
             align-items: center;
         }
 
+        .date-time-pair label {
+            flex: 0.3;
+            text-align: right;
+            margin-right: 10px;
+        }
+
         .date-time-pair input {
-            flex: 1;
+            flex: 0.7;
         }
 
         .remove-date-time {
@@ -106,14 +112,24 @@
     <form id="event-form">
         <input type="text" class="form-input" placeholder="Event name" required>
         <input type="text" class="form-input" placeholder="Event venue" required>
-        <input type="date" class="form-input" id="event-date" required>
-        <input type="time" class="form-input" id="start-time" required>
-        <input type="time" class="form-input" id="end-time" required>
+        <div class="date-time-pair">
+            <label for="event-date">Date:</label>
+            <input type="date" class="form-input" id="event-date" required>
+        </div>
+        <div class="date-time-pair">
+            <label for="start-time">Start Time:</label>
+            <input type="time" class="form-input" id="start-time" required>
+        </div>
+        <div class="date-time-pair">
+            <label for="end-time">End Time:</label>
+            <input type="time" class="form-input" id="end-time" required>
+        </div>
         <div id="date-time-pairs">
             <!-- Date-time input fields will be added here -->
         </div>
         <button type="button" class="gradient-btn" id="add-date-time">ADD DATE-TIME PAIR</button>
-        <input type="file" class="form-input" required>
+        <label for="csv-file" style="color: #fff;">Add CSV file only:</label>
+        <input type="file" class="form-input" id="csv-file" accept=".csv" required>
         <button type="submit" class="gradient-btn">SUBMIT</button>
         <button type="button" class="back-btn" onclick="history.back()">BACK</button>
     </form>
@@ -128,9 +144,12 @@
             const dateTimePair = document.createElement("div");
             dateTimePair.classList.add("date-time-pair");
             dateTimePair.innerHTML = `
-                <input type="date" class="form-input" required placeholder="Date">
-                <input type="time" class="form-input" required placeholder="Start Time">
-                <input type="time" class="form-input" required placeholder="End Time">
+                <label>Date:</label>
+                <input type="date" class="form-input" required>
+                <label>Start Time:</label>
+                <input type="time" class="form-input" required>
+                <label>End Time:</label>
+                <input type="time" class="form-input" required>
                 <button type="button" class="gradient-btn remove-date-time">REMOVE</button>
             `;
             datePairsContainer.appendChild(dateTimePair);
