@@ -10,40 +10,32 @@
             height: 100%;
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background-color: black;
+            background-color: #000; /* Black background for the whole page */
+            color: #fff; /* White text color for better contrast */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            color: white;
         }
 
         .event-card {
-            background-color: black;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
+            background-color: #333; /* Dark background for the card */
             padding: 20px;
-            margin: 20px auto;
+            border-radius: 10px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            width: auto; /* Width adjusted to content */
             max-width: 960px;
-            width: 80%;
-            max-height: 90vh;
             overflow-y: auto;
-            transition: transform 0.3s;
-        }
-
-        .event-card:hover {
-            transform: scale(1.02);
         }
 
         .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 5px;
+            background-color: #555; /* Darker background for input and buttons */
+            border: 1px solid #666; /* Slightly lighter border color */
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            font-size: 16px; /* Font size for buttons */
+            letter-spacing: 1px; /* Spacing between letters for buttons */
+            border-radius: 5px; /* Rounded corners */
             transition: background-color 0.3s, transform 0.3s;
             margin: 10px auto;
             width: 250px;
@@ -52,9 +44,9 @@
         }
 
         .gradient-btn:hover {
-            background-color: #444;
-            cursor: pointer;
-            transform: scale(1.05);
+            background-color: #666; /* Slightly lighter on hover */
+            cursor: pointer; /* Change cursor to pointer */
+            transform: translateY(-2px); /* Moves button up slightly on hover */
         }
 
         .title {
@@ -75,8 +67,9 @@
         }
 
         .form-input {
-            background: #222;
-            color: #ddd;
+            background-color: #555; /* Darker background for input and buttons */
+            border: 1px solid #666; /* Slightly lighter border color */
+            color: #fff; /* White text color */
             width: 100%;
             padding: 10px;
             margin: 10px 0;
