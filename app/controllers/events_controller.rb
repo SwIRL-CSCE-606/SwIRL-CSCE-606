@@ -28,6 +28,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    invite_expiration = event_params[:invite_expiration]
 
     @event = Event.new(
       name:       name
@@ -38,7 +39,8 @@ class EventsController < ApplicationController
       date:         date,
       start_time:   start_time,
       end_time:     end_time,
-      max_capacity: max_capacity
+      max_capacity: max_capacity,
+      invite_expiration: invite_expiration
     )
 
     if csv_file.present?
@@ -104,6 +106,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    invite_expiration = event_params[:invite_expiration]
     # email = event_params[:email]
 
     event_info = @event.event_info
@@ -160,6 +163,7 @@ class EventsController < ApplicationController
     if next_attendee.present?
       EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
       next_attendee.update(email_sent: true) # Update the email_sent field
+      next_attendee.update(email_sent_time: DateTime.now)
     end
   
     redirect_to event_url(@event), notice: 'Your response has been recorded'
@@ -182,12 +186,13 @@ class EventsController < ApplicationController
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
         attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
-    debugger
     else
       @event.attendee_infos.where(email_sent: false).each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
         attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
     end
     redirect_to eventsList_path
@@ -204,7 +209,6 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
-
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, :invite_expiration)
   end
 end
