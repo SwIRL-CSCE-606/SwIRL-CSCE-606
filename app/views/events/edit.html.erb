@@ -32,7 +32,7 @@
     }
 
     .gradient-btn {
-        background: linear-gradient(45deg, #4CAF50, #44A1F2);
+        background: #555;
         border: none;
         color: white;
         padding: 12px 30px;
@@ -42,7 +42,7 @@
     }
 
     .gradient-btn:hover {
-        background: linear-gradient(45deg, #44A1F2, #4CAF50);
+        background: #666;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
         transform: translateY(-2px);
     }
@@ -80,10 +80,10 @@
 <%= render "form", event: @event %>
 
 <br>
-
+    
 <div>
-  <%= link_to "Show this event", @event, class: "gradient-btn", align: "center" %> 
-  <%= link_to "Back to events", events_path, class: "gradient-btn", align: "center" %>
+  <%= link_to "Back to events", events_path, class: "gradient-btn", align: "center", onclick: "history.back()" %>
 </div>
 </div>
 </body>
+    
