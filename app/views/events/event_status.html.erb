@@ -133,7 +133,7 @@
                                 <li class="attendee">
                                     <strong><%= attendee_info&.name %></strong> -
                                     Email: <%= attendee_info&.email %><br>
-                                    Status: <%= attendee_info&.is_attending == "yes" ? '<span class="text-success status">Attending</span>'.html_safe : '<span class="text-danger status">Not Attending</span>'.html_safe %><br>
+                                    Status: <%= attendee_info&.is_attending == "yes" ? '<span class="text-success status">Attending</span>'.html_safe : (attendee_info&.is_attending == "no" ? '<span class="text-danger status">Not Attending</span>'.html_safe : '<span class="text-warning status">Pending</span>'.html_safe) %><br>
                                     <% if attendee_info&.is_attending == "yes" %>
                                         <% attending_count += 1 %>
                                     <% else %>
