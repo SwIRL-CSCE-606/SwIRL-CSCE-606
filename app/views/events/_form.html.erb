@@ -117,14 +117,14 @@
 </div>
 
   <div> 
-    <%= form.label "Event Venue", style: "display: block" %>
-    <%= form.text_field :venue, class: 'form-input', id: 'Event Venue', 
+    <%= form.label "Venue", style: "display: block" %>
+    <%= form.text_field :venue, class: 'form-input', id: 'Venue', 
     value: @event.event_info.present? ? @event.event_info.venue : "", required: true %>
   </div>
 
   <div>
-    <%= form.label "Event Date", style: "display: block" %>
-    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
+    <%= form.label "Date", style: "display: block" %>
+    <%= form.date_field :date, class: 'form-input', id: 'Date',
                      min: Date.today.strftime('%Y-%m-%d'),
                      value: @event.event_info.present? ? @event.event_info.date : "", required: true %>
   </div>
@@ -132,19 +132,19 @@
 
   <div>
     <%= form.label "Max Capacity", style: "display: block" %>
-    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Event Time',
+    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Max Capacity',
     value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
   </div>
 
   <div>
-  <%= form.label "Event Start Time", style: "display: block" %>
-  <%= form.time_field :start_time, class: 'form-input', id: 'Event Time',
+  <%= form.label "Start Time", style: "display: block" %>
+  <%= form.time_field :start_time, class: 'form-input', id: 'Start Time',
                      value: @event.event_info.present? ? @event.event_info.start_time : "", required: true  %>
 </div>
 
 <div>
-  <%= form.label "Event End Time", style: "display: block" %>
-  <%= form.time_field :end_time, class: 'form-input', id: 'Event Time',
+  <%= form.label "End Time", style: "display: block" %>
+  <%= form.time_field :end_time, class: 'form-input', id: 'End Time',
                      min: @event.event_info.present? ? @event.event_info.start_time : "00:00",
                      value: @event.event_info.present? ? @event.event_info.end_time : "",required: true  %>
 </div>
@@ -153,8 +153,8 @@
   <br>
   
   <div>
-    <%= form.label "Upload List of Emails (CSV)", style: "display: block" %>
-    <%= form.file_field :csv_file %>
+    <%= form.label "Upload List of Emails (CSV)", style: "display: block"%>
+    <%= form.file_field :csv_file, id: "csv_file"  %>
   </div>
   <br>
   <div>
