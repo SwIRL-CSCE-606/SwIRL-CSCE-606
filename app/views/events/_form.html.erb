@@ -145,12 +145,15 @@
 
                 <div>
                     <%= form.label :date, "Event Date" %>
-                    <%= form.date_field :date, class: 'form-input', id: 'EventDate', required: true %>
+                    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
+                        min: Date.today.strftime('%Y-%m-%d'),
+                        value: @event.event_info.present? ? @event.event_info.date : "", required: true %>
                 </div>
 
                 <div>
                     <%= form.label :max_capacity, "Max Capacity" %>
-                    <%= form.number_field :max_capacity, class: 'form-input', id: 'MaxCapacity', required: true, placeholder: 'Enter Value'%>
+                    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Event Time',
+                        value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
                 </div>
 
                 <div>
@@ -169,7 +172,8 @@
 
             <div>
                 <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
-                <%= form.file_field :csv_file, class: 'form-input' %>
+                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv'%>
+
             </div>
 
             <br>
