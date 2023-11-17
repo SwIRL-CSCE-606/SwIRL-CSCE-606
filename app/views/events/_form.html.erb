@@ -24,8 +24,9 @@
             border-radius: 10px; /* Rounded corners for the card */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
             width: auto; /* Width adjusted to content */
-            max-width: 960px;
+            max-width: auto;
             overflow-y: auto;
+            margin: 0 auto; 
         }
 
         .gradient-btn {
@@ -64,6 +65,7 @@
             color: white;
             display: block;
             margin-top: 20px;
+            font-size: 22px; /* Adjust the size as needed */
         }
 
         .form-input {
@@ -76,6 +78,8 @@
             border-radius: 5px;
             border: 1px solid #333;
             box-sizing: border-box;
+            font-size: 22px; /* Adjust the size as needed */
+
         }
 
         @media (max-width: 768px) {
@@ -88,6 +92,26 @@
 
             .form-input, .gradient-btn {
                 width: calc(100% - 20px);
+            }
+        }
+
+        /* Add this CSS for responsive two-column layout */
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-row > div {
+            width: calc(50% - 10px); /* Adjust the width and spacing as needed */
+            box-sizing: border-box;
+        }
+
+        /* Adjust the width for smaller screens */
+        @media (max-width: 768px) {
+            .form-row > div {
+                width: calc(100% - 20px);
+                margin-bottom: 10px; /* Add some spacing between rows on smaller screens */
             }
         }
     </style>
@@ -108,34 +132,39 @@
                 </div>
             <% end %>
 
-            <div>
-                <%= form.label :name, "Event Name" %>
-                <%= form.text_field :name, class: 'form-input', id: 'EventName', required: true %>
-            </div>
+            <div class="form-row">
+                <div>
+                    <%= form.label :name, "Event Name" %>
+                    <%= form.text_field :name, class: 'form-input', id: 'EventName', required: true, placeholder: 'EventName' %>
+                </div>
 
-            <div>
-                <%= form.label :venue, "Event Venue" %>
-                <%= form.text_field :venue, class: 'form-input', id: 'EventVenue', required: true %>
-            </div>
+                <div>
+                    <%= form.label :venue, "Event Venue" %>
+                    <%= form.text_field :venue, class: 'form-input', id: 'EventVenue', required: true, placeholder: 'Event Venue' %>
+                </div>
 
-            <div>
-                <%= form.label :date, "Event Date" %>
-                <%= form.date_field :date, class: 'form-input', id: 'EventDate', required: true %>
-            </div>
+                <div>
+                    <%= form.label :date, "Event Date" %>
+                    <%= form.date_field :date, class: 'form-input', id: 'EventDate', required: true %>
+                </div>
 
-            <div>
-                <%= form.label :max_capacity, "Max Capacity" %>
-                <%= form.number_field :max_capacity, class: 'form-input', id: 'MaxCapacity', required: true %>
-            </div>
+                <div>
+                    <%= form.label :max_capacity, "Max Capacity" %>
+                    <%= form.number_field :max_capacity, class: 'form-input', id: 'MaxCapacity', required: true, placeholder: 'Enter Value'%>
+                </div>
 
-            <div>
-                <%= form.label :start_time, "Event Start Time" %>
-                <%= form.time_field :start_time, class: 'form-input', id: 'EventStartTime', required: true %>
-            </div>
+                <div>
+                    <%= form.label :start_time, "Event Start Time" %>
+                    <%= form.time_field :start_time, class: 'form-input', id: 'EventStartTime', required: true %>
+                </div>
 
-            <div>
-                <%= form.label :end_time, "Event End Time" %>
-                <%= form.time_field :end_time, class: 'form-input', id: 'EventEndTime', required: true %>
+                <div>
+                    <%= form.label :end_time, "Event End Time" %>
+                    <%= form.time_field :end_time, class: 'form-input', id: 'EventEndTime', required: true %>
+                </div>
+
+                <!-- Repeat the same pattern for other input fields -->
+                
             </div>
 
             <div>
