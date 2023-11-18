@@ -1,89 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
+    <meta charset="UTF-8">
+    <title>Event Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-<!-- Bootstrap CSS -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        .full-screen-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('path-to-your-background-image.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            opacity: 0.5; /* Dim the background image to keep the text prominent */
+        }
 
+        .content {
+            z-index: 10;
+            color: white;
+            max-width: 960px;
+            padding: 15px;
+        }
 
-<style>
-    body {
-        background-color: #e2c9be;
-        background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Arial', sans-serif;
-    }
+        .title {
+            font-size: 80px; /* Large text size */
+            font-weight: bold;
+            letter-spacing: -2px; /* Tight letter spacing for effect */
+            margin-bottom: 30px;
+        }
 
-    .event-card {
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        border-radius: 15px;
-        overflow: hidden;
-        transition: transform 0.3s;
-    }
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
 
-    .event-card:hover {
-        transform: none;
-    }
+        .cta-button {
+            background-color: #333; /* Darker background for button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 5px; /* Slightly rounded corners for the button */
+            transition: background-color 0.3s, transform 0.3s;
+        }
 
-    .gradient-btn {
-        background: linear-gradient(45deg, #4CAF50, #44A1F2);
-        border: none;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-    }
+        .cta-button:hover {
+            background-color: #444; /* Lighten button background on hover */
+            cursor: pointer;
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
 
-    .gradient-btn:hover {
-        background: linear-gradient(45deg, #44A1F2, #4CAF50);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
-
-    .event-header {
-        padding: 30px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-        font-size: 2em;
-        font-weight: bold;
-        letter-spacing: 2px;
-    }
-
-    .event-content {
-        padding: 30px 20px;
-    }
-
-    .highlight-text {
-        color: rgb(8, 92, 120);
-        padding: 5px 10px;
-        border-radius: 10px;
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-
-</style>
+        /* Add more styles as needed */
+    </style>
 </head>
-
 <body>
-<div class="event-card">
-    <div class="event-header">
-            <h1 align = "center">Skhedule.com</h1>
+
+    <div class="full-screen-bg"></div>
+    
+    <div class="content">
+        <div class="title">SKHEDULE.COM</div>
+        <div class="subtitle">Join us at SKHEDULE.COM and explore a world of events waiting for you!</div>
+        <!-- Ruby on Rails button_to helper -->
+        <%= button_to "Event Page", home_path, method: :get, class: "cta-button" %>
     </div>
-    <div class="event-content">
-    <h4 align = "center">
-        <h3 align = "center">
-            <button class="gradient-btn" align = "center"><%= link_to "Event Page", home_path %></button>
-        </h3>
-    </h4>
-    </div>
+
 </body>
+</html>

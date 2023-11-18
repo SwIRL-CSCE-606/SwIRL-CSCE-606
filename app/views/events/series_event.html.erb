@@ -1,80 +1,110 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Skhedule.com - Series Event Form</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
-        body {
-            background-color: #e2c9be;
-            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .event-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
         }
 
-        .event-card:hover {
-            transform: translateY(-10px);
+        .event-header h1 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .form-input, .gradient-btn {
+            background-color: #555;
+            border: 1px solid #666;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            width: calc(100% - 22px);
         }
 
         .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
+            background-color: #555;
+            padding: 10px 20px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .gradient-btn:hover {
-            background: linear-gradient(45deg, #44A1F2, #4CAF50);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            background-color: #666;
+            cursor: pointer;
             transform: translateY(-2px);
         }
 
-        .event-header {
-            padding: 30px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            font-weight: bold;
-            letter-spacing: 2px;
+        .form-input[type="file"] {
+            padding: 0;
+            margin-top: -5px;
         }
 
-        .event-content {
-            padding: 30px 20px;
+        .back-btn {
+            background-color: transparent;
+            color: #bbb;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+            border: none;
         }
 
-        .highlight-text {
-            color: rgb(8, 92, 120);
+        .back-btn:hover {
+            color: #fff;
+            background-color: #444;
+        }
+
+        .date-time-pair {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-time-pair label {
+            flex: 0.3;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .date-time-pair input {
+            flex: 0.7;
+        }
+
+        .remove-date-time {
+            background-color: #ff0000;
+            border: none;
+            color: #fff;
             padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
+            margin-left: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
+
 <div class="event-card">
     <div class="event-header">
-        <h1 align="center">Skhedule.com</h1>
+        <h1>SKHEDULE.COM</h1>
     </div>
     <div class="event-content">
         <h3 align="center">Series Event Form</h3>
@@ -88,7 +118,7 @@
                 <% @event.time_slots.each do |time_slot| %>
                     <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
                         <div id="date-time-pairs">
-                            <div class="time-slot-fields", id="time-slot-copy">
+                            <div class="date-time-pair", id="time-slot-copy">
                                 <%= render 'time_slot_fields', f: time_slot_form %>
                             </div>
                         </div>
@@ -130,37 +160,19 @@
         targetDiv.appendChild(button);
     }
 
-    // Function to remove the clicked date-time pair
-    function removeDateTimePair(button) {
-        const container = button.parentNode.parentNode;
-        container.removeChild(button.parentNode);
-    }
+            // Add functionality to remove the specific date-time pair
+            dateTimePair.lastElementChild.addEventListener("click", function() {
+                dateTimePair.remove();
+            });
+        });
 
-    // Validate the date and time
-    document.querySelector("form").addEventListener("submit", function (event) {
-        const dateInputs = document.querySelectorAll('input[type="date"]');
-        const timeStartInputs = document.querySelectorAll('input[name="startTime[]"]');
-        const timeEndInputs = document.querySelectorAll('input[name="endTime[]"]');
-
-        for (let i = 0; i < dateInputs.length; i++) {
-            const date = new Date(dateInputs[i].value);
-            const now = new Date();
-            if (date < now) {
-                event.preventDefault();
-                alert("Date cannot be in the past.");
-                return;
-            }
-
-            const startTime = new Date(date.toISOString().split("T")[0] + "T" + timeStartInputs[i].value);
-            const endTime = new Date(date.toISOString().split("T")[0] + "T" + timeEndInputs[i].value);
-            if (endTime <= startTime) {
-                event.preventDefault();
-                alert("End Time must be after Start Time.");
-                return;
-            }
-        }
+        // Form submission handling
+        const eventForm = document.getElementById("event-form");
+        eventForm.addEventListener("submit", function(event) {
+            // Add any necessary form submission logic here
+        });
     });
 </script>
-</body>
 
+</body>
 </html>

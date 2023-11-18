@@ -6,46 +6,68 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #e2c9be;
-            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
+
         .event-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-radius: 15px;
+            background-color: #333; /* Matching color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
         }
+
+        .event-header {
+            margin: 0;
+            color: #fff;
+        }
+
         .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
-            border: none;
+            background-color: #333; /* Matching color */
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 5px;
+            width: calc(100% - 22px);
         }
+
         .gradient-btn:hover {
-            background: linear-gradient(45deg, #44A1F2, #4CAF50);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            background-color: #444; /* Matching color */
+            cursor: pointer;
             transform: translateY(-2px);
         }
-        .event-header {
-            background-color: #4CAF50;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+
+        .back-btn {
+            background-color: transparent;
+            color: #bbb;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+            border: none;
         }
-        .highlight-text {
-            color: rgb(8, 92, 120);
-            border-radius: 10px;
-            font-weight: bold;
+
+        .back-btn:hover {
+            color: #fff;
+            background-color: #444;
         }
     </style>
 </head>
 <body>
-
     <header class="event-header text-center p-4">
-        <h1 class="mb-0">Skhedule.com</h1>
+        <h1 class="mb-0">SKHEDULE.COM</h1>
     </header>
 
     <main class="container my-5">
@@ -55,12 +77,7 @@
                     <h3 class="text-center text-success mb-4"><%= notice %></h3>
                     <%= render @event %>
                     <div class="text-center mt-4">
-                        <%= button_to "Edit", edit_event_path(@event), class: "btn gradient-btn", role: "button" %> 
-                        <br>
-                        <%= button_to "Destroy", @event, method: :delete, class: "btn gradient-btn", role: "button", data: { confirm: "Are you sure?" } %>
-                        <br>
                         <%= link_to "Status", eventsList_path, class: "btn gradient-btn", role: "button" %>
-                        
                     </div>
                 </div>
             </div>
@@ -71,6 +88,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>
