@@ -28,6 +28,11 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    time_slots = event_params[:time_slot]
+
+    if date.nil?
+      date = Time.now
+    end
 
     @event = Event.new(
       name:       name
@@ -53,9 +58,20 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
 
+        # Create time_slot data if applicable 
+        if not time_slots.nil?
+          time_slots.each do |time_slot_data|
+            time_slot = TimeSlot.create!(
+              date: time_slot_data[:date],
+              start_time: time_slot_data[:start_time],
+              end_time: time_slot_data[:end_time],
+              event_id: @event.id 
+            )
+          end
+        end
+
         # Save the other events reference to the event
         # ---------------------- Make this a separate function ------------------- #
-        
         if parsed_data.nil?
           # Handle the case when parsed_data is nil
           puts "parsed_data is nil"
@@ -82,9 +98,8 @@ class EventsController < ApplicationController
         end
         # ----------------------------------------------------------------------- #
         @event_info.event_id = @event.id
-
+  
         if @event_info.save
-          @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
           end
@@ -109,7 +124,7 @@ class EventsController < ApplicationController
     event_info = @event.event_info
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time: start_time, end_time: end_time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, max_capacity: max_capacity, date: date, start_time: start_time, end_time: end_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
@@ -191,6 +206,12 @@ class EventsController < ApplicationController
   end
 
 
+  def series_event
+    @event = Event.new
+    @event_info = EventInfo.new
+    @event.time_slots.build
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -200,7 +221,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slot: [:date, :start_time, :end_time])
 
   end
 end

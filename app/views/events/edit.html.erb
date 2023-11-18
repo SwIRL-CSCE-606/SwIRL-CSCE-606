@@ -9,7 +9,7 @@
     <style>
     body {
         background-color: #e2c9be;
-        background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+        background-image: #666
         background-size: cover;
         background-repeat: no-repeat;
         height: 100vh;
@@ -32,9 +32,9 @@
     }
 
     .gradient-btn {
-        background: linear-gradient(45deg, #4CAF50, #44A1F2);
+        background: #555;
         border: none;
-        color: white;
+        color: black;
         padding: 12px 30px;
         border-radius: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -42,15 +42,15 @@
     }
 
     .gradient-btn:hover {
-        background: linear-gradient(45deg, #44A1F2, #4CAF50);
+        background: #666;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
         transform: translateY(-2px);
     }
 
     .event-header {
         padding: 30px 20px;
-        background-color: #4CAF50;
-        color: white;
+        background-color: #666;
+        color: black;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         font-size: 2em;
@@ -80,10 +80,10 @@
 <%= render "form", event: @event %>
 
 <br>
-
+    
 <div>
-  <%= link_to "Show this event", @event, class: "gradient-btn", align: "center" %> 
-  <%= link_to "Back to events", events_path, class: "gradient-btn", align: "center" %>
+  <%= link_to "Back to events", events_path, class: "gradient-btn", align: "center", onclick: "history.back()" %>
 </div>
 </div>
 </body>
+    
