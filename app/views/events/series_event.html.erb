@@ -109,11 +109,9 @@
     <div class="event-content">
         <h3 align="center">Series Event Form</h3>
             <%= form_with(model: @event) do |form|%>
-                <%= form.label "Event Name" %>
-                <%= form.text_field :name, class: 'form-input', required: true %>
+                <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
 
-                <%= form.label "Event Venue" %>
-                <%= form.text_field :venue, class: 'form-input', required: true %>
+                <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
 
                 <% @event.time_slots.each do |time_slot| %>
                     <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
@@ -168,8 +166,8 @@
     // Validate the date and time
     document.querySelector("form").addEventListener("submit", function (event) {
         const dateInputs = document.querySelectorAll('input[type="date"]');
-        const timeStartInputs = document.querySelectorAll('input[name="startTime[]"]');
-        const timeEndInputs = document.querySelectorAll('input[name="endTime[]"]');
+        const timeStartInputs = document.querySelectorAll('#event_time_slot__start_time');
+        const timeEndInputs = document.querySelectorAll('#event_time_slot__end_time');
 
         for (let i = 0; i < dateInputs.length; i++) {
             const date = new Date(dateInputs[i].value);
