@@ -125,7 +125,7 @@
                     <% end %>
                 <% end %>
 
-                <button type="button" onclick="addDateTimePair()">Add Date-Time Pair</button> 
+                <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
 
                 <%= form.label "Upload CSV File" %>
                 <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
@@ -154,23 +154,40 @@
         button.addEventListener('click', function(){
             removeDateTimePair(button)
         });
+        button.classList.add("remove-date-time")
 
 
-        var targetDiv = newPair.querySelector('.time-slot-fields');
-        targetDiv.appendChild(button);
+        newPair.appendChild(button);
+    }
+    // Function to remove the clicked date-time pair
+    function removeDateTimePair(button) {
+        const container = button.parentNode.parentNode;
+        container.removeChild(button.parentNode);
     }
 
-            // Add functionality to remove the specific date-time pair
-            dateTimePair.lastElementChild.addEventListener("click", function() {
-                dateTimePair.remove();
-            });
-        });
+    // Validate the date and time
+    document.querySelector("form").addEventListener("submit", function (event) {
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        const timeStartInputs = document.querySelectorAll('input[name="startTime[]"]');
+        const timeEndInputs = document.querySelectorAll('input[name="endTime[]"]');
 
-        // Form submission handling
-        const eventForm = document.getElementById("event-form");
-        eventForm.addEventListener("submit", function(event) {
-            // Add any necessary form submission logic here
-        });
+        for (let i = 0; i < dateInputs.length; i++) {
+            const date = new Date(dateInputs[i].value);
+            const now = new Date();
+            if (date < now) {
+                event.preventDefault();
+                alert("Date cannot be in the past.");
+                return;
+            }
+
+            const startTime = new Date(date.toISOString().split("T")[0] + "T" + timeStartInputs[i].value);
+            const endTime = new Date(date.toISOString().split("T")[0] + "T" + timeEndInputs[i].value);
+            if (endTime <= startTime) {
+                event.preventDefault();
+                alert("End Time must be after Start Time.");
+                return;
+            }
+        }
     });
 </script>
 
