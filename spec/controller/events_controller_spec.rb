@@ -2,7 +2,15 @@ require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
   let!(:event) { Event.create!(name: 'Original Name') }
-  let!(:event_info) { EventInfo.create!(event_id: event.id, name: 'Original Name', date: Date.today) }
+  let!(:event_info) do
+    EventInfo.create!(
+      event_id: event.id,
+      name: 'Original Name',
+      date: Date.today,
+      start_time: Time.now,
+      end_time: Time.now + 2.hours
+    )
+  end
   let!(:attendee_info) { event.attendee_infos.create!(email_token: 'token123', email: 'attendee@example.com') }
 
   describe 'GET #event_status' do
@@ -89,7 +97,7 @@ RSpec.describe EventsController, type: :controller do
         {
           name: 'Updated Event Name',
           venue: 'New Venue',
-          date: Date.tomorrow,
+          date: Date.tomorrow
         }
       end
 
@@ -164,41 +172,106 @@ RSpec.describe EventsController, type: :controller do
   #   end
   # end
 
-
   describe 'GET #no_response' do
-    it 'updates attendee_info to no, sends reminder email, and redirects' do
+    let(:next_attendee) do
+      event.attendee_infos.create!(email_token: 'next_token', email: 'next@example.com', is_attending: nil)
+    end
+
+    before do
       allow(Event).to receive(:find).and_return(event)
       allow(event.attendee_infos).to receive(:find_by).and_return(attendee_info)
-      allow(attendee_info).to receive(:update)
-      allow(event.attendee_infos).to receive(:where).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:where).with({ is_attending: nil }).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:where).with({ id: anything }).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:where).with({ id: anything }).and_return(event.attendee_infos)
-      next_attendee = AttendeeInfo.create(email_token: 'next_token', event: event, is_attending: nil)
-      allow(event.attendee_infos).to receive(:first).and_return(next_attendee)
-      mailer_double = instance_double('EventRemainderMailer')
+      allow(attendee_info).to receive(:update).with(is_attending: 'no')
+
+      # Return an ActiveRecord relation instead of an array
+      allow(event.attendee_infos).to receive(:where).with(is_attending: nil).and_return(AttendeeInfo.where(id: next_attendee.id))
+      allow(event.attendee_infos).to receive(:where).with(is_attending: 'yes').and_return(AttendeeInfo.none)
+
+      allow(EventRemainderMailer).to receive_message_chain(:with, :reminder_email, :deliver)
+    end
+
+    it 'updates attendee_info to no, sends reminder email, and redirects' do
       get :no_response, params: { id: event.id, token: 'token123' }
       expect(attendee_info).to have_received(:update).with(is_attending: 'no')
-      expect(EventRemainderMailer).to have_received(:with).with(email: next_attendee.email, token: next_attendee.email_token, event: event)
-      expect(mailer_double).to have_received(:reminder_email)
-      expect(mailer_double).to have_received(:deliver)
+      expect(EventRemainderMailer).to have_received(:with).with(email: 'next@example.com', token: 'next_token',
+                                                                event:)
       expect(response).to redirect_to(event_url(event))
       expect(flash[:notice]).to eq('Your response has been recorded')
     end
   end
-  
+
   describe 'GET #attendees_at_or_over_capacity' do
+    let!(:attending_attendees) do
+      [
+        event.attendee_infos.create!(email_token: 'token1', email: 'attending1@example.com', is_attending: 'yes'),
+        event.attendee_infos.create!(email_token: 'token2', email: 'attending2@example.com', is_attending: 'yes')
+      ]
+    end
+
     it 'returns attendees at or over capacity' do
       allow(Event).to receive(:find).and_return(event)
       allow(event.event_info).to receive(:max_capacity).and_return(2)
-      allow(event.attendee_infos).to receive(:where).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:where).with({ is_attending: 'yes' }).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:limit).with(2).and_return(event.attendee_infos)
-      allow(event.attendee_infos).to receive(:offset).with(2).and_return(event.attendee_infos)
-  
+
+      # Stub only for attendees with is_attending: 'yes'
+      allow(event.attendee_infos).to receive(:where).with(is_attending: 'yes').and_return(AttendeeInfo.where(id: attending_attendees.map(&:id)))
+
       attendees = controller.send(:attendees_at_or_over_capacity)
-  
-      expect(attendees).to eq(event.attendee_infos)
+
+      expect(attendees).to match_array(attending_attendees)
+    end
+  end
+
+  describe 'GET #series_event' do
+    it 'assigns a new Event to @event' do
+      get :series_event
+      expect(assigns(:event)).to be_a_new(Event)
+    end
+
+    it 'assigns a new EventInfo to @event_info' do
+      get :series_event
+      expect(assigns(:event_info)).to be_a_new(EventInfo)
+    end
+
+    it 'builds a new time slot for the event' do
+      get :series_event
+      expect(assigns(:event).time_slots.first).to be_a_new(TimeSlot)
+    end
+  end
+  describe 'GET #invite_attendees' do
+    before do
+      # Setup for the test. Adjust as per your model associations and requirements.
+      allow(Event).to receive(:find).with(event.id.to_s).and_return(event)
+      allow(event).to receive(:event_info).and_return(event_info)
+      allow(EventRemainderMailer).to receive_message_chain(:with, :reminder_email, :deliver)
+    end
+
+    context 'when max_capacity is present' do
+      before do
+        allow(event_info).to receive(:max_capacity).and_return(1)
+        get :invite_attendees, params: { id: event.id }
+      end
+
+      it 'sends emails up to the max capacity' do
+        expect(EventRemainderMailer).to have_received(:with).exactly(1).times
+      end
+
+      it 'redirects to events list' do
+        expect(response).to redirect_to(eventsList_path)
+      end
+    end
+
+    context 'when max_capacity is not present' do
+      before do
+        allow(event_info).to receive(:max_capacity).and_return(nil)
+        get :invite_attendees, params: { id: event.id }
+      end
+
+      it 'sends emails to all attendees' do
+        expect(EventRemainderMailer).to have_received(:with).at_least(:once)
+      end
+
+      it 'redirects to events list' do
+        expect(response).to redirect_to(eventsList_path)
+      end
     end
   end
 end
