@@ -166,13 +166,16 @@ class EventsController < ApplicationController
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-        @attendee_info.update(is_attending: "no")
+      @attendee_info.update(is_attending: "no")
     end
+
     # Find the next attendee who hasn't responded yet and is not at max capacity
-    next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity).first
+    next_attendee = @event.attendee_infos.where(email_sent: false).where.not(id: attendees_at_or_over_capacity).first
 
     if next_attendee.present?
       EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
+      next_attendee.update(email_sent: true)
+      next_attendee.update(email_sent_time: DateTime.now)
     end
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
@@ -181,9 +184,8 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event_info = @event.event_info
     max_capacity = @event_info.max_capacity
-    attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
-    attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
-    attendees_at_capacity + attendees_over_capacity
+    attendees_at_capacity = @event.attendee_infos.where(is_attending: ["yes", "no"], email_sent: true).limit(max_capacity)
+    attendees_at_capacity
   end
 
   
@@ -193,13 +195,17 @@ class EventsController < ApplicationController
     @event_info = @event.event_info
 
     if @event_info.max_capacity.present?
-      attendees_to_invite = @event.attendee_infos.limit(@event_info.max_capacity)
+      attendees_to_invite = @event.attendee_infos.where(email_sent: false).limit(@event_info.max_capacity)
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
     else
-      @event.attendee_infos.each do |attendee|
+      @event.attendee_infos.where(email_sent: false).each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
     end
     redirect_to eventsList_path
