@@ -84,22 +84,38 @@
                     <h3 class="event-col"><strong>Max Capacity:</strong> <%= event.event_info.max_capacity %></h3>
                 </div>
                 <div class="event-row">
-                    <h3 class="event-col">
-                        <strong>Start Time:</strong>
-                        <% if event.event_info.start_time.present? %>
-                            <%= event.event_info.start_time.strftime("%I:%M %p") %>
-                        <% else %>
-                            No data available.
+                    <% if event.time_slots.present? %>
+                        <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                        <% event.time_slots.each do |time_slot| %>
+                            <h3 class="event-col">
+                                <strong>Date:</strong>
+                                <%= time_slot.date %>
+
+                                <strong>Start Time:</strong>
+                                <%= time_slot.start_time.strftime("%I:%M %p") %>
+
+                                <strong>End Time:</strong>
+                                <%= time_slot.end_time.strftime("%I:%M %p") %>
+                            </h3>
                         <% end %>
-                    </h3>
-                    <h3 class="event-col">
-                        <strong>End Time:</strong>
-                        <% if event.event_info.end_time.present? %>
-                            <%= event.event_info.end_time.strftime("%I:%M %p") %>
-                        <% else %>
-                            No data available.
-                        <% end %>
-                    </h3>
+                    <% else %>
+                        <h3 class="event-col">
+                            <strong>Start Time:</strong>
+                            <% if event.event_info.start_time.present? %>
+                                <%= event.event_info.start_time.strftime("%I:%M %p") %>
+                            <% else %>
+                                No data available.
+                            <% end %>
+                        </h3>
+                        <h3 class="event-col">
+                            <strong>End Time:</strong>
+                            <% if event.event_info.end_time.present? %>
+                                <%= event.event_info.end_time.strftime("%I:%M %p") %>
+                            <% else %>
+                                No data available.
+                            <% end %>
+                        </h3>
+                    <% end %>
                 </div>
                 <h3 align="center">
                     <% if @event.csv_file.attached? %>
