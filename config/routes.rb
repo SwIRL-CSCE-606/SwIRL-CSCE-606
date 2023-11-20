@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'no_response', to: 'events#no_response'
 
     end
+    resource :event_info
   end
 
   get 'static_pages/home'
