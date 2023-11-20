@@ -79,7 +79,6 @@
             border: 1px solid #333;
             box-sizing: border-box;
             font-size: 22px; /* Adjust the size as needed */
-
         }
 
         @media (max-width: 768px) {
@@ -145,14 +144,14 @@
 
                 <div>
                     <%= form.label :date, "Event Date" %>
-                    <%= form.date_field :date, class: 'form-input', id: 'Event Date',
+                    <%= form.date_field :date, class: 'form-input', id: 'EventDate',
                         min: Date.today.strftime('%Y-%m-%d'),
                         value: @event.event_info.present? ? @event.event_info.date : "", required: true %>
                 </div>
 
                 <div>
                     <%= form.label :max_capacity, "Max Capacity" %>
-                    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'Event Time',
+                    <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'EventMaxCapacity',
                         value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
                 </div>
 
@@ -173,17 +172,29 @@
             <div>
                 <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
                 <%= form.file_field :csv_file, class: 'form-input', accept: '.csv'%>
-
             </div>
 
             <br>
 
             <div>
                 <h4 align="center">
-                    <%= form.submit "Submit", class: "gradient-btn" %>
+                    <%= form.submit "Submit", class: "gradient-btn", onclick: "return validateTime()" %>
                 </h4>
             </div>
         <% end %>
     </div>
+
+    <script>
+        function validateTime() {
+            var startTime = document.getElementById('EventStartTime').value;
+            var endTime = document.getElementById('EventEndTime').value;
+
+            if (startTime >= endTime) {
+                alert('End time must be later than start time');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
