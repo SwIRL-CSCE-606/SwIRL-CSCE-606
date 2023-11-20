@@ -5,11 +5,11 @@
   end
 
   When("I click on the Singular Event page") do
-    click_link 'Create singular event'
+    click_button 'Create singular event'
   end
 
   Then("I should see the Singular Event page") do
-    expect(page).to have_text('Event name')
+    expect(current_path).to eq('/newEvents')
   end
 
   Then("I should be able to see upload csv option") do
