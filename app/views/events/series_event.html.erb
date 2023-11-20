@@ -106,34 +106,32 @@
     <div class="event-header">
         <h1>SKHEDULE.COM</h1>
     </div>
-    <div class="event-content">
-        <h3 align="center">Series Event Form</h3>
-            <%= form_with(model: @event) do |form|%>
-                <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
+    <h2>Series Event Form</h2>
+    <%= form_with(model: @event) do |form|%>
+        <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
 
-                <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
+        <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
 
-                <% @event.time_slots.each do |time_slot| %>
-                    <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
-                        <div id="date-time-pairs">
-                            <div class="date-time-pair", id="time-slot-copy">
-                                <%= render 'time_slot_fields', f: time_slot_form %>
-                            </div>
-                        </div>
-                    <% end %>
-                <% end %>
-
-                <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
-
-                <%= form.label "Upload CSV File" %>
-                <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
-
-                <div align="center">
-                    <%= form.submit "Submit", class: "gradient-btn" %>
-                    <a href="javascript:history.back()" class="gradient-btn">Back</a>
+        <% @event.time_slots.each do |time_slot| %>
+            <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
+                <div id="date-time-pairs">
+                    <div class="date-time-pair", id="time-slot-copy">
+                        <%= render 'time_slot_fields', f: time_slot_form %>
+                    </div>
                 </div>
             <% end %>
-    </div>
+        <% end %>
+
+        <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
+
+        <%= form.label "Upload CSV File" %>
+        <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
+
+        <div align="center">
+            <%= form.submit "Submit", class: "gradient-btn" %>
+            <a href="javascript:history.back()" class="gradient-btn">Back</a>
+        </div>
+    <% end %>
 </div>
 
 <script>
@@ -165,21 +163,41 @@
 
     // Validate the date and time
     document.querySelector("form").addEventListener("submit", function (event) {
-        const dateInputs = document.querySelectorAll('input[type="date"]');
+        const dateInputs = document.querySelectorAll('#event_time_slot__date');
         const timeStartInputs = document.querySelectorAll('#event_time_slot__start_time');
         const timeEndInputs = document.querySelectorAll('#event_time_slot__end_time');
 
+        var now = new Date();
+
+        // Get the time zone offset in minutes
+        var timeZoneOffsetMinutes = now.getTimezoneOffset();
+        // Convert the offset to hours and minutes
+        var timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetMinutes) / 60);
+        var timeZoneOffsetMinutesRemainder = Math.abs(timeZoneOffsetMinutes) % 60;
+
+        // Determine the sign of the offset
+        var timeZoneOffsetSign = timeZoneOffsetMinutes > 0 ? "-" : "+";
+
+        // Format the offset into a string
+        var timeZoneOffsetString = timeZoneOffsetSign +
+        (timeZoneOffsetHours < 10 ? "0" : "") + timeZoneOffsetHours +
+        ":" +
+        (timeZoneOffsetMinutesRemainder < 10 ? "0" : "") + timeZoneOffsetMinutesRemainder;
+
+        
         for (let i = 0; i < dateInputs.length; i++) {
-            const date = new Date(dateInputs[i].value);
-            const now = new Date();
-            if (date < now) {
+            var startTimeStr = dateInputs[i].value + ' ' + timeStartInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+            var endTimeStr = dateInputs[i].value + ' ' + timeEndInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+
+            var startTime = new Date(startTimeStr);
+            var endTime = new Date(endTimeStr);
+
+            if (startTime < now) {
                 event.preventDefault();
                 alert("Date cannot be in the past.");
                 return;
             }
-
-            const startTime = new Date(date.toISOString().split("T")[0] + "T" + timeStartInputs[i].value);
-            const endTime = new Date(date.toISOString().split("T")[0] + "T" + timeEndInputs[i].value);
+            
             if (endTime <= startTime) {
                 event.preventDefault();
                 alert("End Time must be after Start Time.");
