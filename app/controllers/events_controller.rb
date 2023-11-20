@@ -28,6 +28,11 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
+    time_slots = event_params[:time_slot]
+
+    if date.nil?
+      date = Time.now
+    end
 
     @event = Event.new(
       name:       name
@@ -53,9 +58,20 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
 
+        # Create time_slot data if applicable 
+        if not time_slots.nil?
+          time_slots.each do |time_slot_data|
+            time_slot = TimeSlot.create!(
+              date: time_slot_data[:date],
+              start_time: time_slot_data[:start_time],
+              end_time: time_slot_data[:end_time],
+              event_id: @event.id 
+            )
+          end
+        end
+
         # Save the other events reference to the event
         # ---------------------- Make this a separate function ------------------- #
-        
         if parsed_data.nil?
           # Handle the case when parsed_data is nil
           puts "parsed_data is nil"
@@ -82,9 +98,8 @@ class EventsController < ApplicationController
         end
         # ----------------------------------------------------------------------- #
         @event_info.event_id = @event.id
-
+  
         if @event_info.save
-          @event.update(event_info_id: @event_info.id)
           format.html do
             redirect_to event_url(@event), notice: 'Event was successfully created.'
           end
@@ -105,11 +120,10 @@ class EventsController < ApplicationController
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
     # email = event_params[:email]
-
     event_info = @event.event_info
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, date: date, start_time: start_time, end_time: end_time)
+      if @event.update(name: name) && event_info.update(name: name, venue: venue, max_capacity: max_capacity, date: date, start_time: start_time, end_time: end_time)
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
@@ -151,13 +165,16 @@ class EventsController < ApplicationController
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
     if @event.present? && @attendee_info.present?
-        @attendee_info.update(is_attending: "no")
+      @attendee_info.update(is_attending: "no")
     end
+
     # Find the next attendee who hasn't responded yet and is not at max capacity
-    next_attendee = @event.attendee_infos.where(is_attending: nil).where.not(id: attendees_at_or_over_capacity).first
+    next_attendee = @event.attendee_infos.where(email_sent: false).where.not(id: attendees_at_or_over_capacity).first
 
     if next_attendee.present?
       EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
+      next_attendee.update(email_sent: true)
+      next_attendee.update(email_sent_time: DateTime.now)
     end
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
@@ -166,9 +183,8 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event_info = @event.event_info
     max_capacity = @event_info.max_capacity
-    attendees_at_capacity = @event.attendee_infos.where(is_attending: "yes").limit(max_capacity)
-    attendees_over_capacity = @event.attendee_infos.where(is_attending: "yes").offset(max_capacity)
-    attendees_at_capacity + attendees_over_capacity
+    attendees_at_capacity = @event.attendee_infos.where(is_attending: ["yes", "no"], email_sent: true).limit(max_capacity)
+    attendees_at_capacity
   end
 
   
@@ -178,18 +194,28 @@ class EventsController < ApplicationController
     @event_info = @event.event_info
 
     if @event_info.max_capacity.present?
-      attendees_to_invite = @event.attendee_infos.limit(@event_info.max_capacity)
+      attendees_to_invite = @event.attendee_infos.where(email_sent: false).limit(@event_info.max_capacity)
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
     else
-      @event.attendee_infos.each do |attendee|
+      @event.attendee_infos.where(email_sent: false).each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
+        attendee.update(email_sent: true)
+        attendee.update(email_sent_time: DateTime.now)
       end
     end
     redirect_to eventsList_path
   end
 
+
+  def series_event
+    @event = Event.new
+    @event_info = EventInfo.new
+    @event.time_slots.build
+  end
 
   private
 
@@ -200,7 +226,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file)
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slot: [:date, :start_time, :end_time])
 
   end
 end

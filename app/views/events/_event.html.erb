@@ -1,58 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-
+    <meta charset="UTF-8">
+    <title>Event Details</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-
     <style>
-        body {
-            background-color: #e2c9be;
-            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .event-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .event-card:hover {
-            transform: None;
-        }
-
-        .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-        }
-
-        .gradient-btn:hover {
-            background: linear-gradient(45deg, #44A1F2, #4CAF50);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            transform: translateY(-2px);
+            //background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
         }
 
         .event-header {
             padding: 30px 20px;
-            background-color: #4CAF50;
             color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
             font-size: 2em;
             font-weight: bold;
@@ -63,64 +40,93 @@
             padding: 30px 20px;
         }
 
-        .highlight-text {
-            color: rgb(8, 92, 120);
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
+        .gradient-btn {
+            background: #555;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
         }
 
+        .gradient-btn:hover {
+            background: #666;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .event-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .event-col {
+            flex: 1;
+            padding: 0 10px;
+        }
     </style>
 </head>
-    <div class="event-content">
-    <div id="<%= dom_id event %>">
-      <h3 align = "center">
-        <strong>Name:</strong>
-        <%= event.event_info.name %>
-      </h3>    
+<body>
+    <div class="event-card">
+        <div class="event-header">
+            <h1>Event Details</h1>
+        </div>
+        <div class="event-content">
+            <div id="<%= dom_id event %>">
+                <div class="event-row">
+                    <h3 class="event-col"><strong>Name:</strong> <%= event.event_info.name %></h3>    
+                    <h3 class="event-col"><strong>Venue:</strong> <%= event.event_info.venue %></h3>
+                </div>
+                <div class="event-row">
+                    <h3 class="event-col"><strong>Date:</strong> <%= event.event_info.date %></h3>
+                    <h3 class="event-col"><strong>Max Capacity:</strong> <%= event.event_info.max_capacity %></h3>
+                </div>
+                <div class="event-row">
+                    <% if event.time_slots.present? %>
+                        <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                        <% event.time_slots.each do |time_slot| %>
+                            <h3 class="event-col">
+                                <strong>Date:</strong>
+                                <%= time_slot.date %>
 
-      <h3 align = "center">
-        <strong>Venue:</strong>
-        <%= event.event_info.venue %>
-      </h3>     
+                                <strong>Start Time:</strong>
+                                <%= time_slot.start_time.strftime("%I:%M %p") %>
 
-      <h3 align = "center">
-        <strong>Date:</strong>
-        <%= event.event_info.date %>
-      </h3>    
-
-      <h3 align = "center">
-        <strong>Max Capacity:</strong>
-        <%= event.event_info.max_capacity %>
-      </h3> 
-
-      <h3 align = "center">
-        <strong>Start Time:</strong>
-        <% if event.event_info.start_time.present? %>
-          <%= event.event_info.start_time.strftime("%I:%M:%p") %>
-        <% else %>
-          No data available.
-        <% end %>
-      </h3>
-
-      <h3 align = "center">
-        <strong>End Time:</strong>
-        <% if event.event_info.end_time.present? %>
-          <%= event.event_info.end_time.strftime("%I:%M:%p") %>
-        <% else %>
-          No data available.
-        <% end %>
-      </h3>
-
-      <h3 align = "center">
-        <% if @event.csv_file.attached? %>
-          <p>
-            <strong>CSV File:</strong>
-            <%= link_to @event.csv_file.filename, rails_blob_path(@event.csv_file) %>
-          </p>
-        <% end %>
-      </h3>
-
+                                <strong>End Time:</strong>
+                                <%= time_slot.end_time.strftime("%I:%M %p") %>
+                            </h3>
+                        <% end %>
+                    <% else %>
+                        <h3 class="event-col">
+                            <strong>Start Time:</strong>
+                            <% if event.event_info.start_time.present? %>
+                                <%= event.event_info.start_time.strftime("%I:%M %p") %>
+                            <% else %>
+                                No data available.
+                            <% end %>
+                        </h3>
+                        <h3 class="event-col">
+                            <strong>End Time:</strong>
+                            <% if event.event_info.end_time.present? %>
+                                <%= event.event_info.end_time.strftime("%I:%M %p") %>
+                            <% else %>
+                                No data available.
+                            <% end %>
+                        </h3>
+                    <% end %>
+                </div>
+                <h3 align="center">
+                    <% if @event.csv_file.attached? %>
+                        <p>
+                            <strong>CSV File:</strong>
+                            <%= link_to @event.csv_file.filename, rails_blob_path(@event.csv_file) %>
+                        </p>
+                    <% end %>
+                </h3>
+            </div>
+        </div>
     </div>
-    </div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skhedule.com - Series Event Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .event-card {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
+        }
+
+        .event-header h1 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .form-input, .gradient-btn {
+            background-color: #555;
+            border: 1px solid #666;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+
+        .gradient-btn {
+            background-color: #555;
+            padding: 10px 20px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background-color: #666;
+            cursor: pointer;
+            transform: translateY(-2px);
+        }
+
+        .form-input[type="file"] {
+            padding: 0;
+            margin-top: -5px;
+        }
+
+        .back-btn {
+            background-color: transparent;
+            color: #bbb;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+            border: none;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            background-color: #444;
+        }
+
+        .date-time-pair {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-time-pair label {
+            flex: 0.3;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .date-time-pair input {
+            flex: 0.7;
+        }
+
+        .remove-date-time {
+            background-color: #ff0000;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="event-card">
+    <div class="event-header">
+        <h1>SKHEDULE.COM</h1>
+    </div>
+    <h2>Series Event Form</h2>
+    <%= form_with(model: @event) do |form|%>
+        <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
+
+        <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
+
+        <% @event.time_slots.each do |time_slot| %>
+            <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
+                <div id="date-time-pairs">
+                    <div class="date-time-pair", id="time-slot-copy">
+                        <%= render 'time_slot_fields', f: time_slot_form %>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
+
+        <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
+
+        <%= form.label "Upload CSV File" %>
+        <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
+
+        <div align="center">
+            <%= form.submit "Submit", class: "gradient-btn" %>
+            <a href="javascript:history.back()" class="gradient-btn">Back</a>
+        </div>
+    <% end %>
+</div>
+
+<script>
+    // Function to add a new date-time pair
+    function addDateTimePair() {
+        const container = document.getElementById("date-time-pairs");
+        const field = document.getElementById("time-slot-copy")
+        
+        
+        const newPair = field.cloneNode(true);
+        container.appendChild(newPair);
+
+
+        const button = document.createElement('button');
+        button.textContent = 'Remove';
+        button.addEventListener('click', function(){
+            removeDateTimePair(button)
+        });
+        button.classList.add("remove-date-time")
+
+
+        newPair.appendChild(button);
+    }
+    // Function to remove the clicked date-time pair
+    function removeDateTimePair(button) {
+        const container = button.parentNode.parentNode;
+        container.removeChild(button.parentNode);
+    }
+
+    // Validate the date and time
+    document.querySelector("form").addEventListener("submit", function (event) {
+        const dateInputs = document.querySelectorAll('#event_time_slot__date');
+        const timeStartInputs = document.querySelectorAll('#event_time_slot__start_time');
+        const timeEndInputs = document.querySelectorAll('#event_time_slot__end_time');
+
+        var now = new Date();
+
+        // Get the time zone offset in minutes
+        var timeZoneOffsetMinutes = now.getTimezoneOffset();
+        // Convert the offset to hours and minutes
+        var timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetMinutes) / 60);
+        var timeZoneOffsetMinutesRemainder = Math.abs(timeZoneOffsetMinutes) % 60;
+
+        // Determine the sign of the offset
+        var timeZoneOffsetSign = timeZoneOffsetMinutes > 0 ? "-" : "+";
+
+        // Format the offset into a string
+        var timeZoneOffsetString = timeZoneOffsetSign +
+        (timeZoneOffsetHours < 10 ? "0" : "") + timeZoneOffsetHours +
+        ":" +
+        (timeZoneOffsetMinutesRemainder < 10 ? "0" : "") + timeZoneOffsetMinutesRemainder;
+
+        
+        for (let i = 0; i < dateInputs.length; i++) {
+            var startTimeStr = dateInputs[i].value + ' ' + timeStartInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+            var endTimeStr = dateInputs[i].value + ' ' + timeEndInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+
+            var startTime = new Date(startTimeStr);
+            var endTime = new Date(endTimeStr);
+
+            if (startTime < now) {
+                event.preventDefault();
+                alert("Date cannot be in the past.");
+                return;
+            }
+            
+            if (endTime <= startTime) {
+                event.preventDefault();
+                alert("End Time must be after Start Time.");
+                return;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

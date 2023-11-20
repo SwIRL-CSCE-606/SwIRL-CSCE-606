@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'no_response', to: 'events#no_response'
 
     end
+    resource :event_info
   end
 
   get 'static_pages/home'
@@ -16,7 +17,7 @@ Rails.application.routes.draw do
   root 'static_pages#main'
   # root :to => redirect('/static_pages/home')
   get 'home' => 'static_pages#home'
-  get 'series' => 'static_pages#series_event'
+  get 'series' => 'events#series_event'
   get 'newEvents' => 'events#new'
   get 'eventsList' => 'events#event_status'
   get 'peopleList' => 'people_list#people_list'

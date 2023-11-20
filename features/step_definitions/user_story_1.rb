@@ -3,7 +3,7 @@ Given(/^I am on the Main Page$/) do
 end
 
 When(/^I click on the Organizer Button$/) do
-  click_link 'Event Page'
+  click_button 'Event Page'
 end
 
 Then(/^I should be on the Organizer Page$/) do

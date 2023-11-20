@@ -1,94 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-
+    <meta charset="UTF-8">
+    <title>Skhedule.com - Create Your Event</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-
     <style>
-        body {
-            background-color: #e2c9be;
-            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: 'Arial', sans-serif;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
         }
 
-        .event-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s;
+        .full-screen-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('path-to-your-background-image.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            opacity: 0.5;
         }
 
-        .event-card:hover {
-            transform: none;
+        .content {
+            z-index: 10;
+            max-width: 960px;
+            padding: 15px;
         }
 
-        .gradient-btn {
-            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+        .title {
+            font-size: 80px;
+            font-weight: bold;
+            letter-spacing: -2px;
+            margin-bottom: 30px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .cta-button {
+            background-color: #333;
+            color: white;
             border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-        }
-
-        .gradient-btn:hover {
-            background: linear-gradient(45deg, #44A1F2, #4CAF50);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .event-header {
-            padding: 30px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            font-size: 2em;
-            font-weight: bold;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-transform: uppercase;
             letter-spacing: 2px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 10px; /* Adds space between buttons */
+            width: 250px; /* Fixed width for consistency */
+            display: block; /* Stack buttons vertically */
+            margin-bottom: 20px; /* Space between buttons */
         }
 
-        .event-content {
-            padding: 30px 20px;
+        .cta-button:hover {
+            background-color: #444;
+            cursor: pointer;
+            transform: scale(1.05);
         }
 
-        .highlight-text {
-            color: rgb(8, 92, 120);
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
+        /* Custom styles for button container */
+        .button-container {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically */
+            align-items: center; /* Center buttons horizontally */
+            justify-content: center; /* Center buttons vertically */
+            gap: 20px; /* Space between buttons */
         }
-
     </style>
 </head>
-
 <body>
-<div class="event-card">
-    <div class="event-header">
-        <h1 align = "center">Skhedule.com</h1>
-    </div>
-    <div class="event-content">
-        <h3 align = "center">Click here to create events</h3>
-        <h4 align = "center">
-            <button class="gradient-btn" align = "center"><%= link_to "Create singular event", newEvents_path %></button>
-            <button class="gradient-btn" align = "center"><%= link_to "Create series event", series_path %></button>
-        </h4>
-        <h4 align = "center">
-            <button class="gradient-btn" align = "center"><%= link_to "Check current status", eventsList_path %></button>
-            <button class="gradient-btn" align = "center"><%= link_to "Event Dashboard", eventdashboard_path %></button>
-        </h4>
+
+<div class="full-screen-bg"></div>
+
+<div class="content">
+    <div class="title">SKHEDULE.COM</div>
+    <div class="subtitle">Click here to create events</div>
+    <div class="button-container">
+        <!-- Ruby on Rails button_to helper for creating singular event -->
+        <%= button_to "Create singular event", newEvents_path, method: :get, class: "cta-button" %>
+        <!-- Ruby on Rails button_to helper for creating series event -->
+        <%= button_to "Create series event", series_path, method: :get, class: "cta-button" %>
+        <!-- Ruby on Rails button_to helper for checking current status -->
+        <%= button_to "Check current status", eventsList_path, method: :get, class: "cta-button" %>
+        <!-- Uncomment the below line if the eventdashboard_path is defined in your routes -->
+        <!-- <%= button_to "Event Dashboard", eventdashboard_path, method: :get, class: "cta-button" %> -->
     </div>
 </div>
+
 </body>
+</html>
