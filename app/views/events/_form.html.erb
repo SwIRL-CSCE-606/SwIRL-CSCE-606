@@ -119,7 +119,7 @@
     <div class="event-card">
         <div class="title">Event Creation</div>
         <div class="subtitle">Create your event with ease</div>
-        <%= form_with(model: @event, local: true) do |form| %>
+        <%= form_with(model: [@event, @event.event_info], local: true) do |form| %>
             <% if @event.errors.any? %>
                 <div style="color: red">
                     <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>

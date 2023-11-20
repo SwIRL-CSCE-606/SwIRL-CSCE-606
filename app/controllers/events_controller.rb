@@ -120,7 +120,6 @@ class EventsController < ApplicationController
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
     # email = event_params[:email]
-
     event_info = @event.event_info
 
     respond_to do |format|
