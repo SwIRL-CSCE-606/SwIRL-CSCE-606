@@ -12,7 +12,6 @@ When('the user adds two date-time pairs') do
   2.times { click_button('Add Date-Time Pair') }
 
   # Wait for the specific number of date-time pairs to appear
-  puts page.body
 
   expect(page).to have_selector('.date-time-pair', count: 2, wait: 5)
 
