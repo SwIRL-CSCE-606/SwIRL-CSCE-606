@@ -29,6 +29,14 @@ class EventRemainderMailer < ApplicationMailer
           mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
         end
     end
+    
+    def event_reminder
+      @email = params[:email]
+      @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+      @event = params[:event]
+      @token = params[:token]
+      mail(to: @email, subject: 'Event Reminder', template_name: 'event_reminder')        
+    end
 end
 
 
