@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #e2c9be;
+            background-image: linear-gradient(315deg, #e2c9be 0%, #fbf7e9 74%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(45deg, #4CAF50, #44A1F2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #44A1F2, #4CAF50);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            padding: 30px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .event-content {
+            padding: 30px 20px;
+        }
+
+        .highlight-text {
+            color: rgb(8, 92, 120);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="event-card">
+        <div class="event-header">
+            Event Invitation
+        </div>
+        <div class="event-content">
+            <p class="text-center mb-4 highlight-text">You are cordially invited to speak at our event: </p>
+            <p class="mb-3"><strong>Event Name:</strong> <%= @event.name %> </p>
+            <p class="mb-3"><strong>Location:</strong> <%= @event.event_info.venue %></p>
+            <p> Please select one of the following times to present </p>
+            <div class="d-flex justify-content-around">
+                <% if @event.time_slots.present? %>
+                        <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                        <% @event.time_slots.each do |time_slot| %>
+                            <h3 class="event-col">
+                                <strong>Date:</strong>
+                                <%= time_slot.date %>
+
+                                <strong>Start Time:</strong>
+                                <%= time_slot.start_time.strftime("%I:%M %p") %>
+
+                                <strong>End Time:</strong>
+                                <%= time_slot.end_time.strftime("%I:%M %p") %>
+
+                                <a href="<%= yes_response_series_event_url(@event, token: @token, host: @url, time_slot: time_slot) %>">Yes, I'll Present at this Time</a>
+                            </h3>
+                        <% end %>
+                <% end %>
+                <a href="<%= no_response_series_event_url(@event, token: @token, host: @url) %>">None of these Times Work for Me</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
