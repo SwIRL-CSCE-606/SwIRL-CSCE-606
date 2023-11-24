@@ -193,14 +193,16 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event_info = @event.event_info
 
-    if @event_info.max_capacity.present?
+    yes_attendees = @event.attendee_infos.where(is_attending: "yes")
+
+    if @event_info.max_capacity.present? && @event_info.max_capacity != yes_attendees.count
       attendees_to_invite = @event.attendee_infos.where(email_sent: false).limit(@event_info.max_capacity)
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
         attendee.update(email_sent: true)
         attendee.update(email_sent_time: DateTime.now)
       end
-    else
+    elsif !@event_info.max_capacity.present?
       @event.attendee_infos.where(email_sent: false).each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver
         attendee.update(email_sent: true)
@@ -210,6 +212,21 @@ class EventsController < ApplicationController
     redirect_to eventsList_path
   end
 
+
+  def send_reminders_to_attendees
+
+    @event = Event.find(params[:id])
+    @event_info = @event.event_info
+
+    # Find attendees who responded "yes"
+    yes_attendees = @event.attendee_infos.where(is_attending: "yes")
+
+    # Send emails to those attendees who have already responded "yes"
+    yes_attendees.each do |attendee|
+      EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).event_reminder.deliver
+    end
+    redirect_to eventsList_path
+  end
 
   def series_event
     @event = Event.new
