@@ -26,4 +26,23 @@ RSpec.describe EventsController, type: :controller do
       expect(response).to redirect_to(eventsList_path)
     end
   end
+
+  describe 'GET #send_reminders_to_attendees' do
+    it 'sends reminder emails to attendees who responded "yes"' do
+      event = Event.create(name: 'Sample Event') # Create a sample event
+      event_info = EventInfo.create(event: event, max_capacity: 10)
+      attendee1 = AttendeeInfo.create(email: 'attendee1@example.com', event: event, email_token: 'token1', is_attending: 'yes')
+      attendee2 = AttendeeInfo.create(email: 'attendee2@example.com', event: event, email_token: 'token2', is_attending: 'yes')
+      attendee3 = AttendeeInfo.create(email: 'attendee3@example.com', event: event, email_token: 'token3', is_attending: 'no')
+
+      allow_any_instance_of(Event).to receive(:event_info).and_return(event_info)
+
+      expect(EventRemainderMailer).to receive(:with).exactly(2).times.and_return(EventRemainderMailer)
+      expect(EventRemainderMailer).to receive(:event_reminder).exactly(2).times.and_return(double(deliver: true))
+
+      get :send_reminders_to_attendees, params: { id: event.id }
+
+      expect(response).to redirect_to(eventsList_path)
+    end
+  end
 end
