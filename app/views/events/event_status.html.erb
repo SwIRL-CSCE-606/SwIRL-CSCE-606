@@ -141,6 +141,9 @@
                         <div>
                             <h3>Send Emails: <%= link_to 'Send Emails', invite_attendees_path(event) %></h3>
                         </div>
+                        <div>
+                            <h3>Send Reminder Email: <%= link_to 'Send Reminder Email', send_reminders_to_attendees_path(event) %></h3>
+                        </div>
                         <h2>Attendees:</h2>
                         <ul class="list-unstyled">
                             <% event.attendee_infos.each do |attendee_info| %>

@@ -11,19 +11,26 @@ class EventRemainderMailer < ApplicationMailer
           CSV.foreach(csv_file_path, headers: true) do |row|
             email = row['email'] # Assuming 'email' is a column in your CSV
 
-            mail(to: email, subject: 'Email Reminder').deliver # Use deliver here, not deliver_now
+            mail(to: email, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
           end
         end
       end
-
+    
     def reminder_email
-        @email = params[:email]
-        @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
-        @event = params[:event]
-        @token = params[:token]
-        mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
+      @email = params[:email]
+      @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+      @event = params[:event]
+      @token = params[:token]
+      mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation')
     end
- 
+    
+    def event_reminder
+      @email = params[:email]
+      @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+      @event = params[:event]
+      @token = params[:token]
+      mail(to: @email, subject: 'Event Reminder', template_name: 'event_reminder')
+    end
 end
 
 
