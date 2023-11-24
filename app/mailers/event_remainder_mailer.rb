@@ -24,9 +24,9 @@ class EventRemainderMailer < ApplicationMailer
 
         # Render specific email based on if event has time_slots (which implies it is a series event)
         if @event.time_slots.present?
-          mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation_series')
+          mail(to: @email, subject: 'Speaker Event Invitation', template_name: 'email_invitation_series')
         else
-          mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
+          mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation')
         end
     end
     
