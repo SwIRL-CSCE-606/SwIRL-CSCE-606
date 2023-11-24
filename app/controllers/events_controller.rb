@@ -149,6 +149,26 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
+  def yes_response_series
+    @event = Event.find(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+    @time_slot = params[:time_slot]
+
+    
+    # Input logic to mark that someone has taken this slot
+    
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
+
+  def no_response_series
+    @event = Event.find(params[:id])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
+
+    # Make logic to mark that the person doesn't want to attend the event at all
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
+
+
   def yes_response
     @event = Event.find(params[:id])
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])

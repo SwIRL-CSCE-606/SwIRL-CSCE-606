@@ -21,9 +21,15 @@ class EventRemainderMailer < ApplicationMailer
         @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
         @event = params[:event]
         @token = params[:token]
-        mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
+
+        # Render specific email based on if event has time_slots (which implies it is a series event)
+        if @event.time_slots.present?
+          mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation_series')
+        else
+          mail(to: @email, subject: 'Email Remainder', template_name: 'email_invitation')
+        end
     end
- 
+
 end
 
 
