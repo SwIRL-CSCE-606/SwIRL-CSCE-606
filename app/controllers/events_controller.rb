@@ -229,4 +229,31 @@ class EventsController < ApplicationController
     params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slot: [:date, :start_time, :end_time])
 
   end
+
+  def send_reminders_to_attendees
+    # Find attendees who responded "yes"
+    yes_attendees = self.attendee_infos.where(is_attending: "yes")
+
+    # Send reminders to attendees at 8 am of the previous day
+    yes_attendees.each do |attendee|
+      reminder_time = self.date.to_datetime.change({ hour: 8, min: 0, sec: 0 })
+
+      # Check if the current time is after the reminder time
+      if DateTime.now >= reminder_time
+        # Send reminder email to attendee
+        EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: self).reminder_email.deliver
+
+      end
+    end
+  end
+
+  def self.send_email_reminders
+    # Find events scheduled for the next day
+    events_scheduled_for_next_day = Event.where(date: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)
+
+    # Iterate through those events and send reminders to attendees who responded "yes"
+    events_scheduled_for_next_day.each do |event|
+      event.send_reminders_to_attendees
+    end
+  end
 end
