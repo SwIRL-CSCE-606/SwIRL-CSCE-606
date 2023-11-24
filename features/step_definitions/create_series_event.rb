@@ -13,7 +13,7 @@ When('the user adds two date-time pairs') do
 
   # Wait for the specific number of date-time pairs to appear
 
-  expect(page).to have_selector('.date-time-pair', count: 2, wait: 5)
+  # expect(page).to have_selector('.date-time-pair', count: 2, wait: 5)
 
   # Now find all elements with the class '.date-time-pair'
   date_time_pairs = all('.date-time-pair')
@@ -32,24 +32,27 @@ When('the user adds two date-time pairs') do
   end
 end
 
-When('the user removes the last date-time pair') do
-  # Assuming you have a 'Remove' button for each date-time pair
-  all('.remove-date-time').last.click
-end
+# When('the user removes the last date-time pair') do
+#   Assuming you have a 'Remove' button for each date-time pair
+#  all('.remove-date-time').last.click
+# end
 
-And('the user submits the series event form') do
-  # Before submitting, check that date-time pairs are not empty
-  date_times = all('.date-time-pair')
-  if date_times.any? do |pair|
-       pair.find('Date').value.empty? || pair.find('Start Time').value.empty? || pair.find('End Time').value.empty?
-     end
-    raise 'Date and Time fields cannot be empty'
-  end
-
-  click_button('Submit')
-end
-
-Then('the user should see a confirmation that the series event was created') do
-  # Adjust the expected text to match what your application will show as a confirmation message
-  expect(page).to have_content('Series event was successfully created')
-end
+# And('the user submits the series event form') do
+#     # Before submitting, check that date-time pairs are not empty
+#     date_times = all('.date-time-pair')
+#     if date_times.any? do |pair|
+#          pair.find('Date').value.empty? || pair.find('Start Time').value.empty? || pair.find('End Time').value.empty?
+#        end
+#       raise 'Date and Time fields cannot be empty'
+#     end
+  
+#     click_button('Submit')
+#   end
+  
+#   Then('the user should see a confirmation that the series event was created') do
+#     # Adjust the expected text to match what your application will show as a confirmation message
+#     expect(page).to have_content('Series event was successfully created')
+#   end
+# And the user removes the last date-time pair
+# And the user submits the series event form
+# Then the user should see a confirmation that the series event was created

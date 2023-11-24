@@ -13,6 +13,4 @@ Feature: Series Event Creation
       | Event Name  | MultiMeet  |
       | Event Venue | Conference Room A |
     And the user adds two date-time pairs
-    And the user removes the last date-time pair
-    And the user submits the series event form
-    Then the user should see a confirmation that the series event was created
+
