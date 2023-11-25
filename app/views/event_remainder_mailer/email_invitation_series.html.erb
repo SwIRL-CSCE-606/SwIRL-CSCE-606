@@ -81,32 +81,31 @@
             Event Invitation
         </div>
         <div class="event-content">
-            <p class="text-center mb-4 highlight-text">You are cordially invited to this upcoming event:</p>
+            <p class="text-center mb-4 highlight-text">You are cordially invited to speak at our event: </p>
             <p class="mb-3"><strong>Event Name:</strong> <%= @event.name %> </p>
-            <p class="mb-3"><strong>Date:</strong> <%= @event.event_info.date.strftime('%B %d, %Y') %></p>
-            <p class="mb-3"><strong>Start Time:</strong> <%= @event.event_info.start_time.strftime('%H:%M %p') %> </p>
-            <p class="mb-3"><strong>End Time:</strong> <%= @event.event_info.end_time.strftime('%H:%M %p') %> </p>
             <p class="mb-3"><strong>Location:</strong> <%= @event.event_info.venue %></p>
-            <br>
-            <%
-=begin%>
- <p class="mb-4"><strong>Description:</strong> <%= @event.event_info.description %></p> 
-<%
-=end%>      
-            <h3><strong> Please RSVP below </strong></h3>
+            <p> Please select one of the following times to present </p>
             <div class="d-flex justify-content-around">
-                <a href="<%= yes_response_event_url(@event, token: @token, host: @url) %>">Yes, I'll Attend</a>
-                <a href="<%= no_response_event_url(@event, token: @token, host: @url) %>">No, I wont Attend</a>
+                <% if @event.time_slots.present? %>
+                        <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                        <% @event.time_slots.each do |time_slot| %>
+                            <h3 class="event-col">
+                                <strong>Date:</strong>
+                                <%= time_slot.date %>
+
+                                <strong>Start Time:</strong>
+                                <%= time_slot.start_time.strftime("%I:%M %p") %>
+
+                                <strong>End Time:</strong>
+                                <%= time_slot.end_time.strftime("%I:%M %p") %>
+
+                                <a href="<%= yes_response_series_event_url(@event, token: @token, host: @url, time_slot: time_slot) %>">Yes, I'll Present at this Time</a>
+                            </h3>
+                        <% end %>
+                <% end %>
+                <a href="<%= no_response_series_event_url(@event, token: @token, host: @url) %>">None of these Times Work for Me</a>
             </div>
         </div>
     </div>
 </body>
-
-    <!-- Future: Bootstrap JS and dependencies -->
-    <!-- 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    -->
-
 </html>

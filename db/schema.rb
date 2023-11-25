@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_20_024640) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_24_005841) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_20_024640) do
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "attendee_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -96,5 +97,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_20_024640) do
   add_foreign_key "attendee_infos", "events", on_delete: :cascade
   add_foreign_key "event_infos", "events", on_delete: :cascade
   add_foreign_key "events", "event_infos"
+  add_foreign_key "time_slots", "attendee_infos", column: "attendee_id"
   add_foreign_key "time_slots", "events", on_delete: :cascade
 end

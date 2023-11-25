@@ -3,7 +3,8 @@ Rails.application.routes.draw do
     member do
       get 'yes_response', to: 'events#yes_response'
       get 'no_response', to: 'events#no_response'
-
+      get 'yes_response_series', to: 'event#yes_response_series'
+      get 'no_response_series', to: 'event#no_response_series'
     end
     resource :event_info
   end
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
   get 'eventdashboard' => 'events#eventdashboard'
 
   get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
+  get 'send_reminders_to_attendees/:id' => 'events#send_reminders_to_attendees', as: 'send_reminders_to_attendees'
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
