@@ -203,6 +203,7 @@ class EventsController < ApplicationController
     yes_attendees = @event.attendee_infos.where(is_attending: "yes")
 
     if @event_info.max_capacity.present? && @event_info.max_capacity != yes_attendees.count
+
       attendees_to_invite = @event.attendee_infos.where(email_sent: false).limit(@event_info.max_capacity)
       attendees_to_invite.each do |attendee|
         EventRemainderMailer.with(email: attendee.email, token: attendee.email_token, event: @event).reminder_email.deliver

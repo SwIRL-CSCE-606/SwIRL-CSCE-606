@@ -167,6 +167,7 @@ RSpec.describe EventsController, type: :controller do
       expect(assigns(:event).time_slots.first).to be_a_new(TimeSlot)
     end
   end
+
   describe 'GET #invite_attendees' do
     before do
       # Setup for the test. Adjust as per your model associations and requirements.
