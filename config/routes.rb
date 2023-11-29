@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     member do
       get 'yes_response', to: 'events#yes_response'
       get 'no_response', to: 'events#no_response'
-      get 'yes_response_series', to: 'event#yes_response_series'
-      get 'no_response_series', to: 'event#no_response_series'
+      get 'yes_response_series', to: 'events#yes_response_series'
+      get 'no_response_series', to: 'events#no_response_series'
     end
     resource :event_info
   end
