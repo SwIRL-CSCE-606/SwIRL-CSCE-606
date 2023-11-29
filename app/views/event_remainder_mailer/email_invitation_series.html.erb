@@ -99,7 +99,7 @@
                                 <strong>End Time:</strong>
                                 <%= time_slot.end_time.strftime("%I:%M %p") %>
 
-                                <a href="<%= yes_response_series_event_url(@event, token: @token, host: @url, time_slot: time_slot) %>">Yes, I'll Present at this Time</a>
+                                <a href="<%= yes_response_series_event_url(@event, token: @token, host: @url, time_slot: time_slot.id) %>">Yes, I'll Present at this Time</a>
                             </h3>
                         <% end %>
                 <% end %>
