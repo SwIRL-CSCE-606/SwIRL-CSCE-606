@@ -181,26 +181,6 @@ class EventsController < ApplicationController
     redirect_to event_url(@event), notice: 'Your response has been recorded'
   end
 
-  def no_response_series
-    @event = Event.find(params[:id])
-    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
-
-    if @event.present? && @attendee_info.present?
-      @attendee_info.update(is_attending: "no")
-    end
-
-    # Find the next attendee who hasn't responded yet and is not at max capacity
-    next_attendee = @event.attendee_infos.where(email_sent: false).where.not(id: attendees_at_or_over_capacity).first
-
-    if next_attendee.present?
-      EventRemainderMailer.with(email: next_attendee.email, token: next_attendee.email_token, event: @event).reminder_email.deliver
-      next_attendee.update(email_sent: true)
-      next_attendee.update(email_sent_time: DateTime.now)
-    end
-    redirect_to event_url(@event), notice: 'Your response has been recorded'
-  end
-
-
   def yes_response
     @event = Event.find(params[:id])
     @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])

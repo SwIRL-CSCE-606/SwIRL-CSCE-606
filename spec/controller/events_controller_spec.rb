@@ -167,15 +167,6 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe 'GET #no_response_series' do
-    it 'updates attendee_info to no and redirects' do
-      get :no_response, params: { id: event.id, token: 'token123' }
-      attendee_info.reload
-      expect(attendee_info.is_attending).to eq('no')
-      expect(response).to redirect_to(event_url(event_series))
-      expect(flash[:notice]).to eq('Your response has been recorded')
-    end
-  end
 
   describe 'PATCH #update' do
     context 'with valid parameters' do
