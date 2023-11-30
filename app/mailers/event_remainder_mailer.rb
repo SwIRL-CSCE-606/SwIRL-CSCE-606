@@ -1,7 +1,8 @@
 require 'csv'
+include CalendarHelper
 
 class EventRemainderMailer < ApplicationMailer
-    default from: 'noreply@sendgrid.net'
+    default from: 'skhedule4@gmail.com'
     default_url_options[:host] = 'https://skhedule-9d55cf93012e.herokuapp.com'
 
     def remainder_email(csv_file_path)
@@ -21,14 +22,19 @@ class EventRemainderMailer < ApplicationMailer
         @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
         @event = params[:event]
         @token = params[:token]
-
+        
         # Render specific email based on if event has time_slots (which implies it is a series event)
         if @event.time_slots.present?
           mail(to: @email, subject: 'Speaker Event Invitation', template_name: 'email_invitation_series')
         else
-          mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation')
+          icalendar_content = generate_icalendar(@event, default_params[:from])
+          mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation') do |format|
+            format.ics { render plain: icalendar_content }
+            format.html
+          end
         end
     end
+
     
     def event_reminder
       @email = params[:email]

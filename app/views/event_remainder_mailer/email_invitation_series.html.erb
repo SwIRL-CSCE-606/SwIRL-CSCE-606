@@ -90,14 +90,8 @@
                         <h3 class="event-col"><strong>Time Slots:</strong></h3>
                         <% @event.time_slots.each do |time_slot| %>
                             <h3 class="event-col">
-                                <strong>Date:</strong>
-                                <%= time_slot.date %>
-
-                                <strong>Start Time:</strong>
-                                <%= time_slot.start_time.strftime("%I:%M %p") %>
-
-                                <strong>End Time:</strong>
-                                <%= time_slot.end_time.strftime("%I:%M %p") %>
+                            
+                                <%= time_slot.date.strftime("%B-%d-%Y")  + " " +  time_slot.start_time.strftime("%I:%M %p") + " - " +  time_slot.end_time.strftime("%I:%M %p") %>
 
                                 <a href="<%= yes_response_series_event_url(@event, token: @token, host: @url, time_slot: time_slot.id) %>">Yes, I'll Present at this Time</a>
                             </h3>
