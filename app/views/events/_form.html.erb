@@ -152,7 +152,7 @@
                 <div>
                     <%= form.label :max_capacity, "Max Capacity" %>
                     <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'EventMaxCapacity',
-                        value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
+                        value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true, placeholder:"Max Capacity (Optional)"%>
                 </div>
 
                 <div>
