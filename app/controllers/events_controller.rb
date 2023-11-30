@@ -150,11 +150,36 @@ class EventsController < ApplicationController
   end
 
   def yes_response_series
-  end
+    @event = Event.find(params[:id])
+    @time_slot = TimeSlot.find(params[:time_slot])
+    @attendee_info = @event.attendee_infos.find_by(email_token: params[:token])
 
-  def no_response_series
-  end
+    # If any of the data doesn't exist then return
+    if !@event.present? || !@time_slot.present? || !@attendee_info.present?
+      redirect_to event_url(@event), notice: 'Invalid Response Params'
+      return
+    else
+      
+    end
 
+    # Does the time_slot already belong to someone?
+    if !@time_slot.attendee_info.nil?
+      redirect_to event_url(@event), notice: 'Time-slot has already been selected, Please select another one'
+      return
+    end
+
+    # Does the attendee already have a time_slot? We need to decide what to do about this but for now deny it
+    if @attendee_info.time_slot.present?
+      redirect_to event_url(@event), notice: 'You have already selected a time-slot, Please contact admin to change selected time'
+      return
+    end
+
+    # Good path, time_slot doesn't belong to anyone and attendee doesn't already have a time_slot they have selected
+    @attendee_info.update!(is_attending: "yes")
+    @time_slot.update!(attendee_info_id: @attendee_info.id)
+
+    redirect_to event_url(@event), notice: 'Your response has been recorded'
+  end
 
   def yes_response
     @event = Event.find(params[:id])

@@ -152,7 +152,7 @@
                 <div>
                     <%= form.label :max_capacity, "Max Capacity" %>
                     <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'EventMaxCapacity',
-                        value: @event.event_info.present? ? @event.event_info.max_capacity : ""  , required: true%>
+                        value: @event.event_info.present? ? @event.event_info.max_capacity : "", placeholder:"Max Capacity"%>
                 </div>
 
                 <div>
@@ -171,7 +171,7 @@
 
             <div>
                 <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
-                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv'%>
+                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv', required: true %>
             </div>
 
             <br>

@@ -125,17 +125,30 @@
                             <h3> Date: <%= event.event_info&.date&.strftime('%A, %d %b %Y') %></h3>
                         </div>
                         <div>
-                            <h3>Time: <%= event.event_info&.start_time&.strftime('%H:%M %p') %></h3>
+                            <h3>Location: <%= event.event_info&.venue %></h3>
                         </div>
                         <div>
-                            <h3>Location: <%= event.event_info&.venue %></h3>
+                            <% if event.time_slots.present? %>
+                                <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                                <% event.time_slots.each do |time_slot| %>
+                                    <h3 class="event-col">
+                                        <%= %>
+
+                                        <%= time_slot.start_time.strftime("%I:%M %p") + " - " + time_slot.end_time.strftime("%I:%M %p") +  "  " + time_slot.date.strftime("%m-%d-%y") %>
+                                    </h3>
+                                <% end %>
+                            <% else %>
+                                <h3>Time: <%= event.event_info&.start_time&.strftime('%H:%M %p') %></h3>
+                            <% end %>
                         </div>
                         <br> <!-- Line break for spacing -->
                         <div>
                             <h3>Yes/No Ratio: <span id="yes-count-<%= event.id %>">0</span> / <span id="no-count-<%= event.id %>">0</span></h3>
                         </div>
                         <div>
-                            <h3>Max Capacity: <%= event.event_info&.max_capacity %></h3>
+                            <% if event.event_info.max_capacity.present? %>
+                                <h3>Max Capacity: <%= event.event_info&.max_capacity %></h3>
+                            <% end %>
                         </div>
                         <br> <!-- Line break for spacing -->
                         <div>
@@ -155,6 +168,9 @@
                                         <% attending_count += 1 %>
                                     <% else %>
                                         <% not_attending_count += 1 %>
+                                    <% end %>
+                                    <% if attendee_info.time_slot.present? %>
+                                        Time Slot Selected: <%= attendee_info.time_slot.start_time.strftime("%I:%M %p") + " - " + attendee_info.time_slot.end_time.strftime("%I:%M %p") +  "  " + attendee_info.time_slot.date.strftime("%m-%d-%y") %>
                                     <% end %>
                                 </li>
                             <% end %>

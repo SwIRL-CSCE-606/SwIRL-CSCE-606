@@ -111,7 +111,7 @@
         <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
 
         <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
-
+        
         <% @event.time_slots.each do |time_slot| %>
             <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
                 <div id="date-time-pairs">
