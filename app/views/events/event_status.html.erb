@@ -169,6 +169,9 @@
                                     <% else %>
                                         <% not_attending_count += 1 %>
                                     <% end %>
+                                    <% if attendee_info.time_slot.present? %>
+                                        Time Slot Selected: <%= attendee_info.time_slot.start_time.strftime("%I:%M %p") + " - " + attendee_info.time_slot.end_time.strftime("%I:%M %p") +  "  " + attendee_info.time_slot.date.strftime("%m-%d-%y") %>
+                                    <% end %>
                                 </li>
                             <% end %>
                         </ul>
