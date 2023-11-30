@@ -82,10 +82,9 @@
         </div>
         <div class="event-content">
             <p class="text-center mb-4 highlight-text">You are cordially invited to this upcoming event:</p>
-            <p class="mb-3"><strong>Event Name:</strong> <%= @event.name %> </p>
+            <p class="mb-3"><strong>Event:</strong> <%= @event.name %> </p>
             <p class="mb-3"><strong>Date:</strong> <%= @event.event_info.date.strftime('%B %d, %Y') %></p>
-            <p class="mb-3"><strong>Start Time:</strong> <%= @event.event_info.start_time.strftime('%H:%M %p') %> </p>
-            <p class="mb-3"><strong>End Time:</strong> <%= @event.event_info.end_time.strftime('%H:%M %p') %> </p>
+            <p class="mb-3"><strong>Time:</strong> <%= @event.event_info.start_time.strftime('%H:%M %p') + " - " + @event.event_info.end_time.strftime('%H:%M %p') %> </p>
             <p class="mb-3"><strong>Location:</strong> <%= @event.event_info.venue %></p>
             <br>
             <%
