@@ -13,6 +13,36 @@ RSpec.describe EventsController, type: :controller do
   end
   let!(:attendee_info) { event.attendee_infos.create!(email_token: 'token123', email: 'attendee@example.com') }
 
+  # Series Event data
+  let!(:event_series) {Event.create!(name: "Series Event")}
+  let!(:event_info_series) do 
+    EventInfo.create!(
+      event_id: event_series.id,
+      name: 'Series Event',
+      date: Date.today,
+      start_time: Time.now,
+      end_time: Time.now + 2.hours
+    )
+  end
+  let!(:time_slot) do
+    TimeSlot.create!(
+      event_id: event_series.id,
+      start_time: Time.now,
+      end_time: Time.now + 2.hours,
+      date: Date.today
+    )
+  end
+  let!(:time_slot_1) do
+    TimeSlot.create!(
+      event_id: event_series.id,
+      start_time: Time.now,
+      end_time: Time.now + 2.hours,
+      date: Date.today
+    )
+  end
+  let!(:attendee_info_series) { event_series.attendee_infos.create!(email_token: 'token456', email: 'attendee@example.com') }
+  let!(:attendee_info_series_1) { event_series.attendee_infos.create!(email_token: 'token789', email: 'attendee@example.com') }
+
   describe 'GET #event_status' do
     let(:events) { Event.all }
 
@@ -90,6 +120,53 @@ RSpec.describe EventsController, type: :controller do
       expect(flash[:notice]).to eq('Your response has been recorded')
     end
   end
+
+  describe 'GET #yes_response_series' do
+    it 'updates attendee_info to yes and time_slot info redirects' do
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
+      attendee_info_series.reload
+      time_slot.reload
+      expect(attendee_info_series.is_attending).to eq('yes')
+      expect(time_slot.attendee_info_id).to eq(attendee_info_series.id)
+      expect(response).to redirect_to(event_url(event_series))
+      expect(flash[:notice]).to eq('Your response has been recorded')
+    end
+
+    it 'try to select time_slot that already is owned' do
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'token789', time_slot: time_slot.id}
+      attendee_info_series.reload
+      attendee_info_series_1.reload
+      time_slot.reload
+      expect(attendee_info_series_1.is_attending).to eq(nil)
+      expect(time_slot.attendee_info_id).to eq(attendee_info_series.id)
+      expect(response).to redirect_to(event_url(event_series))
+      expect(flash[:notice]).to eq('Time-slot has already been selected, Please select another one')
+    end
+
+    it 'try to select time_slot when attendee already has one assigned' do
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot_1.id}
+      attendee_info_series.reload
+      time_slot.reload
+      time_slot_1.reload
+      expect(attendee_info_series.is_attending).to eq('yes')
+      expect(time_slot.attendee_info_id).to eq(attendee_info_series.id)
+      expect(response).to redirect_to(event_url(event_series))
+      expect(flash[:notice]).to eq('You have already selected a time-slot, Please contact admin to change selected time')
+    end
+
+    it 'invalid params' do
+      get :yes_response_series, params: { id: event_series.id, token: 'efasef', time_slot: time_slot.id}
+      attendee_info_series.reload
+      time_slot.reload
+      expect(attendee_info_series.is_attending).to eq(nil)
+      expect(time_slot.attendee_info_id).to eq(nil)
+      expect(response).to redirect_to(event_url(event_series))
+      expect(flash[:notice]).to eq('Invalid Response Params')
+    end
+  end
+
 
   describe 'PATCH #update' do
     context 'with valid parameters' do

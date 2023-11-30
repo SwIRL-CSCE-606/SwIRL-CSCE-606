@@ -37,6 +37,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'rubycritic', require: false
   gem 'dotenv-rails'
+  gem "rails-erd"
 end
 
 group :test do
