@@ -84,7 +84,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('Event Reminder')
       expect(mail.to).to eq([email])
-      expect(mail.from).to eq(['noreply@sendgrid.net']) 
+      expect(mail.from).to eq(['skhedule4@gmail.com']) 
     end
   end
 
