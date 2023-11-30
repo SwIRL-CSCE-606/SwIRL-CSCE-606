@@ -112,6 +112,9 @@
 
         <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
 
+        <%= form.number_field :max_capacity, in: 1..1000000000, step: 1, class: 'form-input', id: 'EventMaxCapacity',
+                        value: @event.event_info.present? ? @event.event_info.max_capacity : "", placeholder: "Max Capacity (Optional)" %>
+
         <% @event.time_slots.each do |time_slot| %>
             <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
                 <div id="date-time-pairs">
