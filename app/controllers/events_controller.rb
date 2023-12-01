@@ -17,7 +17,11 @@ class EventsController < ApplicationController
   end
 
   # GET /events/1/edit
-  def edit; end
+  def edit
+    if @event.time_slots.present?
+      render "series_event"
+    end
+  end
 
   # POST /events or /events.json
   def create
