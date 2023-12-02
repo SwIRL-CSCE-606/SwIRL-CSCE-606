@@ -138,7 +138,7 @@
                                     </h3>
                                 <% end %>
                             <% else %>
-                                <h3>Time: <%= event.event_info&.start_time&.strftime('%H:%M %p') + " - " + event.event_info&.end_time&.strftime('%H:%M %p')%></h3>
+                                <h3>Time: <%= event.event_info&.start_time&.strftime('%I:%M %p') + " - " + event.event_info&.end_time&.strftime('%I:%M %p')%></h3>
                             <% end %>
                         </div>
                         <br> <!-- Line break for spacing -->

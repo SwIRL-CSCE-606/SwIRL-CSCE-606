@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    time_slots = event_params[:time_slot]
+
 
     if date.nil?
       date = Time.now
@@ -63,16 +63,7 @@ class EventsController < ApplicationController
       if @event.save
 
         # Create time_slot data if applicable 
-        if not time_slots.nil?
-          time_slots.each do |time_slot_data|
-            time_slot = TimeSlot.create!(
-              date: time_slot_data[:date],
-              start_time: time_slot_data[:start_time],
-              end_time: time_slot_data[:end_time],
-              event_id: @event.id 
-            )
-          end
-        end
+        @event.update(event_params.extract!(:time_slots_attributes))
 
         # Save the other events reference to the event
         # ---------------------- Make this a separate function ------------------- #
@@ -123,16 +114,18 @@ class EventsController < ApplicationController
     start_time = event_params[:start_time]
     end_time = event_params[:end_time]
     max_capacity = event_params[:max_capacity]
-    # email = event_params[:email]
+    csv_file = event_params[:csv_file]
+
     event_info = @event.event_info
 
     respond_to do |format|
-      if @event.update(name: name) && event_info.update(name: name, venue: venue, max_capacity: max_capacity, date: date, start_time: start_time, end_time: end_time)
+      if @event.time_slots.present? && @event.update(event_params.extract!(:name, :time_slots_attributes)) && event_info.update(name: name, venue: venue)
+          format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
+          format.json { render :show, status: :ok, location: @event }
+      elsif @event.update(name: name) && event_info.update(event_params.except(:csv_file, :time_slots))
           format.html { redirect_to event_url(@event), notice: 'Event was successfully updated.' }
           format.json { render :show, status: :ok, location: @event }
       else
-        logger.debug @event.errors.full_messages
-        logger.debug event_info.errors.full_messages
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
@@ -280,7 +273,7 @@ class EventsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def event_params
-    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slot: [:date, :start_time, :end_time])
+    params.require(:event).permit(:name, :venue, :date, :start_time, :end_time, :max_capacity, :csv_file, time_slots_attributes: [:id, :date, :start_time, :end_time, :_destroy])
 
   end
 end

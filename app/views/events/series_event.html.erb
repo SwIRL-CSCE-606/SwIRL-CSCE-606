@@ -112,15 +112,15 @@
 
         <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue", value: @event.event_info&.venue %>
         
-        <% @event.time_slots.each do |time_slot| %>
-            <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
-                <div id="date-time-pairs">
-                    <div class="date-time-pair", id="time-slot-copy">
-                        <%= render 'time_slot_fields', f: time_slot_form %>
-                    </div>
+
+        <%= form.fields_for :time_slots do |time_slot_form| %>
+            <div id="date-time-pairs">
+                <div class="date-time-pair", id="time-slot-copy">
+                    <%= render 'time_slot_fields', f: time_slot_form %>
                 </div>
-            <% end %>
+            </div>
         <% end %>
+
 
         <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
 
