@@ -8,7 +8,7 @@ module CalendarHelper
         BEGIN:VEVENT
         SUMMARY:#{event.name}
         DTSTART:#{event.event_info.date.strftime('%Y%m%dT') + event.event_info.start_time.strftime('%H%M%S')}
-        DTEND:#{event.event_info.date.strftime('%Y%m%dT') + event.event_info.end_time.strftime('%Y%m%dT%H%M%S')}
+        DTEND:#{event.event_info.date.strftime('%Y%m%dT') + event.event_info.end_time.strftime('%H%M%S')}
         LOCATION:#{event.event_info.venue}
         DESCRIPTION:""
         ORGANIZER:mailto:#{from_email} # Replace with the actual organizer's email
