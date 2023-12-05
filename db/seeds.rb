@@ -27,11 +27,11 @@ attendee_infos = [
 
 # Data for EventInfos Table
 event_infos = [
-  { name: 'Item 1', description: 'event 1', date: '01-Jan-2023', venue: 'Venue 1', time:'00:00:00AM'},
-  { name: 'Item 2', description: 'event 2', date: '15-Feb-2023', venue: 'Venue 2', time:'00:00:00AM'},
-  { name: 'Item 3', description: 'event 3', date: '30-Mar-2023', venue: 'Venue 3', time:'00:00:00AM'},
-  { name: 'Item 4', description: 'event 4', date: '10-Apr-2023', venue: 'Venue 4', time:'00:00:00AM'},
-  { name: 'Item 5', description: 'event 5', date: '25-May-2023', venue: 'Venue 5', time:'00:00:00AM'}
+  { name: 'Item 1', description: 'event 1', date: '01-Jan-2023', venue: 'Venue 1', start_time:'00:00:00AM', end_time:'02:00:00AM'},
+  { name: 'Item 2', description: 'event 2', date: '15-Feb-2023', venue: 'Venue 2', start_time:'00:00:00AM', end_time:'02:00:00AM'},
+  { name: 'Item 3', description: 'event 3', date: '30-Mar-2023', venue: 'Venue 3', start_time:'00:00:00AM', end_time:'02:00:00AM'},
+  { name: 'Item 4', description: 'event 4', date: '10-Apr-2023', venue: 'Venue 4', start_time:'00:00:00AM', end_time:'02:00:00AM'},
+  { name: 'Item 5', description: 'event 5', date: '25-May-2023', venue: 'Venue 5', start_time:'00:00:00AM', end_time:'02:00:00AM'}
 ]
 
 # Data for Events Table
@@ -58,7 +58,8 @@ events.each_with_index do |event_data, index|
     description: event_infos[index][:description],
     date: event_infos[index][:date],
     venue: event_infos[index][:venue],
-    start_time: event_infos[index][:time],
+    start_time: event_infos[index][:start_time],
+    end_time: event_infos[index][:end_time],
     event_id: event.id
   )
 
