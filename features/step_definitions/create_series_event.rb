@@ -6,9 +6,9 @@ When('the user fills in the series event form with the following details:') do |
   data = table.rows_hash
   fill_in 'Event Name', with: data['Event Name']
   fill_in 'Event Venue', with: data['Event Venue']
-  fill_in 'event[time_slot][][date]', with: data['Date']
-  fill_in 'event[time_slot][][start_time]', with: data['Start Time']
-  fill_in 'event[time_slot][][end_time]', with: data['End Time']
+  fill_in 'event[time_slots_attributes][0][date]', with: data['Date']
+  fill_in 'event[time_slots_attributes][0][start_time]', with: data['Start Time']
+  fill_in 'event[time_slots_attributes][0][end_time]', with: data['End Time']
 end
 
 # When('the user adds two date-time pairs') do

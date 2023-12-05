@@ -30,10 +30,10 @@ Feature: Create Singular Event
     Then the event content for "Valorant" should be visible
     Then the event "Valorant" should display the following details:
     | Date         | Wednesday, 22 Nov 2023 |
-    | Time         | 18:09 PM              |
-    | Location     | Zachery               |
-    | Yes/No Ratio | 0 / 0                 |
-    | Max Capacity | 100                   |
+    | Time         | 6:09 PM - 08:09 PM     |
+    | Location     | Zachery                |
+    | Yes/No Ratio | 0 / 0                  |
+    | Max Capacity | 100                    |
 
 
 
