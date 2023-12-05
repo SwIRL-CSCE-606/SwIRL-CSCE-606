@@ -110,17 +110,18 @@
     <%= form_with(model: @event) do |form|%>
         <%= form.text_field :name, class: 'form-input', required: true, placeholder: "Event Name"%>
 
-        <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue" %>
+        <%= form.text_field :venue, class: 'form-input', required: true, placeholder: "Event Venue", value: @event.event_info&.venue %>
         
-        <% @event.time_slots.each do |time_slot| %>
-            <%= form.fields_for time_slot, index: time_slot.id do |time_slot_form| %>
+        <div id="time_slots_fields">
+            <%= form.fields_for :time_slots do |time_slot_form| %>
                 <div id="date-time-pairs">
                     <div class="date-time-pair", id="time-slot-copy">
                         <%= render 'time_slot_fields', f: time_slot_form %>
                     </div>
                 </div>
             <% end %>
-        <% end %>
+        </div>
+
 
         <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
 
@@ -137,12 +138,14 @@
 <script>
     // Function to add a new date-time pair
     function addDateTimePair() {
-        const container = document.getElementById("date-time-pairs");
+        const container = document.getElementById("time_slots_fields");
         const field = document.getElementById("time-slot-copy")
         
         
         const newPair = field.cloneNode(true);
         container.appendChild(newPair);
+        const index = container.childElementCount;
+        updateAttributeNames(newPair,index - 1);
 
 
         const button = document.createElement('button');
@@ -159,6 +162,13 @@
     function removeDateTimePair(button) {
         const container = button.parentNode.parentNode;
         container.removeChild(button.parentNode);
+    }
+
+    function updateAttributeNames(container, index) {
+      container.querySelectorAll('input').forEach(function(input) {
+        input.name = input.name.replace(/\d+/, index);
+        input.id = input.id.replace(/\d+/, index);
+      });
     }
 
     // Validate the date and time
