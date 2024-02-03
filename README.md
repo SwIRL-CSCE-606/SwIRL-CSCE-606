@@ -17,11 +17,11 @@ For more information about the project, please feel free to contact our team mem
 
 Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
 
-GitHub Repo - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606
+GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
 
-Documentation - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606/tree/main/documentation/Fall2023
+Documentation - 
 
-Project Management - https://github.com/orgs/SwIRL-CSCE-606/projects/3/views/1 
+Project Management -
 
 # Prerequisites
 
