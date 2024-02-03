@@ -12,17 +12,6 @@ The emails will be sent out to experts (those who will be delivering lectures) i
 
 For more information about the project, please feel free to contact our team members!
 
-Mohit Sarin (mohitsarin26@tamu.edu) - Developer/Product Owner<br>
-
-Erik Priest (epriest@tamu.edu) - Developer<br>
-
-Ishant Kundra (ishantkundra@tamu.edu) - Developer<br>
-
-Chong Wen (chongwen@tamu.edu) - Developer<br>
-
-Aashay Kadakia (aashaykadakia@tamu.edu) - Developer<br>
-
-Shaunak Joshi (shaunakjoshi@tamu.edu) - Developer/Scrum Master<br>
 
 # Links to our resources:
 
