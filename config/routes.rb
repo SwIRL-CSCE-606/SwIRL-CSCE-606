@@ -26,10 +26,15 @@ Rails.application.routes.draw do
 
   get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
   get 'send_reminders_to_attendees/:id' => 'events#send_reminders_to_attendees', as: 'send_reminders_to_attendees'
+  get '/login' => 'login#new'
+  post '/login' => 'login#create'
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
 
   #get 'eventsList' => 'events#index'
+
+  #for login
+  # post '/check_login', to: 'login_controller#check_login'
 
 end
