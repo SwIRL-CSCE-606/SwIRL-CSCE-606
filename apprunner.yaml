@@ -1,0 +1,15 @@
+version: 1
+runtime: 
+  family: "Ruby"
+  version: "3.2"  # Specify the Ruby version used by your Rails app
+
+build:
+  commands:
+    - gem install bundler:2.2.17
+    - bundle install --deployment --without development test
+
+start:
+  command: bundle exec rails server -e production
+  runtime: 
+    family: "Ruby"
+    version: "3.2"  # Specify the Ruby version used by your Rails app
