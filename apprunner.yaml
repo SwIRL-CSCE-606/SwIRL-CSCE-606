@@ -1,8 +1,6 @@
 version: 1.0
 runtime: ruby31
 build:
-  commands:
-    build:
-      bundle install
+  command: bundle install
 run:
   command: bundle exec rackup --host 0.0.0.0 -p 8080
