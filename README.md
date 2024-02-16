@@ -12,12 +12,13 @@ The emails will be sent out to experts (those who will be delivering lectures) i
 
 For more information about the project, please feel free to contact our team members!
 
-Carlos Meisel cmeisel101@tamu.edu
-Prakhar Singh prakhar2@tamu.edu
-Radha Goswami debal_goswami@tamu.edu
-Glen Browne gdbrowne85@tamu.edu
-Pankaj Kumar Tiwari contact_pankaj@tamu.edu
-Erhan Wang ewang41@tamu.edu
+1. Glen Browne <gdbrowne85@tamu.edu> (Product Owner)
+2. Eric McGonagle <ermcgonagle@tamu.edu>
+3. Prakhar Singh <prakhar2@tamu.edu>
+4. Radha DebalGoswami <debal_goswami@tamu.edu>
+5. Carlos Meisel <cmeisel101@tamu.edu>
+6. Pankaj Kumar Tiwari <contact_pankaj@tamu.edu>
+7. Erhan Wang <ewang41@tamu.edu>
 
 # Links to our resources:
 
