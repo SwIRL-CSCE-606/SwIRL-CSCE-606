@@ -15,7 +15,7 @@ For more information about the project, please feel free to contact our team mem
 1. Glen Browne <gdbrowne85@tamu.edu> (Product Owner)
 2. Eric McGonagle <ermcgonagle@tamu.edu>
 3. Prakhar Singh <prakhar2@tamu.edu>
-4. Radha DebalGoswami <debal_goswami@tamu.edu>
+4. Radha Debal Goswami <debal_goswami@tamu.edu>
 5. Carlos Meisel <cmeisel101@tamu.edu>
 6. Pankaj Kumar Tiwari <contact_pankaj@tamu.edu>
 7. Erhan Wang <ewang41@tamu.edu>
