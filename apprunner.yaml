@@ -1,5 +1,6 @@
 version: 1.0
-runtime: ruby31
+runtime: ruby32
+  version: 3.2.2
 build:
   commands: 
     build:
