@@ -8,6 +8,7 @@ gem "rails", "~> 7.0.8"
 gem "sprockets-rails" # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "puma", "~> 5.0"
 gem "importmap-rails"
+gem "roo", "~> 2.10.1"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"

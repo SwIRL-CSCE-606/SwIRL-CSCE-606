@@ -12,27 +12,16 @@ The emails will be sent out to experts (those who will be delivering lectures) i
 
 For more information about the project, please feel free to contact our team members!
 
-Mohit Sarin (mohitsarin26@tamu.edu) - Developer/Product Owner<br>
-
-Erik Priest (epriest@tamu.edu) - Developer<br>
-
-Ishant Kundra (ishantkundra@tamu.edu) - Developer<br>
-
-Chong Wen (chongwen@tamu.edu) - Developer<br>
-
-Aashay Kadakia (aashaykadakia@tamu.edu) - Developer<br>
-
-Shaunak Joshi (shaunakjoshi@tamu.edu) - Developer/Scrum Master<br>
 
 # Links to our resources:
 
 Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
 
-GitHub Repo - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606
+GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
 
-Documentation - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606/tree/main/documentation/Fall2023
+Documentation - 
 
-Project Management - https://github.com/orgs/SwIRL-CSCE-606/projects/3/views/1 
+Project Management -
 
 # Prerequisites
 
