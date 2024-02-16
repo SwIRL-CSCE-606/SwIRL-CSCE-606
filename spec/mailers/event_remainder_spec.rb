@@ -19,7 +19,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
       csv_file.rewind
 
       # Create an instance of the mailer and pass the csv_file_path as an argument
-      mailer = EventRemainderMailer.with(csv_file: csv_file.path).reminder_email(csv_file.path)
+      mailer = EventRemainderMailer.with(csv_file: csv_file.path).remainder_email(csv_file.path)
 
       # Change this number based on the number of email addresses in your CSV
       expect do
@@ -45,7 +45,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
       excel_file.rewind
   
       # Create an instance of the mailer and pass the excel_file_path as an argument
-      mailer = EventRemainderMailer.with(excel_file: excel_file.path).reminder_email(excel_file.path)
+      mailer = EventRemainderMailer.with(excel_file: excel_file.path).remainder_email(excel_file.path)
   
       # Change this number based on the number of email addresses in your Excel file
       expect do

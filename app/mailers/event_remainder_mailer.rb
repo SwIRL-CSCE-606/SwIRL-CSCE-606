@@ -7,7 +7,7 @@ class EventRemainderMailer < ApplicationMailer
     default from: 'skhedule4@gmail.com'
     default_url_options[:host] = 'https://skhedule-9d55cf93012e.herokuapp.com'
 
-    def reminder_email(csv_file_path)
+    def remainder_email(csv_file_path)
       @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
       if csv_file_path.present?
         if File.extname(csv_file_path) == '.csv'
