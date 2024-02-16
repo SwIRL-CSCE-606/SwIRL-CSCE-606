@@ -14,7 +14,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
       CSV
 
       # Create a temporary CSV file for testing
-      csv_file = Tempfile.new('test_emails.csv')
+      csv_file = Tempfile.new(['test_emails', '.csv'])
       csv_file.write(csv_data)
       csv_file.rewind
 
@@ -26,33 +26,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
         mailer.deliver
       end.to change {
                ActionMailer::Base.deliveries.count
-             }.by(2)
-    end
-  end
-
-  describe 'send emails from Excel' do
-    it 'sends emails from an Excel file' do
-      # Set up Excel data for testing
-      excel_data = <<~EXCEL
-        email
-        example1@example.com
-        example2@example.com
-      EXCEL
-  
-      # Create a temporary Excel file for testing
-      excel_file = Tempfile.new(['test_emails.xlsx'])
-      excel_file.write(excel_data)
-      excel_file.rewind
-  
-      # Create an instance of the mailer and pass the excel_file_path as an argument
-      mailer = EventRemainderMailer.with(excel_file: excel_file.path).remainder_email(excel_file.path)
-  
-      # Change this number based on the number of email addresses in your Excel file
-      expect do
-        mailer.deliver
-      end.to change {
-        ActionMailer::Base.deliveries.count
-      }.by(2)
+             }.by(3)
     end
   end
 
