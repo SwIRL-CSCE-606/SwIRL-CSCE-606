@@ -1,5 +1,5 @@
-
 require 'csv'
+require 'roo'
 require 'securerandom'
 
 
@@ -50,11 +50,23 @@ class EventsController < ApplicationController
       max_capacity: max_capacity
     )
 
-    if csv_file.present?
+    if csv_file.present? && File.extname(csv_file.path) == '.csv'
       @event.csv_file.attach(csv_file)
       # Parse the CSV data
       csv_data = csv_file.read
       parsed_data = CSV.parse(csv_data, headers: true)
+    elsif csv_file.present? && File.extname(csv_file.path) == '.xlsx'
+      excel_data = csv_file.read
+      workbook = Roo::Excelx.new(StringIO.new(excel_data))
+      worksheet = workbook.sheet(0) # Assuming the data is in the first sheet
+      headers = worksheet.row(1) # Assuming headers are in the first row
+      parsed_data = []
+      (2..worksheet.last_row).each do |i| # Start from the second row
+        row = Hash[[headers, worksheet.row(i)].transpose]
+        parsed_data << row
+      end
+    else
+      puts "Unsupported File Type"
     end
 
     # NOTE: @event.id does not exist until the record is SAVED

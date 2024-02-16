@@ -14,7 +14,7 @@ RSpec.describe EventRemainderMailer, type: :mailer do
       CSV
 
       # Create a temporary CSV file for testing
-      csv_file = Tempfile.new('test_emails.csv')
+      csv_file = Tempfile.new(['test_emails', '.csv'])
       csv_file.write(csv_data)
       csv_file.rewind
 
