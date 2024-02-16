@@ -84,7 +84,7 @@ Then, create a user and alter the role to superuser
 
 Clone the repository.
 
-    git clone https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606.git
+    git clone https://github.com/gdbrowne85/SwIRL-CSCE-606/SwIRL-CSCE-606.git
 
 Navigate to project directory
 
