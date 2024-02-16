@@ -1,16 +1,8 @@
-version: 1
-runtime: 
-  family: "Ruby"
-  version: "3.1"  # Specify the Ruby version used by your Rails app
-
+version: 1.0
+runtime: ruby31
 build:
   commands:
-    - gem install bundler:2.2.17
-    - bundle install --deployment --without development test
-
-start:
-  command: bundle exec rails server -b 0.0.0.0 -p 80 -e production
-  runtime: 
-    family: "Ruby"
-    version: "3.1"
-  port: 80
+    build:
+      - bundle install
+run:
+  command: bundle exec rackup --host 0.0.0.0 -p 8080
