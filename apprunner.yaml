@@ -1,6 +1,9 @@
 version: 1.0
 runtime: ruby31
 build:
-  command: bundle install
+  commands: 
+    build:
+      - sudo apt install libpq-dev
+      - bundle install
 run:
   command: bundle exec rackup --host 0.0.0.0 -p 8080
