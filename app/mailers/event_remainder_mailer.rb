@@ -1,4 +1,6 @@
 require 'csv'
+require 'roo'
+require 'active_support/all'
 include CalendarHelper
 
 class EventRemainderMailer < ApplicationMailer
@@ -8,11 +10,23 @@ class EventRemainderMailer < ApplicationMailer
     def remainder_email(csv_file_path)
         @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
         if csv_file_path.present?
-          # Create an email for each recipient in the CSV file
-          CSV.foreach(csv_file_path, headers: true) do |row|
-            email = row['email'] # Assuming 'email' is a column in your CSV
+          if File.extname(csv_file_path) == '.csv'
+            # Create an email for each recipient in the CSV file
+            CSV.foreach(csv_file_path, headers: true) do |row|
+              email = row['email'] # Assuming 'email' is a column in your CSV
 
-            mail(to: email, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
+              mail(to: email, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
+            end
+          elsif File.extname(csv_file_path) == '.xlsx'
+            if xls.class == Roo::Excelx
+              workbook = Roo::Excelx.new(csv_file_path)
+              column_1_data = workbook.column(1)
+              column_1_data.each do |value|
+                mail(to: value, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
+              end
+            end
+          else
+            puts "Unsupported File Type"
           end
         end
       end

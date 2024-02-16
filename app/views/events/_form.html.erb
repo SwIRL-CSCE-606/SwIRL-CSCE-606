@@ -170,9 +170,10 @@
             </div>
 
             <div>
-                <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
-                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv', required: true %>
+                <%= form.label :csv_file, "Upload List of Emails (Excel/CSV)" %>
+                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', required: true %>
             </div>
+
 
             <br>
 
