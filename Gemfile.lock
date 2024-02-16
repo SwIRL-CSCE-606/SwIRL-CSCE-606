@@ -137,7 +137,7 @@ GEM
       reline (>= 0.3.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    diff-lcs (1.5.0)
+    diff-lcs (1.5.1)
     docile (1.4.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
@@ -421,6 +421,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   debug
+  diff-lcs (~> 1.5.1)
   dotenv-rails
   importmap-rails
   jbuilder
