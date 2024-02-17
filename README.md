@@ -22,7 +22,7 @@ For more information about the project, please feel free to contact our team mem
 
 # Links to our resources:
 
-Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
+Deployed App - https://swirlskehdule-f316b598c688.herokuapp.com/
 
 GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
 
