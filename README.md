@@ -26,6 +26,8 @@ Deployed App - https://swirl-skhedule-60f782e4ecdf.herokuapp.com/home
 
 GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
 
+Code Climate Quality Report - https://codeclimate.com/github/gdbrowne85/SwIRL-CSCE-606
+
 Documentation - 
 
 Project Management -
