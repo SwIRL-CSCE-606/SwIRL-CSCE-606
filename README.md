@@ -205,3 +205,7 @@ Create a key to run SMTP using the below commands.
 
     heroku config:set RAILS_MASTER_KEY=`cat config/master.key`
     heroku rails db:migrate
+
+# Login:
+
+Currently, To login into the Skhedule webapp, use email: 'contact_pankaj@tamu.edu' and password: '1234'. Additional functionalities related to login will be added in the next iteration and details will be updated in this section.
