@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resource :event_info
   end
 
+  root 'static_pages#home'
   get 'static_pages/home'
   get 'static_pages/help'
   
@@ -16,7 +17,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root 'static_pages#main'
-  root 'signin#new'
+  get 'login', to: 'login#new'
+
   # root :to => redirect('/static_pages/home')
   get 'home' => 'static_pages#home'
   get 'series' => 'events#series_event'
