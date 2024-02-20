@@ -421,7 +421,6 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   debug
-  diff-lcs (~> 1.5.1)
   dotenv-rails
   importmap-rails
   jbuilder
