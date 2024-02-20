@@ -22,9 +22,11 @@ For more information about the project, please feel free to contact our team mem
 
 # Links to our resources:
 
-Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
+Deployed App - https://swirlskehdule-f316b598c688.herokuapp.com
 
 GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
+
+Code Climate Quality Report - https://codeclimate.com/github/gdbrowne85/SwIRL-CSCE-606
 
 Documentation - 
 
@@ -203,3 +205,7 @@ Create a key to run SMTP using the below commands.
 
     heroku config:set RAILS_MASTER_KEY=`cat config/master.key`
     heroku rails db:migrate
+
+# Login:
+
+Currently, To login into the Skhedule webapp, use email: 'contact_pankaj@tamu.edu' and password: '1234'. Additional functionalities related to login will be added in the next iteration and details will be updated in this section.

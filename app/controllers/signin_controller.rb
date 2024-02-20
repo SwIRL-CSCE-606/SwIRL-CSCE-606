@@ -1,10 +1,8 @@
-# app/controllers/your_controller_name_controller.rb
-
-class LoginController < ApplicationController
+class SigninController < ApplicationController
     def new
-      # This is the action that will render the login form
+      # Render the login form
     end
-
+  
     def create
       email = params[:email]
       password = params[:password]
@@ -14,11 +12,10 @@ class LoginController < ApplicationController
   
       if user && user.password == password
         logger.debug "Login successful"
-        redirect_to '/static_pages/home' # Redirect to your desired page
+        redirect_to '/static_pages/home' # Redirect to home page
       else
-        redirect_to '/login' # Redirect to login page or show error message
+        redirect_to '/signin' # Redirect to login page or show error message
       end
     end
   end
-  
   

@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root 'static_pages#main'
+  # root 'static_pages#main'
+  root 'signin#new'
   # root :to => redirect('/static_pages/home')
   get 'home' => 'static_pages#home'
   get 'series' => 'events#series_event'
@@ -26,8 +27,12 @@ Rails.application.routes.draw do
 
   get 'invite_attendees/:id' => 'events#invite_attendees', as: "invite_attendees"
   get 'send_reminders_to_attendees/:id' => 'events#send_reminders_to_attendees', as: 'send_reminders_to_attendees'
-  get '/login' => 'login#new'
-  post '/login' => 'login#create'
+  # get '/login' => 'login#new'
+  # post '/login' => 'login#create'
+  # get '/signin' => 'Signin#new'
+  # post '/signin' => 'Signin#create'
+  get '/signin', to: 'signin#new'
+  post '/signin', to: 'signin#create'
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
