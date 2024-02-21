@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root 'static_pages#main'
-  get 'login', to: 'login#new'
+  get 'signin', to: 'signin#new'
 
   # root :to => redirect('/static_pages/home')
   get 'home' => 'static_pages#home'
