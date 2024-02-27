@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resource :event_info
   end
 
-  root 'static_pages#home'
+  root 'signin#new'
   get 'static_pages/home'
   get 'static_pages/help'
   

@@ -5,10 +5,10 @@ include CalendarHelper
 
 class EventRemainderMailer < ApplicationMailer
     default from: 'skhedule4@gmail.com'
-    default_url_options[:host] = 'https://skhedule-9d55cf93012e.herokuapp.com'
+    default_url_options[:host] = 'https://swirlskehdule-f316b598c688.herokuapp.com/'
 
     def remainder_email(csv_file_path)
-      @url = 'https://skhedule-9d55cf93012e.herokuapp.com/'
+      @url = 'https://swirlskehdule-f316b598c688.herokuapp.com/'
       if csv_file_path.present?
         if File.extname(csv_file_path) == '.csv'
           # Create an email for each recipient in the CSV file
@@ -31,7 +31,7 @@ class EventRemainderMailer < ApplicationMailer
     
     def reminder_email
         @email = params[:email]
-        @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+        @url = 'https://swirlskehdule-f316b598c688.herokuapp.com/'
         @event = params[:event]
         @token = params[:token]
         
@@ -50,7 +50,7 @@ class EventRemainderMailer < ApplicationMailer
     
     def event_reminder
       @email = params[:email]
-      @url = 'https://skhedule-9d55cf93012e.herokuapp.com'
+      @url = 'https://swirlskehdule-f316b598c688.herokuapp.com/'
       @event = params[:event]
       @token = params[:token]
       mail(to: @email, subject: 'Event Reminder', template_name: 'event_reminder')        
