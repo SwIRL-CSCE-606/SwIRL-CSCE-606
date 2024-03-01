@@ -41,7 +41,8 @@ class EventRemainderMailer < ApplicationMailer
         else
           icalendar_content = generate_icalendar(@event, default_params[:from])
           mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation') do |format|
-            format.ics { render plain: icalendar_content }
+            # format.ics { render plain: icalendar_content }
+            attachments['event.ics'] = { mime_type: 'text/calendar', content: icalendar_content }
             format.html
           end
         end
