@@ -23,8 +23,6 @@ class EventRemainderMailer < ApplicationMailer
           column_1_data.each do |value|
             mail(to: value, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
           end
-        else
-          puts "Unsupported File Type"
         end
       end
     end
