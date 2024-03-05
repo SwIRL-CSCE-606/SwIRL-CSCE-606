@@ -39,6 +39,7 @@ group :development, :test do
   gem 'rubycritic', require: false
   gem 'dotenv-rails'
   gem "rails-erd"
+  gem 'factory_bot_rails'
 end
 
 group :test do
