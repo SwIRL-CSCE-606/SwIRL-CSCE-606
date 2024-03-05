@@ -16,6 +16,9 @@ class CalendarsController < ApplicationController
     end
 
     def create_event
+        @event = Event.find(params[:id])
+        @event_info = @event.event_info
+
         if authorized?
             begin
                 client = Signet::OAuth2::Client.new(client_options)
@@ -25,13 +28,29 @@ class CalendarsController < ApplicationController
                 service.authorization = client
 
                 today = Date.today
+                start_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.start_time}:00").utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ")
+                end_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.end_time}:00").utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ")
+
+                puts start_datetime
+                puts end_datetime
                 
                 # location, attendees
                 new_event = Google::Apis::CalendarV3::Event.new(
-                start: Google::Apis::CalendarV3::EventDateTime.new(date: today),
-                end: Google::Apis::CalendarV3::EventDateTime.new(date: today + 1),
-                summary: 'New event!'
+                start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_datetime),
+                end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_datetime),
+                location: @event_info.venue,
+                summary: @event_info.name
                 )
+
+                if @event.attendee_infos.present?
+                    attendees = []
+                    @event.attendee_infos.each do |attendee_info|
+                        attendees << Google::Apis::CalendarV3::EventAttendee.new(email: attendee_info.email, display_name: attendee_info.name, response_status: attendee_info.is_attending ? 'accepted' : 'needsAction')
+                    end
+                    new_event.attendees = attendees
+                end
+
+
                 calendar_id = params[:calendar_id] || 'primary'
                 service.insert_event(calendar_id, new_event)
 
