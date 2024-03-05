@@ -39,9 +39,10 @@ class CalendarsController < ApplicationController
             
                 redirect_to eventsList_url
 
-            rescue => e
-                flash[:alert] = 'Failed to add event!'
-                redirect_to eventsList_url
+            rescue Google::Apis::AuthorizationError
+                response = client.refresh!
+                session[:authorization] = session[:authorization].merge(response)
+                retry
             end
         
         else 
