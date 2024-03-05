@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   post '/signin', to: 'signin#create'
   get "/redirect", to: "calendars#redirect", as: 'redirect'
   get "/callback", to: "calendars#callback", as: 'callback'
-  get '/calendars', to: 'calendars#calendars', as: 'calendars'
+  post '/create_event', to: 'calendars#create_event', as: 'create_event'
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 

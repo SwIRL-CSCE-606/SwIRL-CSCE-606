@@ -94,7 +94,15 @@
 </head>
 
 <body>
-
+    <% if flash[:notice].present? %>
+    <div class="alert alert-success" role="alert">
+    <%= flash[:notice] %>
+    </div>
+    <% elsif flash[:alert].present? %>
+    <div class="alert alert-danger" role="alert">
+    <%= flash[:alert] %>
+    </div>
+    <% end %>
     <div class="event-dashboard">
         <div class="dashboard-header">
             <h1>Event Dashboard</h1>
@@ -176,8 +184,7 @@
                             <% end %>
                         </ul>
                         <div>
-                            <h3>Add to Calendar:</h3>
-                            <%= button_to "Add to Calendar", new_event(event), method: :post, class: "gradient-btn", remote: true %>
+                            <%= button_to "Add to Calendar", create_event_path, method: :post, class: "gradient-btn", remote: true %>
                         </div>
                     </div>
                 </li>

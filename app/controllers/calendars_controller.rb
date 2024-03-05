@@ -1,7 +1,6 @@
 class CalendarsController < ApplicationController
     def redirect
         client = Signet::OAuth2::Client.new(client_options)
-        puts client.authorization_uri.to_s
         redirect_to(client.authorization_uri.to_s, allow_other_host: true)
     end
 
@@ -13,20 +12,49 @@ class CalendarsController < ApplicationController
     
         session[:authorization] = response
     
-        redirect_to calendars_url
+        redirect_to eventsList_url
     end
 
-    def calendars
-        client = Signet::OAuth2::Client.new(client_options)
-        client.update!(session[:authorization])
-    
-        service = Google::Apis::CalendarV3::CalendarService.new
-        service.authorization = client
-    
-        @calendar_list = service.list_calendar_lists
+    def create_event
+        if authorized?
+            begin
+                client = Signet::OAuth2::Client.new(client_options)
+                client.update!(session[:authorization])
+            
+                service = Google::Apis::CalendarV3::CalendarService.new
+                service.authorization = client
+
+                today = Date.today
+                
+                # location, attendees
+                new_event = Google::Apis::CalendarV3::Event.new(
+                start: Google::Apis::CalendarV3::EventDateTime.new(date: today),
+                end: Google::Apis::CalendarV3::EventDateTime.new(date: today + 1),
+                summary: 'New event!'
+                )
+                calendar_id = params[:calendar_id] || 'primary'
+                service.insert_event(calendar_id, new_event)
+
+                flash[:notice] = 'Event added successfully!'
+            
+                redirect_to eventsList_url
+
+            rescue => e
+                flash[:alert] = 'Failed to add event!'
+                redirect_to eventsList_url
+            end
+        
+        else 
+            redirect_to redirect_path
+            return
+        end
     end
 
     private
+
+    def authorized?
+        session[:authorization].present? 
+    end
 
     def client_options
         {
