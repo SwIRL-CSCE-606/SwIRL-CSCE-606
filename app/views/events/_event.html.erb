@@ -125,6 +125,9 @@
                         </p>
                     <% end %>
                 </h3>
+                <div>
+                    <%= button_to "Add to Calendar", create_event_path(event), method: :post, class: "gradient-btn", remote: true %>
+                </div>
             </div>
         </div>
     </div>
