@@ -23,8 +23,6 @@ class EventRemainderMailer < ApplicationMailer
           column_1_data.each do |value|
             mail(to: value, subject: 'Email Invitation').deliver # Use deliver here, not deliver_now
           end
-        else
-          puts "Unsupported File Type"
         end
       end
     end
@@ -41,7 +39,8 @@ class EventRemainderMailer < ApplicationMailer
         else
           icalendar_content = generate_icalendar(@event, default_params[:from])
           mail(to: @email, subject: 'Event Invitation', template_name: 'email_invitation') do |format|
-            format.ics { render plain: icalendar_content }
+            # format.ics { render plain: icalendar_content }
+            attachments['event.ics'] = { mime_type: 'text/calendar', content: icalendar_content }
             format.html
           end
         end

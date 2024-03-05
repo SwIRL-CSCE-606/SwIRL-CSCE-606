@@ -7,5 +7,7 @@ class PopulateUsers < ActiveRecord::Migration[7.0]
     User.create(serial_no: 5, email: 'cmeisel101@tamu.edu', password: '1234')
     User.create(serial_no: 6, email: 'ewang41@tamu.edu', password: '1234')
     User.create(serial_no: 7, email: 'gdbrowne85@tamu.edu', password: '1234')
+    User.create(serial_no: 8, email: 'anirith@tamu.edu', password: '1234')
+    User.create(serial_no: 9, email: 'pcr@tamu.edu', password: '1234')
   end
 end

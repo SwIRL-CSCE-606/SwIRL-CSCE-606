@@ -350,4 +350,54 @@ RSpec.describe EventsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    let(:valid_attributes) do
+      { name: 'New Event', venue: 'New Venue', date: Date.tomorrow, start_time: Time.now, end_time: Time.now + 2.hours, max_capacity: 50 }
+    end
+
+    it 'creates a new event with valid parameters' do
+      expect {
+        post :create, params: { event: valid_attributes }
+      }.to change(Event, :count).by(1)
+      expect(response).to redirect_to(event_url(Event.last))
+      expect(flash[:notice]).to eq('Event was successfully created.')
+    end
+  end
+
+  include ActiveJob::TestHelper # Include this if you are processing ActiveStorage attachments or background jobs
+
+  let(:valid_attributes) do
+    {
+      name: 'Test Event',
+      venue: 'Test Venue',
+      date: Date.tomorrow,
+      start_time: '10:00',
+      end_time: '12:00',
+      max_capacity: 20
+    }
+  end
+
+  # excel_file = Rails.root.join('spec', 'fixtures', 'test_emails.xlsx')
+
+  let(:excel_file) do
+    fixture_file_upload(Rails.root.join('spec', 'fixtures', 'test_attendees.xlsx'), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+  end  
+
+  describe 'POST #create with Excel file' do
+    it 'creates a new Event and processes attendees from Excel file' do
+      expect do
+        perform_enqueued_jobs do
+          post :create, params: { event: valid_attributes.merge(csv_file: excel_file) }
+        end
+      end.to change(Event, :count).by(1)
+         .and change(EventInfo, :count).by(1)
+         .and change(AttendeeInfo, :count).by(2) # Assuming there are 2 attendees in the Excel file
+
+      new_event = Event.last
+      expect(new_event.name).to eq(valid_attributes[:name])
+      expect(new_event.event_info.venue).to eq(valid_attributes[:venue])
+      expect(response).to redirect_to(event_path(new_event)) # Adjust the path as necessary
+    end
+  end
 end

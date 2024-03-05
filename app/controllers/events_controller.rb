@@ -65,8 +65,6 @@ class EventsController < ApplicationController
         row = Hash[[headers, worksheet.row(i)].transpose]
         parsed_data << row
       end
-    else
-      puts "Unsupported File Type"
     end
 
     # NOTE: @event.id does not exist until the record is SAVED
