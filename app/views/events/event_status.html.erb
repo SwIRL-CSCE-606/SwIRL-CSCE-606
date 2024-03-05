@@ -175,6 +175,10 @@
                                 </li>
                             <% end %>
                         </ul>
+                        <div>
+                            <h3>Add to Calendar:</h3>
+                            <%= button_to "Add to Calendar", new_event(event), method: :post, class: "gradient-btn", remote: true %>
+                        </div>
                     </div>
                 </li>
                 <br> <!-- Line break for each event -->

@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   # post '/signin' => 'Signin#create'
   get '/signin', to: 'signin#new'
   post '/signin', to: 'signin#create'
+  get "/redirect", to: "calendars#redirect", as: 'redirect'
+  get "/callback", to: "calendars#callback", as: 'callback'
+  get '/calendars', to: 'calendars#calendars', as: 'calendars'
 
   #get 'events/:id/email_invitation' => 'events#email_invitation', as: :email_invitation
 
