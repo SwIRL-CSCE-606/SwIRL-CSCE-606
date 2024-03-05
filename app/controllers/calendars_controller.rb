@@ -28,13 +28,11 @@ class CalendarsController < ApplicationController
                 service.authorization = client
 
                 today = Date.today
-                start_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.start_time}:00").utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ")
-                end_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.end_time}:00").utc.strftime("%Y-%m-%dT%H:%M:%S.%LZ")
+                start_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.start_time}:00").strftime("%Y-%m-%dT%H:%M:%S.%LZ")
+                end_datetime = DateTime.parse("#{@event_info.date}T#{@event_info.end_time}:00").strftime("%Y-%m-%dT%H:%M:%S.%LZ")
 
                 puts start_datetime
-                puts end_datetime
                 
-                # location, attendees
                 new_event = Google::Apis::CalendarV3::Event.new(
                 start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_datetime),
                 end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_datetime),
