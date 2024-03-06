@@ -4,7 +4,7 @@ require 'active_support/all'
 include CalendarHelper
 
 class EventRemainderMailer < ApplicationMailer
-    default from: 'skhedule4@gmail.com'
+    default from: 'SkheduleSp24@gmail.com'
     default_url_options[:host] = 'https://swirlskehdule-f316b598c688.herokuapp.com/'
 
     def remainder_email(csv_file_path)
