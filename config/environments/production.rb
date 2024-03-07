@@ -1,6 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.log_level = :debug # configure verbose logging
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -50,7 +51,7 @@ Rails.application.configure do
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  # config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -95,10 +96,10 @@ Rails.application.configure do
   config.action_mailer.perform_caching = true
   config.action_mailer.delivery_method = :smtp
 
-  host = "gmail.com"
-  user_name = Rails.application.credentials.USER_NAME
-  password = Rails.application.credentials.PASSWORD
-  config.action_mailer.default_url_options = { host: host, protocol:'http' }
+  host = "swirlskehdule-f316b598c688.herokuapp.com"
+  user_name = Rails.application.credentials.user_name
+  password = Rails.application.credentials.app_password
+  config.action_mailer.default_url_options = { host: host, protocol: 'https' } # Adjusted to 'https' based on your host URL
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
@@ -107,7 +108,8 @@ Rails.application.configure do
     password: password,
     authentication: :plain,
     enable_starttls_auto: true
-  }
+    }
+
 
 
 end

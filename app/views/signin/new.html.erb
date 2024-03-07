@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <h1>Login</h1>
+  
+  <%= form_tag('/signin', method: 'post') do %>
+    <div>
+      <%= label_tag(:email, 'Email:') %>
+      <%= text_field_tag(:email, nil, id: 'email') %>
+    </div>
+    <div>
+      <%= label_tag(:password, 'Password:') %>
+      <%= password_field_tag(:password, nil, id: 'password') %>
+    </div>
+    <%= submit_tag('Login') %>
+  <% end %>
+
+  <%= link_to 'Sign-up', signup_path %>
+  <%= link_to 'Continue without signing in', home_path %>
+</body>
+</html>

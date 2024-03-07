@@ -12,27 +12,25 @@ The emails will be sent out to experts (those who will be delivering lectures) i
 
 For more information about the project, please feel free to contact our team members!
 
-Mohit Sarin (mohitsarin26@tamu.edu) - Developer/Product Owner<br>
-
-Erik Priest (epriest@tamu.edu) - Developer<br>
-
-Ishant Kundra (ishantkundra@tamu.edu) - Developer<br>
-
-Chong Wen (chongwen@tamu.edu) - Developer<br>
-
-Aashay Kadakia (aashaykadakia@tamu.edu) - Developer<br>
-
-Shaunak Joshi (shaunakjoshi@tamu.edu) - Developer/Scrum Master<br>
+1. Glen Browne <gdbrowne85@tamu.edu> (Product Owner)
+2. Eric McGonagle <ermcgonagle@tamu.edu>
+3. Prakhar Singh <prakhar2@tamu.edu>
+4. Radha Debal Goswami <debal_goswami@tamu.edu>
+5. Carlos Meisel <cmeisel101@tamu.edu>
+6. Pankaj Kumar Tiwari <contact_pankaj@tamu.edu>
+7. Erhan Wang <ewang41@tamu.edu>
 
 # Links to our resources:
 
-Deployed App - https://skhedule-9d55cf93012e.herokuapp.com/
+Deployed App - https://swirlskehdule-f316b598c688.herokuapp.com
 
-GitHub Repo - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606
+GitHub Repo - https://github.com/gdbrowne85/SwIRL-CSCE-606
 
-Documentation - https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606/tree/main/documentation/Fall2023
+Code Climate Quality Report - https://codeclimate.com/github/gdbrowne85/SwIRL-CSCE-606
 
-Project Management - https://github.com/orgs/SwIRL-CSCE-606/projects/3/views/1 
+Documentation - 
+
+Project Management - https://www.pivotaltracker.com/n/projects/2690139
 
 # Prerequisites
 
@@ -95,7 +93,7 @@ Then, create a user and alter the role to superuser
 
 Clone the repository.
 
-    git clone https://github.com/SwIRL-CSCE-606/SwIRL-CSCE-606.git
+    git clone https://github.com/gdbrowne85/SwIRL-CSCE-606/SwIRL-CSCE-606.git
 
 Navigate to project directory
 
@@ -207,3 +205,7 @@ Create a key to run SMTP using the below commands.
 
     heroku config:set RAILS_MASTER_KEY=`cat config/master.key`
     heroku rails db:migrate
+
+# Login:
+
+Currently, To login into the Skhedule webapp, use email: 'contact_pankaj@tamu.edu' and password: '1234'. Additional functionalities related to login will be added in the next iteration and details will be updated in this section.

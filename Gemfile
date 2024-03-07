@@ -8,11 +8,13 @@ gem "rails", "~> 7.0.8"
 gem "sprockets-rails" # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "puma", "~> 5.0"
 gem "importmap-rails"
+gem "roo", "~> 2.10.1"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
+gem 'aws-sdk-rails'
 
 #Use password_digest 
 #because Rails has a built-in method called has_secure_password which utilizes the bcrypt gem to handle password hashing. 
@@ -38,6 +40,7 @@ group :development, :test do
   gem 'rubycritic', require: false
   gem 'dotenv-rails'
   gem "rails-erd"
+  gem 'factory_bot_rails'
 end
 
 group :test do

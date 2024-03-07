@@ -1,6 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.log_level = :debug # configure verbose logging
   # Configure 'rails notes' to inspect Cucumber files
   config.annotations.register_directories('features')
   config.annotations.register_extensions('feature') { |tag| /#\s*(#{tag}):?\s*(.*)$/ }
@@ -40,16 +41,17 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :smtp
 
   host = "localhost:3000"
-  user_name = Rails.application.credentials.USER_NAME
-  password = Rails.application.credentials.PASSWORD
-  config.action_mailer.default_url_options = { host: host, protocol:'http' }
+  user_name = Rails.application.credentials.user_name
+  puts(user_name)
+  password = Rails.application.credentials.app_password
+  puts(password)
+  config.action_mailer.default_url_options = { host: host, protocol: 'https' } # Adjusted to 'https' based on your host URL
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
@@ -58,7 +60,8 @@ Rails.application.configure do
     password: password,
     authentication: :plain,
     enable_starttls_auto: true
-  }
+    }
+
 
 
     #qcns mqwf gspy zzve
