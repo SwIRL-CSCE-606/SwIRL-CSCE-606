@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given('the user is on the series event page') do
   visit('/series') # Path for the series event page
 end
@@ -58,11 +60,10 @@ And('the user submits the series event form') do
 end
 
 Then('the user should see the following series event details:') do |table|
-  table.rows_hash.each do |field, value|
+  table.rows_hash.each do |_field, value|
     expect(page).to have_content(value)
   end
 end
-
 
 # Then('the user should see a confirmation that the series event was created') do
 #   # Adjust the expected text to match what your application will show as a confirmation message
@@ -90,13 +91,6 @@ And('the event {string} should display the following attendee details:') do |eve
     end
   end
 end
-
-
-  
-
-
-
-
 
 # Scenario: Successfully adding and removing date-time pairs
 # When the user fills in the series event form with the following details:

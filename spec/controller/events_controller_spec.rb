@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
@@ -9,7 +11,7 @@ RSpec.describe EventsController, type: :controller do
     EventInfo.create!(
       event_id: event.id,
       name: 'Original Name',
-      date: date,
+      date:,
       start_time: s_time,
       end_time: e_time,
       max_capacity: 10
@@ -18,35 +20,39 @@ RSpec.describe EventsController, type: :controller do
   let!(:attendee_info) { event.attendee_infos.create!(email_token: 'token123', email: 'attendee@example.com') }
 
   # Series Event data
-  let!(:event_series) {Event.create!(name: "Series Event")}
-  let!(:event_info_series) do 
+  let!(:event_series) { Event.create!(name: 'Series Event') }
+  let!(:event_info_series) do
     EventInfo.create!(
       event_id: event_series.id,
       name: 'Series Event',
       venue: 'Somewhere',
-      date: date,
+      date:,
       start_time: s_time,
-      end_time: e_time,
+      end_time: e_time
     )
   end
   let!(:time_slot) do
     TimeSlot.create!(
       event_id: event_series.id,
-      date: date,
+      date:,
       start_time: s_time,
-      end_time: e_time,
+      end_time: e_time
     )
   end
   let!(:time_slot_1) do
     TimeSlot.create!(
       event_id: event_series.id,
-      date: date,
+      date:,
       start_time: s_time,
-      end_time: e_time,
+      end_time: e_time
     )
   end
-  let!(:attendee_info_series) { event_series.attendee_infos.create!(email_token: 'token456', email: 'attendee@example.com') }
-  let!(:attendee_info_series_1) { event_series.attendee_infos.create!(email_token: 'token789', email: 'attendee@example.com') }
+  let!(:attendee_info_series) do
+    event_series.attendee_infos.create!(email_token: 'token456', email: 'attendee@example.com')
+  end
+  let!(:attendee_info_series_1) do
+    event_series.attendee_infos.create!(email_token: 'token789', email: 'attendee@example.com')
+  end
 
   describe 'GET #event_status' do
     let(:events) { Event.all }
@@ -128,7 +134,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'GET #yes_response_series' do
     it 'updates attendee_info to yes and time_slot info redirects' do
-      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id }
       attendee_info_series.reload
       time_slot.reload
       expect(attendee_info_series.is_attending).to eq('yes')
@@ -138,8 +144,8 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it 'try to select time_slot that already is owned' do
-      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
-      get :yes_response_series, params: { id: event_series.id, token: 'token789', time_slot: time_slot.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id }
+      get :yes_response_series, params: { id: event_series.id, token: 'token789', time_slot: time_slot.id }
       attendee_info_series.reload
       attendee_info_series_1.reload
       time_slot.reload
@@ -150,8 +156,8 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it 'try to select time_slot when attendee already has one assigned' do
-      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id}
-      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot_1.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot.id }
+      get :yes_response_series, params: { id: event_series.id, token: 'token456', time_slot: time_slot_1.id }
       attendee_info_series.reload
       time_slot.reload
       time_slot_1.reload
@@ -162,7 +168,7 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it 'invalid params' do
-      get :yes_response_series, params: { id: event_series.id, token: 'efasef', time_slot: time_slot.id}
+      get :yes_response_series, params: { id: event_series.id, token: 'efasef', time_slot: time_slot.id }
       attendee_info_series.reload
       time_slot.reload
       expect(attendee_info_series.is_attending).to eq(nil)
@@ -172,7 +178,6 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-
   describe 'PATCH #update' do
     context 'with valid parameters' do
       let(:valid_params) do
@@ -180,8 +185,8 @@ RSpec.describe EventsController, type: :controller do
           name: 'Updated Event Name',
           venue: 'New Venue',
           date: Date.tomorrow,
-          start_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00"),
-          end_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00") + 2.hours,
+          start_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00'),
+          end_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00') + 2.hours,
           max_capacity: 100
         }
       end
@@ -194,25 +199,27 @@ RSpec.describe EventsController, type: :controller do
           time_slots_attributes: [{
             id: 1,
             date: Date.tomorrow,
-            start_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00"),
-            end_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00") + 2.hours,
-          },{
+            start_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00'),
+            end_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00') + 2.hours
+          }, {
             id: 2,
             date: Date.tomorrow,
-            start_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00"),
-            end_time: Time.new(2000, 01, 01, Time.now.hour, Time.now.min, Time.now.sec, "+00:00") + 2.hours,
+            start_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00'),
+            end_time: Time.new(2000, 0o1, 0o1, Time.now.hour, Time.now.min, Time.now.sec, '+00:00') + 2.hours,
             _destroy: true
           }]
         }
       end
-      
+
       # Check that the expected values are there
       it 'sanity check' do
         expect(event.name).to eq('Original Name')
         expect(event_info.name).to eq('Original Name')
         expect(event_info.date).to eq(date)
-        expect(event_info.start_time).to be_within(1.second).of(Time.new(2000, 01, 01, s_time.hour, s_time.min, s_time.sec, "+00:00"))
-        expect(event_info.end_time).to be_within(1.second).of(Time.new(2000, 01, 01, e_time.hour, e_time.min, e_time.sec, "+00:00"))
+        expect(event_info.start_time).to be_within(1.second).of(Time.new(2000, 0o1, 0o1, s_time.hour, s_time.min,
+                                                                         s_time.sec, '+00:00'))
+        expect(event_info.end_time).to be_within(1.second).of(Time.new(2000, 0o1, 0o1, e_time.hour, e_time.min,
+                                                                       e_time.sec, '+00:00'))
         expect(event_info.max_capacity).to eq(10)
       end
 
@@ -222,8 +229,8 @@ RSpec.describe EventsController, type: :controller do
         expect(event.name).to eq(valid_params[:name])
         expect(event.event_info.venue).to eq(valid_params[:venue])
         expect(event.event_info.date).to eq(valid_params[:date])
-        expect(event.event_info.start_time.strftime('%I:%M %p')).to eq(valid_params[:start_time].strftime('%I:%M %p'))
-        expect(event.event_info.end_time.strftime('%I:%M %p')).to eq(valid_params[:end_time].strftime('%I:%M %p'))
+        expect(event.event_info.start_time.in_time_zone.strftime('%I:%M %p')).to eq(valid_params[:start_time].in_time_zone.strftime('%I:%M %p'))
+        expect(event.event_info.end_time.in_time_zone.strftime('%I:%M %p')).to eq(valid_params[:end_time].in_time_zone.strftime('%I:%M %p'))
         expect(event.event_info.max_capacity).to eq(valid_params[:max_capacity])
         expect(response).to redirect_to(event_url(event))
         expect(flash[:notice]).to eq('Event was successfully updated.')
@@ -236,8 +243,8 @@ RSpec.describe EventsController, type: :controller do
         expect(event_series.name).to eq(valid_params_series[:name])
         expect(event_series.event_info.venue).to eq(valid_params_series[:venue])
         expect(event_series.time_slots.first.date).to eq(Date.tomorrow)
-        expect(event_series.time_slots.first.start_time.strftime('%I:%M %p')).to eq(valid_params_series[:time_slots_attributes][0][:start_time].strftime('%I:%M %p'))
-        expect(event_series.time_slots.first.end_time.strftime('%I:%M %p')).to eq(valid_params_series[:time_slots_attributes][0][:end_time].strftime('%I:%M %p'))
+        expect(event_series.time_slots.first.start_time.in_time_zone.strftime('%I:%M %p')).to eq(valid_params_series[:time_slots_attributes][0][:start_time].in_time_zone.strftime('%I:%M %p'))
+        expect(event_series.time_slots.first.end_time.in_time_zone.strftime('%I:%M %p')).to eq(valid_params_series[:time_slots_attributes][0][:end_time].in_time_zone.strftime('%I:%M %p'))
         expect(event_series.time_slots.size).to eq(1)
         expect(response).to redirect_to(event_url(event_series))
         expect(flash[:notice]).to eq('Event was successfully updated.')
@@ -294,7 +301,7 @@ RSpec.describe EventsController, type: :controller do
       end
     end
   end
-  
+
   describe 'GET #series_event' do
     it 'assigns a new Event to @event' do
       get :series_event
@@ -348,6 +355,58 @@ RSpec.describe EventsController, type: :controller do
       it 'redirects to events list' do
         expect(response).to redirect_to(eventsList_path)
       end
+    end
+  end
+
+  describe 'POST #create' do
+    let(:valid_attributes) do
+      { name: 'New Event', venue: 'New Venue', date: Date.tomorrow, start_time: Time.now, end_time: Time.now + 2.hours,
+        max_capacity: 50 }
+    end
+
+    it 'creates a new event with valid parameters' do
+      expect do
+        post :create, params: { event: valid_attributes }
+      end.to change(Event, :count).by(1)
+      expect(response).to redirect_to(event_url(Event.last))
+      expect(flash[:notice]).to eq('Event was successfully created.')
+    end
+  end
+
+  include ActiveJob::TestHelper # Include this if you are processing ActiveStorage attachments or background jobs
+
+  let(:valid_attributes) do
+    {
+      name: 'Test Event',
+      venue: 'Test Venue',
+      date: Date.tomorrow,
+      start_time: '10:00',
+      end_time: '12:00',
+      max_capacity: 20
+    }
+  end
+
+  # excel_file = Rails.root.join('spec', 'fixtures', 'test_emails.xlsx')
+
+  let(:excel_file) do
+    fixture_file_upload(Rails.root.join('spec', 'fixtures', 'test_attendees.xlsx'),
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+  end
+
+  describe 'POST #create with Excel file' do
+    it 'creates a new Event and processes attendees from Excel file' do
+      expect do
+        perform_enqueued_jobs do
+          post :create, params: { event: valid_attributes.merge(csv_file: excel_file) }
+        end
+      end.to change(Event, :count).by(1)
+         .and change(EventInfo, :count).by(1)
+         .and change(AttendeeInfo, :count).by(2) # Assuming there are 2 attendees in the Excel file
+
+      new_event = Event.last
+      expect(new_event.name).to eq(valid_attributes[:name])
+      expect(new_event.event_info.venue).to eq(valid_attributes[:venue])
+      expect(response).to redirect_to(event_path(new_event)) # Adjust the path as necessary
     end
   end
 end

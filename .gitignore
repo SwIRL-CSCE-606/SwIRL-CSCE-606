@@ -41,3 +41,4 @@ master.key
 
 # Ignore coverage results
 coverage/
+/config/credentials/development.key

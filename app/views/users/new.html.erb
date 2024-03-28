@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up to SKHEDULE.COM</title> <!-- Change title to SKHEDULE.COM - Sign Up -->
+  <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: black; /* Change background color to black */
+            text-align: center;
+            color: white; /* Change text color to white */
+        }
+
+        h1 {
+            font-size: 80px; /* Adjust font size for heading */
+            font-weight: bold;
+            letter-spacing: -2px;
+            margin-bottom: 30px;
+        }
+
+        /* Styles for form */
+        form {
+            max-width: 400px; /* Adjust form width */
+            margin: 0 auto; /* Center align form */
+            padding: 20px; /* Add padding for better spacing */
+            border: 2px solid white; /* Add border */
+            border-radius: 10px; /* Add border radius */
+        }
+
+        label {
+            display: block; /* Display labels as block */
+            margin-bottom: 10px; /* Add margin bottom to labels */
+            font-size: 18px; /* Adjust label font size */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 80%; /* Set input width to 100% */
+            padding: 10px; /* Add padding to inputs */
+            margin-bottom: 20px; /* Add margin bottom to inputs */
+            font-size: 16px; /* Adjust input font size */
+        }
+
+        input[type="submit"] {
+            background-color: #333; /* Change submit button background color */
+            color: white; /* Change submit button text color */
+            border: none; /* Remove border */
+            padding: 15px 30px; /* Adjust padding */
+            font-size: 18px; /* Adjust font size */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer; /* Add pointer cursor */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #444; /* Change background color on hover */
+            transform: scale(1.05); /* Add slight scale effect on hover */
+        }
+
+        /* Error message styles */
+        span.error {
+            color: red;
+            display: none;
+        }
+
+        /* Styles for links */
+        .link-box {
+            border: 2px solid white; /* Add border */
+            border-radius: 10px; /* Add border radius */
+            display: inline-block; /* Display links as block */
+            padding: 10px 20px; /* Add padding */
+            margin-top: 10px; /* Add margin top */
+            font-size: 16px; /* Adjust font size */
+            text-decoration: none; /* Remove underline */
+            color: white; /* Change link color */
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .link-box:hover {
+            background-color: #333; /* Change background color on hover */
+            transform: scale(1.05); /* Add slight scale effect on hover */
+        }
+    </style>
+</head>
+<body>
+  <h1>Sign Up to SKHEDULE.COM</h1> <!-- Update heading to include "Sign Up" -->
+
+  <!-- Sign-up form -->
+  <%= form_with(model: @user, url: signup_path, id: 'signup_form') do |form| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.label :email %>
+    <%= form.text_field :email, id: 'email_field' %>
+    <span class="error" id="email_error">Email is already registered</span> <!-- Use class for error message -->
+
+    <%= form.label :password %>
+    <%= form.password_field :password, id: 'password_field' %>
+    <span class="error" id="password_error">Password must be at least 6 characters long</span> <!-- Use class for error message -->
+
+    <%= form.label :password_confirmation %>
+    <%= form.password_field :password_confirmation, id: 'password_confirmation_field' %>
+    <span class="error" id="password_confirmation_error">Password confirmation doesn't match</span> <!-- Use class for error message -->
+
+    <%= form.submit "Sign Up", onclick: "return validateForm();" %>
+  <% end %>
+
+  <!-- JavaScript for form validation -->
+  <script>
+    function validateForm() {
+      var email = document.getElementById("email_field").value;
+      var password = document.getElementById("password_field").value;
+      var passwordConfirmation = document.getElementById("password_confirmation_field").value;
+
+      // Check if password length is less than 6
+      if (password.length < 6) {
+        document.getElementById("password_error").style.display = "block";
+        return false;
+      } else {
+        document.getElementById("password_error").style.display = "none";
+      }
+
+      // Check if password and password confirmation match
+      if (password !== passwordConfirmation) {
+        document.getElementById("password_confirmation_error").style.display = "block";
+        return false;
+      } else {
+        document.getElementById("password_confirmation_error").style.display = "none";
+      }
+
+      // In a real application, you would perform AJAX request here
+      // For demonstration purposes, let's assume validation passes
+      return true;
+    }
+  </script>
+</body>
+</html>

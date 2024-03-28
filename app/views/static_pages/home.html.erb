@@ -73,7 +73,7 @@
         /* Custom styles for button container */
         .button-container {
             display: flex;
-            flex-direction: column; /* Stack buttons vertically */
+            flex-direction: row; /* Stack buttons vertically */
             align-items: center; /* Center buttons horizontally */
             justify-content: center; /* Center buttons vertically */
             gap: 20px; /* Space between buttons */
@@ -86,7 +86,7 @@
 
 <div class="content">
     <div class="title">SKHEDULE.COM</div>
-    <div class="subtitle">Click here to create events</div>
+    <div class="subtitle">Click below to create events</div>
     <div class="button-container">
         <!-- Ruby on Rails button_to helper for creating singular event -->
         <%= button_to "Create singular event", newEvents_path, method: :get, class: "cta-button" %>
@@ -98,6 +98,5 @@
         <!-- <%= button_to "Event Dashboard", eventdashboard_path, method: :get, class: "cta-button" %> -->
     </div>
 </div>
-
 </body>
 </html>
