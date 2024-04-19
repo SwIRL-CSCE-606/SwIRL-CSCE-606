@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
@@ -16,35 +17,36 @@
 
 # Data for AttendeeInfos Table
 attendee_infos = [
-  { name: 'Erik',     email: 'example1@gmail.com', is_attending: 'true',   comments: 'N/A'},
-  { name: 'Mohit',    email: 'example2@gmail.com', is_attending: 'false',  comments: 'N/A'},
-  { name: 'Aashay',   email: 'example3@gmail.com', is_attending: 'true',   comments: 'N/A'},
-  { name: 'Chong',    email: 'example4@gmail.com', is_attending: 'false',  comments: 'N/A'},
-  { name: 'Ishant',   email: 'example5@gmail.com', is_attending: 'false',  comments: 'N/A'},
-  { name: 'Shaunak',  email: 'example6@gmail.com', is_attending: 'true',   comments: 'N/A'}
+  { name: 'Erik',     email: 'example1@gmail.com', is_attending: 'true',   comments: 'N/A' },
+  { name: 'Mohit',    email: 'example2@gmail.com', is_attending: 'false',  comments: 'N/A' },
+  { name: 'Aashay',   email: 'example3@gmail.com', is_attending: 'true',   comments: 'N/A' },
+  { name: 'Chong',    email: 'example4@gmail.com', is_attending: 'false',  comments: 'N/A' },
+  { name: 'Ishant',   email: 'example5@gmail.com', is_attending: 'false',  comments: 'N/A' },
+  { name: 'Shaunak',  email: 'example6@gmail.com', is_attending: 'true',   comments: 'N/A' }
 ]
-
 
 # Data for EventInfos Table
 event_infos = [
-  { name: 'Item 1', description: 'event 1', date: '01-Jan-2023', venue: 'Venue 1', start_time:'00:00:00AM', end_time:'02:00:00AM'},
-  { name: 'Item 2', description: 'event 2', date: '15-Feb-2023', venue: 'Venue 2', start_time:'00:00:00AM', end_time:'02:00:00AM'},
-  { name: 'Item 3', description: 'event 3', date: '30-Mar-2023', venue: 'Venue 3', start_time:'00:00:00AM', end_time:'02:00:00AM'},
-  { name: 'Item 4', description: 'event 4', date: '10-Apr-2023', venue: 'Venue 4', start_time:'00:00:00AM', end_time:'02:00:00AM'},
-  { name: 'Item 5', description: 'event 5', date: '25-May-2023', venue: 'Venue 5', start_time:'00:00:00AM', end_time:'02:00:00AM'}
+  { name: 'Item 1', description: 'event 1', date: '01-Jan-2023', venue: 'Venue 1', start_time: '00:00:00AM',
+    end_time: '02:00:00AM' },
+  { name: 'Item 2', description: 'event 2', date: '15-Feb-2023', venue: 'Venue 2', start_time: '00:00:00AM',
+    end_time: '02:00:00AM' },
+  { name: 'Item 3', description: 'event 3', date: '30-Mar-2023', venue: 'Venue 3', start_time: '00:00:00AM',
+    end_time: '02:00:00AM' },
+  { name: 'Item 4', description: 'event 4', date: '10-Apr-2023', venue: 'Venue 4', start_time: '00:00:00AM',
+    end_time: '02:00:00AM' },
+  { name: 'Item 5', description: 'event 5', date: '25-May-2023', venue: 'Venue 5', start_time: '00:00:00AM',
+    end_time: '02:00:00AM' }
 ]
 
 # Data for Events Table
 events = [
-  { name: 'Item 1'},
-  { name: 'Item 2'},
-  { name: 'Item 3'},
-  { name: 'Item 4'},
-  { name: 'Item 5'}
+  { name: 'Item 1' },
+  { name: 'Item 2' },
+  { name: 'Item 3' },
+  { name: 'Item 4' },
+  { name: 'Item 5' }
 ]
-
-
-
 
 # Create entries for Event Table, EventInfos Table, and AttendeeInfos Tables
 # Create entries for Event Table, EventInfos Table, and AttendeeInfos Tables
@@ -65,7 +67,7 @@ events.each_with_index do |event_data, index|
 
   # Create unique attendees per event
   attendee_infos.each do |attendee_data|
-    attendee = AttendeeInfo.create!(
+    AttendeeInfo.create!(
       name: attendee_data[:name],
       email: attendee_data[:email],
       is_attending: attendee_data[:is_attending],
@@ -77,9 +79,6 @@ events.each_with_index do |event_data, index|
   # Update reference from event_id to new tables
   event.update!(event_info_id: event_info.id)
 end
-
-
-
 
 #   accounts = [
 #     { :email => 'user1@example.com', :name => 'User One', :password_digest => 'password1' },

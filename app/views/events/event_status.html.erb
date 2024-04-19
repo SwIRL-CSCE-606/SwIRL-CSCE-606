@@ -8,50 +8,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #000; /* Black background for the whole page */
-            color: #fff; /* White text color for better contrast */
+            background-color: #000;
+            color: #fff;
             display: flex;
-            flex-direction: column; /* Arrange content vertically */
+            flex-direction: column;
             align-items: center;
+            text-align: center;
+            overflow-x: hidden; /* Enable horizontal scrolling */
+        }
+
+        .title-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: -1px;
             text-align: center;
         }
 
+        .navbar-email {
+            line-height: 40px;
+            margin-left: 15px;
+            text-align: end;
+        }
+
         .event-card {
-            background-color: #333; /* Dark background for the card */
+            background-color: #333;
             padding: 20px;
-            border-radius: 10px; /* Rounded corners for the card */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            width: auto; /* Width adjusted to content */
-            margin-bottom: 15px; /* Space between cards */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            margin-bottom: 15px;
+            max-width: 700px;
         }
 
         .event-header {
             padding: 20px;
-            background-color: #555; /* Dark background for the header */
-            color: #fff; /* White text for the header */
-            border-bottom: 1px solid #666; /* Slightly lighter border color */
+            background-color: #555;
+            color: #fff;
+            border-bottom: 1px solid #666;
             font-size: 1.5em;
             font-weight: bold;
             letter-spacing: 1px;
-            cursor: pointer; /* Make the event name clickable */
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .event-content {
-            background-color: #555; /* Darker background for content */
-            color: #fff; /* White text color */
-            display: none; /* Hide the event details by default */
-            padding: 20px; /* Adjust padding for better formatting */
+            background-color: #555;
+            color: #fff;
+            display: none;
+            padding: 20px;
         }
 
         .gradient-btn {
-            background-color: #555; /* Button background */
+            background-color: #555;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -61,19 +91,19 @@
         }
 
         .gradient-btn:hover {
-            background-color: #666; /* Slightly lighter on hover */
-            cursor: pointer; /* Change cursor to pointer */
-            transform: translateY(-2px); /* Moves button up slightly on hover */
+            background-color: #666;
+            cursor: pointer;
+            transform: translateY(-2px);
         }
 
         .transparent-btn {
             background-color: transparent;
             border: none;
-            color: #bbb; /* Lighter text color */
+            color: #bbb;
         }
 
         .transparent-btn:hover {
-            color: #fff; /* White color on hover */
+            color: #fff;
         }
 
         .list-unstyled {
@@ -85,24 +115,75 @@
             margin-bottom: 10px;
         }
 
-        /* Additional padding for the header */
         .dashboard-header {
-            padding-bottom: 20px;
+            padding-top: 80px;
+            padding-bottom: 50px;
+        }
+        
+        .status-awaiting-reply {
+            color: #ffc107; /* Bootstrap yellow color for warning */
+        }
+        .status-attending {
+            color: #28a745; /* Bootstrap green color for success */
+        }
+        .status-not-attending {
+            color: #dc3545; /* Bootstrap red color for danger */
         }
 
+        @media (max-width: 768px) {
+            .event-card {
+                width: 95%;
+            }
+        }
+        
+        /* Particle Orb styling */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: -1; /* Ensure particles are behind content */
+        }
     </style>
 </head>
 
 <body>
+    <!-- Particle Orb -->
+    <div id="particles-js"></div>
+    
+    <!-- Navigation bar -->
+    <nav class="title-bar">
+        <div class="container d-flex align-items-center">
+            <div class="navbar-title flex-grow-1">
+                <span>A Place For All Your Events</span>
+            </div>
+            <!-- Email -->
+            <div class="navbar-email">
+                <%= session[:user_email] if session[:user_email] %> 
+            </div>
+        </div>
+    </nav>
 
+    <% if flash[:notice].present? %>
+    <div class="alert alert-success" role="alert">
+    <%= flash[:notice] %>
+    </div>
+    <% elsif flash[:alert].present? %>
+    <div class="alert alert-danger" role="alert">
+    <%= flash[:alert] %>
+    </div>
+    <% end %>
     <div class="event-dashboard">
         <div class="dashboard-header">
             <h1>Event Dashboard</h1>
+            <br>
             <div>
                 <%= link_to "Back to Home", home_path, class: "gradient-btn" %>
             </div>
         </div>
-        
+
         <ul>
             <% @events.each do |event| %>
                 <% attending_count = 0 %>
@@ -111,14 +192,14 @@
                     <div class="event-header" onclick="toggleEventContent('<%= event.id %>')">
                         <h3><%= event.name %></h3>
                         <div class="event-actions">
-                            <%= link_to edit_event_path(event),  class: "btn transparent-btn", role: "button" do %>
+                            <%= link_to edit_event_path(event), class: "btn transparent-btn", role: "button" do %>
                                 <i class="fas fa-pencil-alt"></i>
                             <% end %>
-                            <%= button_to event, method: :delete, class: "btn transparent-btn", role: "button", onclick:"return confirm('Are you sure?')" do %>
+                            <%= button_to event, method: :delete, class: "btn transparent-btn", role: "button", onclick: "return confirm('Are you sure?')" do %>
                                 <i class="fas fa-trash-alt"></i>
                             <% end %>
                         </div>
-                    </div>                    
+                    </div>
                     <div id="event-content-<%= event.id %>" class="event-content">
                         <h2>Event Details:</h2>
                         <div>
@@ -129,59 +210,194 @@
                         </div>
                         <div>
                             <% if event.time_slots.present? %>
-                                <h3 class="event-col"><strong>Time Slots:</strong></h3>
-                                <% event.time_slots.each do |time_slot| %>
-                                    <h3 class="event-col">
-                                        <%= %>
+                            <h3 class="event-col"><strong>Time Slots:</strong></h3>
+                            <% event.time_slots.each do |time_slot| %>
+                            <h3 class="event-col">
+                                <%= %>
 
-                                        <%= time_slot.start_time.strftime("%I:%M %p") + " - " + time_slot.end_time.strftime("%I:%M %p") +  "  " + time_slot.date.strftime("%m-%d-%y") %>
-                                    </h3>
-                                <% end %>
+                                <%= time_slot.start_time.strftime("%I:%M %p") + " - " + time_slot.end_time.strftime("%I:%M %p") + "  " + time_slot.date.strftime("%m-%d-%y") %>
+                            </h3>
+                            <% end %>
                             <% else %>
-                                <h3>Time: <%= event.event_info&.start_time&.strftime('%I:%M %p') + " - " + event.event_info&.end_time&.strftime('%I:%M %p')%></h3>
+                            <h3>Time: <%= event.event_info&.start_time&.strftime('%I:%M %p') + " - " + event.event_info&.end_time&.strftime('%I:%M %p') %></h3>
                             <% end %>
                         </div>
-                        <br> <!-- Line break for spacing -->
+                        <br>
+                        <!-- Line break for spacing -->
                         <div>
                             <h3>Yes/No Ratio: <span id="yes-count-<%= event.id %>">0</span> / <span id="no-count-<%= event.id %>">0</span></h3>
                         </div>
                         <div>
                             <% if event.event_info.max_capacity.present? %>
-                                <h3>Max Capacity: <%= event.event_info&.max_capacity %></h3>
+                            <h3>Max Capacity: <%= event.event_info&.max_capacity %></h3>
                             <% end %>
+                            <br>
+                            <%seconds_until_target_time= event.event_info&.reminder_time.to_i - Time.now.to_i%>
+
+                            <%= content_tag(:h1, "", data:{
+                                controller: "countdown",
+                                countdown_target: "countdown",
+                                seconds_until_end_value: seconds_until_target_time,
+                                event_id: event.id
+                            })%>
                         </div>
-                        <br> <!-- Line break for spacing -->
+                        <br>
+                        <!-- Line break for spacing -->
                         <div>
-                            <h3>Send Emails: <%= link_to 'Send Emails', invite_attendees_path(event) %></h3>
+                            <h3>Send Emails: <%= link_to 'Send Emails', invite_attendees_path(event)%></h3>
                         </div>
                         <div>
                             <h3>Send Reminder Email: <%= link_to 'Send Reminder Email', send_reminders_to_attendees_path(event) %></h3>
                         </div>
+                        
                         <h2>Attendees:</h2>
                         <ul class="list-unstyled">
                             <% event.attendee_infos.each do |attendee_info| %>
-                                <li class="attendee">
-                                    <strong><%= attendee_info&.name %></strong> -
-                                    Email: <%= attendee_info&.email %><br>
-                                    Status: <%= attendee_info&.is_attending == "yes" ? '<span class="text-success status">Attending</span>'.html_safe : (attendee_info&.is_attending == "no" ? '<span class="text-danger status">Not Attending</span>'.html_safe : '<span class="text-warning status">Pending</span>'.html_safe) %><br>
-                                    <% if attendee_info&.is_attending == "yes" %>
-                                        <% attending_count += 1 %>
-                                    <% else %>
-                                        <% not_attending_count += 1 %>
-                                    <% end %>
-                                    <% if attendee_info.time_slot.present? %>
-                                        Time Slot Selected: <%= attendee_info.time_slot.start_time.strftime("%I:%M %p") + " - " + attendee_info.time_slot.end_time.strftime("%I:%M %p") +  "  " + attendee_info.time_slot.date.strftime("%m-%d-%y") %>
-                                    <% end %>
-                                </li>
+                            <li class="attendee">
+                                <strong><%= attendee_info&.name %></strong> -
+                                Email: <%= attendee_info&.email %><br>
+                                Status: <span class="<%= status_class(attendee_info.status) %>">
+                                    <%= readable_status(attendee_info.status) %>
+                                </span><br>
+                                <% if attendee_info&.is_attending == "yes" %>
+                                <% attending_count += 1 %>
+                                <% else %>
+                                <% not_attending_count += 1 %>
+                                <% end %>
+                                <% if attendee_info.time_slot.present? %>
+                                Time Slot Selected: <%= attendee_info.time_slot.start_time.strftime("%I:%M %p") + " - " + attendee_info.time_slot.end_time.strftime("%I:%M %p") + "  " + attendee_info.time_slot.date.strftime("%m-%d-%y") %>
+                                <% end %>
+                            </li>
                             <% end %>
                         </ul>
+                        <div>
+                            <%= button_to "Add to Google Calendar", create_event_path(event), method: :post, class: "gradient-btn", remote: true, data: { turbo: false } %>
+                        </div>
                     </div>
                 </li>
-                <br> <!-- Line break for each event -->
-            <% end %>
+                <br>
+                <!-- Line break for each event -->
+                <% end %>
         </ul>
     </div>
 
+    <!-- Particle Orb JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 200,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        console.log("Page fully rendered");
+    </script>
+
+    <!-- JavaScript for toggling event content -->
     <script>
         function toggleEventContent(eventId) {
             var eventContent = document.getElementById("event-content-" + eventId);

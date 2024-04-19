@@ -6,101 +6,143 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+    /* Title bar and nav bar styles */
+    .title-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Ensure it's above other content */
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between; /* To push content to both edges */
+        align-items: center; /* Vertical centering */
+    }
 
-        .event-card {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: auto;
-        }
+    .navbar-title {
+        font-size: 24px; /* Adjust the font size */
+        font-weight: bold;
+        letter-spacing: -1px;
+        text-align: center;
+    }
 
-        .event-header h1 {
-            margin: 0;
-            color: #fff;
-        }
+    .navbar-email {
+        line-height: 40px; /* Adjust line height for vertical alignment */
+        margin-left: 15px;
+        text-align: end;
+    }
 
-        .form-input, .gradient-btn {
-            background-color: #555;
-            border: 1px solid #666;
-            color: #fff;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            width: calc(100% - 22px);
-        }
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 70px; /* Adjust to avoid content being hidden behind navbar */
+    }
 
-        .gradient-btn {
-            background-color: #555;
-            padding: 10px 20px;
-            font-size: 16px;
-            letter-spacing: 1px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+    .event-card {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: auto;
+    }
 
-        .gradient-btn:hover {
-            background-color: #666;
-            cursor: pointer;
-            transform: translateY(-2px);
-        }
+    .event-header h1 {
+        margin: 0;
+        color: #fff;
+    }
 
-        .form-input[type="file"] {
-            padding: 0;
-            margin-top: -5px;
-        }
+    .form-input, .gradient-btn {
+        background-color: #555;
+        border: 1px solid #666;
+        color: #fff;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        width: calc(100% - 22px);
+    }
 
-        .back-btn {
-            background-color: transparent;
-            color: #bbb;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            display: inline-block;
-            border: none;
-        }
+    .gradient-btn {
+        background-color: #555;
+        padding: 10px 20px;
+        font-size: 16px;
+        letter-spacing: 1px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
 
-        .back-btn:hover {
-            color: #fff;
-            background-color: #444;
-        }
+    .gradient-btn:hover {
+        background-color: #666;
+        cursor: pointer;
+        transform: translateY(-2px);
+    }
 
-        .date-time-pair {
-            display: flex;
-            align-items: center;
-        }
+    .form-input[type="file"] {
+        padding: 0;
+        margin-top: -5px;
+    }
 
-        .date-time-pair label {
-            flex: 0.3;
-            text-align: right;
-            margin-right: 10px;
-        }
+    .back-btn {
+        background-color: transparent;
+        color: #bbb;
+        text-decoration: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        display: inline-block;
+        border: none;
+    }
 
-        .date-time-pair input {
-            flex: 0.7;
-        }
+    .back-btn:hover {
+        color: #fff;
+        background-color: #444;
+    }
 
-        .remove-date-time {
-            background-color: #ff0000;
-            border: none;
-            color: #fff;
-            padding: 5px 10px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
+    .date-time-pair {
+        display: flex;
+        align-items: center;
+    }
+
+    .date-time-pair label {
+        flex: 0.3;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    .date-time-pair input {
+        flex: 0.7;
+    }
+
+    .remove-date-time {
+        background-color: #ff0000;
+        border: none;
+        color: #fff;
+        padding: 5px 10px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
+
+<!-- Navigation bar -->
+<nav class="title-bar">
+    <div class="container d-flex align-items-center">
+        <div class="navbar-title flex-grow-1">
+            <span>A Place For All Your Events</span>
+        </div>
+        <!-- Email -->
+        <div class="navbar-email">
+            <%= session[:user_email] if session[:user_email] %> 
+        </div>
+    </div>
+</nav>
 
 <div class="event-card">
     <div class="event-header">
@@ -121,100 +163,137 @@
                 </div>
             <% end %>
         </div>
-
+        <div>
+            <%= form.label :reminder_time, "Reminder Timer" %>
+            <%= form.datetime_field :reminder_time, class: 'form-input', id: 'ReminderTime',
+                required: true, value: @event.event_info.present? ? @event.event_info.reminder_time : ""%>
+        </div>
 
         <button type="button" onclick="addDateTimePair()" class="gradient-btn" id="add-date-time">Add Date-Time Pair</button> 
 
-        <%= form.label "Upload CSV File" %>
-        <%= form.file_field :csv_file, class: 'form-input', required: true, accept: ".csv" %>
+        <%= form.label "Upload Excel/CSV File" %>
+        <%= form.file_field :csv_file, id: 'csvFileInput', class: 'form-input', required: false, accept: ".csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" %>
+
+        <%= form.label :user_input, "Enter Emails (Comma-Separated List)" %>
+        <%= form.text_field :user_input, id: 'userInput', class: 'form-input', placeholder: 'example@email.com, example2@email.com, ...' %>
+
 
         <div align="center">
-            <%= form.submit "Submit", class: "gradient-btn" %>
+            <%= form.submit "Submit", class: "gradient-btn", onclick: "return validateEmails()" %>
             <a href="javascript:history.back()" class="gradient-btn">Back</a>
         </div>
     <% end %>
 </div>
 
 <script>
-    // Function to add a new date-time pair
-    function addDateTimePair() {
-        const container = document.getElementById("time_slots_fields");
-        const field = document.getElementById("time-slot-copy")
+// Function to add a new date-time pair
+function addDateTimePair() {
+    const container = document.getElementById("time_slots_fields");
+    const field = document.getElementById("time-slot-copy")
+    
+    
+    const newPair = field.cloneNode(true);
+    container.appendChild(newPair);
+    const index = container.childElementCount;
+    updateAttributeNames(newPair,index - 1);
+
+
+    const button = document.createElement('button');
+    button.textContent = 'Remove';
+    button.addEventListener('click', function(){
+        removeDateTimePair(button)
+    });
+    button.classList.add("remove-date-time")
+
+
+    newPair.appendChild(button);
+}
+// Function to remove the clicked date-time pair
+function removeDateTimePair(button) {
+    const container = button.parentNode.parentNode;
+    container.removeChild(button.parentNode);
+}
+
+function updateAttributeNames(container, index) {
+  container.querySelectorAll('input').forEach(function(input) {
+    input.name = input.name.replace(/\d+/, index);
+    input.id = input.id.replace(/\d+/, index);
+  });
+}
+
+// Validate the date and time
+document.querySelector("form").addEventListener("submit", function (event) {
+    const dateInputs = document.querySelectorAll('#event_time_slot__date');
+    const timeStartInputs = document.querySelectorAll('#event_time_slot__start_time');
+    const timeEndInputs = document.querySelectorAll('#event_time_slot__end_time');
+
+    var now = new Date();
+
+    // Get the time zone offset in minutes
+    var timeZoneOffsetMinutes = now.getTimezoneOffset();
+    // Convert the offset to hours and minutes
+    var timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetMinutes) / 60);
+    var timeZoneOffsetMinutesRemainder = Math.abs(timeZoneOffsetMinutes) % 60;
+
+    // Determine the sign of the offset
+    var timeZoneOffsetSign = timeZoneOffsetMinutes > 0 ? "-" : "+";
+
+    // Format the offset into a string
+    var timeZoneOffsetString = timeZoneOffsetSign +
+    (timeZoneOffsetHours < 10 ? "0" : "") + timeZoneOffsetHours +
+    ":" +
+    (timeZoneOffsetMinutesRemainder < 10 ? "0" : "") + timeZoneOffsetMinutesRemainder;
+
+    
+    for (let i = 0; i < dateInputs.length; i++) {
+        var startTimeStr = dateInputs[i].value + ' ' + timeStartInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+        var endTimeStr = dateInputs[i].value + ' ' + timeEndInputs[i].value + '.000 UTC' + timeZoneOffsetString;
+
+        var startTime = new Date(startTimeStr);
+        var endTime = new Date(endTimeStr);
+
+
+        if (startTime < now) {
+            event.preventDefault();
+            alert("Date cannot be in the past.");
+            return;
+        }
         
-        
-        const newPair = field.cloneNode(true);
-        container.appendChild(newPair);
-        const index = container.childElementCount;
-        updateAttributeNames(newPair,index - 1);
-
-
-        const button = document.createElement('button');
-        button.textContent = 'Remove';
-        button.addEventListener('click', function(){
-            removeDateTimePair(button)
-        });
-        button.classList.add("remove-date-time")
-
-
-        newPair.appendChild(button);
+        if (endTime <= startTime) {
+            event.preventDefault();
+            alert("End Time must be after Start Time.");
+            return;
+        }
     }
-    // Function to remove the clicked date-time pair
-    function removeDateTimePair(button) {
-        const container = button.parentNode.parentNode;
-        container.removeChild(button.parentNode);
-    }
+});
 
-    function updateAttributeNames(container, index) {
-      container.querySelectorAll('input').forEach(function(input) {
-        input.name = input.name.replace(/\d+/, index);
-        input.id = input.id.replace(/\d+/, index);
-      });
-    }
+    function validateEmails() {
+        var userInput = document.getElementById('userInput').value;
 
-    // Validate the date and time
-    document.querySelector("form").addEventListener("submit", function (event) {
-        const dateInputs = document.querySelectorAll('#event_time_slot__date');
-        const timeStartInputs = document.querySelectorAll('#event_time_slot__start_time');
-        const timeEndInputs = document.querySelectorAll('#event_time_slot__end_time');
-
-        var now = new Date();
-
-        // Get the time zone offset in minutes
-        var timeZoneOffsetMinutes = now.getTimezoneOffset();
-        // Convert the offset to hours and minutes
-        var timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetMinutes) / 60);
-        var timeZoneOffsetMinutesRemainder = Math.abs(timeZoneOffsetMinutes) % 60;
-
-        // Determine the sign of the offset
-        var timeZoneOffsetSign = timeZoneOffsetMinutes > 0 ? "-" : "+";
-
-        // Format the offset into a string
-        var timeZoneOffsetString = timeZoneOffsetSign +
-        (timeZoneOffsetHours < 10 ? "0" : "") + timeZoneOffsetHours +
-        ":" +
-        (timeZoneOffsetMinutesRemainder < 10 ? "0" : "") + timeZoneOffsetMinutesRemainder;
-
-        
-        for (let i = 0; i < dateInputs.length; i++) {
-            var startTimeStr = dateInputs[i].value + ' ' + timeStartInputs[i].value + '.000 UTC' + timeZoneOffsetString;
-            var endTimeStr = dateInputs[i].value + ' ' + timeEndInputs[i].value + '.000 UTC' + timeZoneOffsetString;
-
-            var startTime = new Date(startTimeStr);
-            var endTime = new Date(endTimeStr);
-
-            if (startTime < now) {
-                event.preventDefault();
-                alert("Date cannot be in the past.");
-                return;
-            }
-            
-            if (endTime <= startTime) {
-                event.preventDefault();
-                alert("End Time must be after Start Time.");
-                return;
+        if (userInput.trim() === '' && document.getElementById('csvFileInput').files.length === 0) {
+            event.preventDefault();
+            alert("Please enter email addresses or upload a file.");
+            return;
+        } else if (userInput.trim() != '') {
+            var emails = userInput.split(',').map(function(email) {
+                return email.trim();
+            });
+            for (var i = 0; i < emails.length; i++) {
+                var email = emails[i];
+                if (!isValidEmail(email)) {
+                    alert('Invalid email: ' + emails[i]);
+                    return false;
+                }
             }
         }
-    });
+
+        return true;
+    }
+    function isValidEmail(email) {
+        // Regular expression for validating email address
+        var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    }    
 </script>
 
 </body>

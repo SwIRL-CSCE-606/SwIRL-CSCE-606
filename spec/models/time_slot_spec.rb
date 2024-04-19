@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TimeSlot, type: :model do
@@ -16,7 +18,7 @@ RSpec.describe TimeSlot, type: :model do
     it 'updates end time of an existing time slot' do
       new_end_time = Time.current.change(year: 2000, day: 1, month: 1).strftime('%H:%M:%S')
       time_slot.update!(end_time: new_end_time)
-      
+
       expect(time_slot.reload.end_time.strftime('%H:%M:%S')).to eq new_end_time
     end
 

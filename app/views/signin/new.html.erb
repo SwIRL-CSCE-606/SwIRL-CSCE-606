@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: transparent; /* Change background color to transparent */
+    }
+
+    h1 {
+      font-size: 80px;
+      font-weight: bold;
+      letter-spacing: -2px;
+      margin-bottom: 30px;
+      position: relative; /* Add position relative */
+      z-index: 2; /* Ensure header is on top */
+      color: white; /* Ensure text is white */
+    }
+
+    /* Styles for form */
+    form {
+      position: relative; /* Add position relative */
+      z-index: 1; /* Ensure login form is in front */
+      background-color: rgba(0, 0, 0, 0.5); /* Add background color with transparency */
+      max-width: 400px; /* Adjust form width */
+      margin: 0 auto; /* Center align form */
+      padding: 20px; /* Add padding for better spacing */
+      border: 2px solid white; /* Add border */
+      border-radius: 10px; /* Add border radius */
+    }
+
+    label {
+      display: block; /* Display labels as block */
+      margin-bottom: 10px; /* Add margin bottom to labels */
+      font-size: 18px; /* Adjust label font size */
+      color: white; /* Ensure text is white */
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 80%; /* Set input width to 100% */
+      padding: 10px; /* Add padding to inputs */
+      margin-bottom: 20px; /* Add margin bottom to inputs */
+      font-size: 16px; /* Adjust input font size */
+    }
+
+    input[type="submit"] {
+      background-color: #333; /* Change submit button background color */
+      color: white; /* Change submit button text color */
+      border: none; /* Remove border */
+      padding: 15px 30px; /* Adjust padding */
+      font-size: 18px; /* Adjust font size */
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+      cursor: pointer; /* Add pointer cursor */
+    }
+
+    input[type="submit"]:hover {
+      background-color: #444; /* Change background color on hover */
+      transform: scale(1.05); /* Add slight scale effect on hover */
+    }
+
+    /* Styles for links */
+    .link-box {
+      position: relative; /* Add position relative */
+      z-index: 1; /* Ensure links are in front */
+      border: 2px solid white; /* Add border */
+      border-radius: 10px; /* Add border radius */
+      display: inline-block; /* Display links as block */
+      padding: 10px 20px; /* Add padding */
+      margin-top: 10px; /* Add margin top */
+      font-size: 16px; /* Adjust font size */
+      text-decoration: none; /* Remove underline */
+      color: white; /* Change link color */
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .link-box:hover {
+      background-color: #333; /* Change background color on hover */
+      transform: scale(1.05); /* Add slight scale effect on hover */
+    }
+
+    /* Particle Orb */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0; /* Ensure particles are behind */
+      background-color: black; /* Set background color for particle effect */
+    }
+  </style>
+  <!-- Include the Particle Orb JS file -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+  <!-- Particle Orb -->
+  <div id="particles-js"></div>
+
+  <h1>Login</h1>
+  
+  <%= form_tag('/signin', method: 'post') do %>
+    <div>
+      <%= label_tag(:email, 'Email') %>
+      <%= text_field_tag(:email, nil, id: 'email') %>
+    </div>
+    <div>
+      <%= label_tag(:password, 'Password') %>
+      <%= password_field_tag(:password, nil, id: 'password') %>
+    </div>
+    <%= submit_tag('Login') %>
+  <% end %>
+
+  <%= link_to 'Sign-up', signup_path, class: 'link-box' %>
+  <%= link_to 'Continue without signing in', home_path, class: 'link-box' %>
+
+  <!-- Initialize Particle Orb -->
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#ffffff"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          },
+          "image": {
+            "src": "img/github.svg",
+            "width": 100,
+            "height": 100
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 6,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 200,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 100,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+    console.log("Page fully rendered");
+  </script>
+</body>
+</html>
