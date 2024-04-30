@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAttendeeToTimeSlots < ActiveRecord::Migration[7.0]
   def change
     add_column :time_slots, :attendee_id, :integer, default: nil

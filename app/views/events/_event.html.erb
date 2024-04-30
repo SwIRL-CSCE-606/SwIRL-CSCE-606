@@ -120,11 +120,14 @@
                 <h3 align="center">
                     <% if @event.csv_file.attached? %>
                         <p>
-                            <strong>CSV File:</strong>
+                            <strong>CSV/Excel File:</strong>
                             <%= link_to @event.csv_file.filename, rails_blob_path(@event.csv_file) %>
                         </p>
                     <% end %>
                 </h3>
+                <div>
+                    <%= button_to "Add to Google Calendar", create_event_path(event), method: :post, class: "gradient-btn", remote: true, data: { turbo: false }%>
+                </div>
             </div>
         </div>
     </div>

@@ -6,6 +6,29 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .title-bar {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between; /* To push content to both edges */
+            align-items: center; /* Vertical centering */
+        }
+
+        .navbar-title {
+            font-size: 24px; /* Adjust the font size */
+            font-weight: bold;
+            letter-spacing: -1px;
+            margin-top: 20px; /* Remove margin to align with subtitle */
+            text-align: center;
+        }
+
+        .navbar-email {
+            line-height: 40px; /* Adjust line height for vertical alignment */
+            margin-left: 15px;
+            margin-top: 40px;
+            text-align: end;
+        }
         body, html {
             height: 100%;
             margin: 0;
@@ -20,12 +43,13 @@
 
         .event-card {
             background-color: #333; /* Dark background for the card */
-            padding: 20px;
+            padding: 50px;
             border-radius: 10px; /* Rounded corners for the card */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
             width: auto; /* Width adjusted to content */
             max-width: auto;
-            overflow-y: auto;
+            max-height: 80vh; /* Set maximum height to occupy 80% of viewport height */
+            overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
             margin: 0 auto; 
         }
 
@@ -54,11 +78,13 @@
             font-size: 40px;
             font-weight: bold;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .subtitle {
             font-size: 24px;
             margin-bottom: 25px;
+            text-align: center;
         }
 
         label {
@@ -83,39 +109,67 @@
 
         @media (max-width: 768px) {
             .event-card {
-                width: 95%;
-                padding: 10px;
+                width: 95%; /* Adjust card width for smaller screens */
+                padding: 20px;
                 margin: 10px auto;
                 max-height: 90vh;
             }
 
             .form-input, .gradient-btn {
-                width: calc(100% - 20px);
+                width: calc(100% - 20px); /* Adjust input and button width for smaller screens */
             }
-        }
 
-        /* Add this CSS for responsive two-column layout */
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            .form-row {
+                flex-direction: column; /* Change to a single column layout on smaller screens */
+            }
+
+            .form-row > div {
+                width: 100%; /* Adjust input field width to full width on smaller screens */
+                margin-bottom: 10px; /* Add some spacing between rows on smaller screens */
+            }
+
+            .title {
+                font-size: 30px;
+            }
+
+            .subtitle {
+                font-size: 20px;
+            }
         }
 
         .form-row > div {
             width: calc(50% - 10px); /* Adjust the width and spacing as needed */
             box-sizing: border-box;
+            padding: 0 5px; /* Add padding between each form element */
         }
-
-        /* Adjust the width for smaller screens */
         @media (max-width: 768px) {
             .form-row > div {
                 width: calc(100% - 20px);
                 margin-bottom: 10px; /* Add some spacing between rows on smaller screens */
+                padding: 0 10px; /* Increase padding for smaller screens */
             }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation bar -->
+    <nav class="title-bar">
+        <div class="container d-flex align-items-center">
+            <div class="navbar-title flex-grow-1">
+                <span>A Place For All Your Events</span>
+            </div>
+            <!-- Email -->
+            <div class="navbar-email">
+                <%= session[:user_email] if session[:user_email] %>
+            </div>
+            <% if session[:user_email] %>
+            <form action="<%= logout_path %>" method="post">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <button type="submit" style="background-color: black; color: white; border: 2px solid white;">Logout</button>
+            </form>
+            <% end %>
+        </div>
+    </nav>
     <div class="event-card">
         <div class="title">Event Creation</div>
         <div class="subtitle">Create your event with ease</div>
@@ -164,15 +218,21 @@
                     <%= form.label :end_time, "Event End Time" %>
                     <%= form.time_field :end_time, class: 'form-input', id: 'EventEndTime', required: true, value: @event.event_info&.end_time&.strftime('%T.%L') %>
                 </div>
-
-                <!-- Repeat the same pattern for other input fields -->
-                
+                <div>
+                    <%= form.label :reminder_time, "Reminder Timer" %>
+                    <%= form.datetime_field :reminder_time, class: 'form-input', id: 'ReminderTime',
+                        required: true, value: @event.event_info.present? ? @event.event_info.reminder_time : ""%>
+                </div>
+                <div>
+                    <%= form.label :csv_file, "Upload List of Emails (Excel/CSV with column labels Email and Priority)" %>
+                    <%= form.file_field :csv_file, id: 'csvFileInput', class: 'form-input', accept: '.csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', required: false %>
+                </div>
+                <div>
+                    <%= form.label :user_input, "Enter Emails (Comma-Separated List)" %>
+                    <%= form.text_field :user_input, id: 'userInput', class: 'form-input', placeholder: 'example@email.com, example2@email.com, ...' %>
+                </div>
             </div>
 
-            <div>
-                <%= form.label :csv_file, "Upload List of Emails (CSV)" %>
-                <%= form.file_field :csv_file, class: 'form-input', accept: '.csv', required: true %>
-            </div>
 
             <br>
 
@@ -189,11 +249,39 @@
             var startTime = document.getElementById('EventStartTime').value;
             var endTime = document.getElementById('EventEndTime').value;
 
+            var userInput = document.getElementById('userInput').value;
+
+            if (userInput.trim() ===  '' && document.getElementById('csvFileInput').files.length === 0) {
+                alert('Please enter emails or upload a file');
+                return false;
+            }
+            else if (userInput.trim() != '') {
+                var emails = userInput.split(',').map(function(email) {
+                    return email.trim();
+                });
+                for (var i = 0; i < emails.length; i++) {
+                    var email = emails[i];
+                    if (!isValidEmail(email)) {
+                        alert('Invalid email: ' + emails[i]);
+                        return false;
+                    }
+                }
+            }
+
             if (startTime >= endTime) {
                 alert('End time must be later than start time');
                 return false;
             }
+
+
             return true;
+        }
+
+            
+        function isValidEmail(email) {
+            // Regular expression for validating email address
+            var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
         }
     </script>
 </body>

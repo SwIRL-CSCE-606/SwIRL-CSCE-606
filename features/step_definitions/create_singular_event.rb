@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given('the user is on the home page') do
   visit('/home') # Adjust this as per your actual home page URL
 end

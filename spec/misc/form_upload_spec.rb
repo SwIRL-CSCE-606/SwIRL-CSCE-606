@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
@@ -23,7 +25,7 @@ RSpec.describe EventsController, type: :controller do
 
       it 'redirects to the created event' do
         post :create, params: { event: valid_params }
-        expect(response).to redirect_to(event_path(Event.last))
+        expect(response).to redirect_to(eventdashboard_path)
       end
     end
   end
